@@ -34,7 +34,7 @@ export class LobbyService {
    /**
     * Returns the id of the newly created lobby
     */
-   public new(type: 'movie' | 'tv-show'): Lobby {
+   public new(type: 'movie' | 'tv'): Lobby {
 
       const newlobby: Lobby = {
          id: this.genlobbyId(),
@@ -90,7 +90,6 @@ export class LobbyService {
             }
             return JSON.parse(reply);
          });
-         
          --lobby.numPlayers;    
 
          /* If all players have left, and game isn't playing, delete the lobby */
@@ -110,7 +109,6 @@ export class LobbyService {
          lock.unlock();
          throw new Error(err.message);
       }
-
    }
 
 
@@ -238,7 +236,7 @@ export class LobbyService {
 
    private checkStatus(lobby: Lobby): void {
       if (lobby.playing) {
-         throw new Error('lobby has already started');
+         throw new Error('game has already started');
       }
    }
 }

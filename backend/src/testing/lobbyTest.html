@@ -21,11 +21,11 @@
    <label for="movie">Movie</label>
    <input type="radio" id="tvBtn" value="tv-show">
    <label for="tvBtn">TV-Show</label>
-
+   <button id="startBtn">Start</button>
    <script src="/socket.io/socket.io.js"></script>
    <script>
 
-
+      let x = 2;
 
    document.getElementById('connectBtn').addEventListener('click', () => {
       console.log("clickedJoin");
@@ -43,7 +43,7 @@
       socket.on('update', (game) => {
          console.log(game);
 
-         if (game.started) {
+         if (game.playing) {
             console.log('game started');
             socket.disconnect();
          }
@@ -82,6 +82,9 @@
          let genre = parseInt(document.getElementById('genre').value);
          socket.emit('delGenre', genre);
       });
+      document.getElementById('startBtn').addEventListener('click', () => {
+         socket.emit('start');
+      })
    });
 
     </script>

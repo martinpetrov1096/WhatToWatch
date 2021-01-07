@@ -25,6 +25,7 @@ export const lobbySocket = (socket: any) => {
       })
       .catch(err => {
          console.log(err.message);
+         socket.emit('error', err);
       });
 
    socket.on('disconnect', () => {
@@ -69,7 +70,7 @@ export const lobbySocket = (socket: any) => {
    });
 
    socket.on('changeType', (type: any) => {
-      if (typeof type != 'string' && (type != 'movie' && type != 'tv-show')) {
+      if (typeof type != 'string' && (type != 'movie' && type != 'tv')) {
          socket.emit('error', new Error('type must be a string that is either \'tv-show\' or \'movie\''))
       } else {
          lobbyService.changeType(lobbyId, type)
@@ -86,6 +87,7 @@ export const lobbySocket = (socket: any) => {
    socket.on('start', () => {
       lobbyService.start(lobbyId)
          .then((lobby: Lobby) => {
+            socket.emit('update', lobby);
             socket.to(lobbyId).emit('update', lobby);
          })
          .catch((err: any) => {

@@ -3,14 +3,10 @@ export interface Lobby {
 
    id: string;
    playing: boolean;
-   type: 'movie' | 'tv-show';
+   type: 'movie' | 'tv';
    numPlayers: number;
    genre: Array<number>;
    minRating: number;
 }
 
 
-export interface Match {
-   numMatched: number;
-   id: number;
-}
