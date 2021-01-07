@@ -2,7 +2,7 @@ import redis, { RedisClient } from 'redis';
 import  Redlock from 'redlock';
 import config from '../config/config';
 import crypto  from 'crypto';
-import { Game } from '../models/game';
+import { Lobby } from '../models/lobbyModel';
 import  { promisify } from 'util'
 
 
@@ -31,7 +31,7 @@ export class GameService {
    }
 
 
-   public async join(gameId: string): Promise<Game> {
+   public async join(gameId: string): Promise<Lobby> {
       const resource = 'locks:' + gameId;
       const lock = await this.redlock.lock(resource, 1000);
       const game = await this.getAsync(gameId)
@@ -52,7 +52,7 @@ export class GameService {
    }
 
 
-   private checkStatus(game: Game): void {
+   private checkStatus(game: Lobby): void {
       if (!game.playing) {
          throw new Error('Game has already started');
       }

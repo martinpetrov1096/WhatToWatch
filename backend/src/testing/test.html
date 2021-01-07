@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+
+    </style>
+  </head>
+  <body>
+   <h1 id="password">Default</h1>
+   <input type="text" id="gameId">
+   <button id="connectBtn">Connect</button>
+
+   
+   <input type="text" id="genre" value="genre">
+   <button id="genreAddBtn">Add Genre</button>
+   <button id="genreDelBtn">Remove Genre</button>
+
+
+   <input type="radio" id="movieBtn" value="movie">
+   <label for="movie">Movie</label>
+   <input type="radio" id="tvBtn" value="tv-show">
+   <label for="tvBtn">TV-Show</label>
+
+   <script src="/socket.io/socket.io.js"></script>
+   <script>
+
+
+
+   document.getElementById('connectBtn').addEventListener('click', () => {
+      console.log("clickedJoin");
+      var gameId = document.getElementById('gameId').value;
+      console.log(gameId)
+      var socket = io('/lobby', {
+         query: { 'gameId': gameId}
+      });
+      
+      socket.on('connection', (error) => {
+         console.log('connected');
+         
+      });
+
+      socket.on('update', (game) => {
+         console.log(game);
+
+         if (game.started) {
+            console.log('game started');
+            socket.disconnect();
+         }
+         switch (game.type) {
+            case 'movie':
+            document.getElementById('tvBtn').checked = false;
+               document.getElementById('movieBtn').checked = true;
+               break;
+            case 'tv-show':
+               document.getElementById('tvBtn').checked = true;
+               document.getElementById('movieBtn').checked = false;
+               break;
+            default:
+               console.log('error with type');
+               break;
+         }
+
+         document.getElementById('genre').value = game.genre;
+      });
+
+      socket.on('error', (err) => {
+         console.log(err.message);
+      });
+      document.getElementById('movieBtn').addEventListener('click', () => {
+         socket.emit('changeType', 'movie');
+      });
+      document.getElementById('tvBtn').addEventListener('click', () => {
+         socket.emit('changeType', 'tv-show');
+      });
+
+      document.getElementById('genreAddBtn').addEventListener('click', () => {
+         let genre = parseInt(document.getElementById('genre').value);
+         socket.emit('addGenre', genre);
+      });
+      document.getElementById('genreDelBtn').addEventListener('click', () => {
+         let genre = parseInt(document.getElementById('genre').value);
+         socket.emit('delGenre', genre);
+      });
+   });
+
+    </script>
+
+  </body>
+</html>

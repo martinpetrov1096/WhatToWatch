@@ -1,8 +1,9 @@
 import { Socket } from "socket.io";
-import { GameSocket } from '../types/gameSocketType';
 
-export default async(socket: GameSocket, next: any) => {
-   if (!socket.gameId) {
+export default async(socket: any, next: (err?: any) => void): Promise<void> => {
+
+   if (!socket.handshake.query.gameId) {
+      
       next(new Error('Socket miissing gameId param'));
    }
 }

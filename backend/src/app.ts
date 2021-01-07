@@ -2,10 +2,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import config from './config/config';
 import gameRouter from './routes/gameRoute';
-
+import testRouter from './testing/testRoute';
 import { errors } from 'celebrate';
-import * as socketio from 'socket.io';
+import { createServer } from 'http';
+import { Server, Socket } from 'socket.io';
 
+import { lobbySocket } from './routes/sockets/lobbySocket';
+import { gameSocket } from './routes/sockets/gameSocket';
+ 
 import gameMiddleware from './middleware/gameMiddleware';
 ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////// EXPRESS CONFIG /////////////////////////////
@@ -15,13 +19,21 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use('/game', gameRouter);
+app.use('/test', testRouter);
 app.use(errors());
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////// SOCKET IO CONFIG ////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
-const server = require('http').createServer(app);
-export const io = require('socket.io')(server);
+const httpServer = createServer(app);
+const io = new Server(httpServer);
 io.use(gameMiddleware);
 
+const lobbyIO = io.of('/lobby');
+const gameIO = io.of('/game');
+lobbyIO.on('connection', lobbySocket);
+gameIO.on('connection', gameSocket);
 
-app.listen(config.port, () => {
+httpServer.listen(config.port, () => {
    console.log('what-to-watch listening on port ' + config.port);
 });

@@ -1,13 +1,12 @@
 
-export interface Game {
+export interface Lobby {
 
    id: string;
    playing: boolean;
    type: 'movie' | 'tv-show';
    numPlayers: number;
-   genre: Array<number> | null;
-   minRating: number | null;
-   matches: Array<Match> | null;
+   genre: Array<number>;
+   minRating: number;
 }
 
 
