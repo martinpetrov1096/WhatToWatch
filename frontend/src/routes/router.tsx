@@ -1,9 +1,9 @@
 import {BrowserRouter, Switch, Route, Link } from 'react-router-dom';
-import {ExpandedInfoRoute} from './routes/expanded-info-route';
-import { GameStatusRoute } from './routes/game-status-route';
-import { LobbyRoute } from './routes/lobby-route';
-import { NewGameRoute } from './routes/new-game-route';
-import { VoteRoute } from './routes/vote-route';
+import {ExpandedInfoRoute} from './expanded-info-route';
+import { GameStatusRoute } from './game-status-route';
+import { LobbyRoute } from './lobby-route';
+import { NewGameRoute } from './new-game-route';
+import { VoteRoute } from './vote-route';
 
 
 export const Router = function() {
