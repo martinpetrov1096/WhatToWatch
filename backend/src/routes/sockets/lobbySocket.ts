@@ -14,7 +14,7 @@ const lobbyService = LobbyService.getInstance();
 export const lobbySocket = (socket: any) => {
 
    let lobbyId = socket.handshake.query.gameId;
-   console.log(lobbyId);
+   console.log('updating' + lobbyId);
 
    /* On connection, connect */
    lobbyService.connect(lobbyId)
@@ -87,7 +87,7 @@ export const lobbySocket = (socket: any) => {
    socket.on('start', () => {
       lobbyService.start(lobbyId)
          .then((lobby: Lobby) => {
-            socket.emit('update', lobby);
+          //  socket.emit('update', lobby);
             socket.to(lobbyId).emit('update', lobby);
          })
          .catch((err: any) => {

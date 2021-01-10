@@ -4,7 +4,8 @@ export const config = {
       bgUrl: 'https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/'
    },
    server: {
-      socket: 'localhost:8080/game'
+      url: 'localhost:8080',
+      newGame: '/game',
    }
 
 }

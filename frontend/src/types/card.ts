@@ -17,3 +17,4 @@ export interface ICardModel {
    vote_count?: number;
 
 }
+

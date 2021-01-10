@@ -75,6 +75,22 @@ export class LobbyService {
 
    }
 
+   public async checkLobby(lobbyId: string): Promise<boolean> {
+      const resource = 'locks:' + lobbyId;
+      const lock = await this.redlock.lock(resource, 1000);
+
+      try {
+         const lobby = await this.getLobby(lobbyId);
+         lock.unlock();
+         return lobby.id == lobbyId;
+      }
+      catch(err: any) {
+         lock.unlock();
+         return false;
+      }
+
+   }
+
    public async disconnect(lobbyId: string): Promise<Lobby> {
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -186,7 +202,7 @@ export class LobbyService {
    }
 
    private genlobbyId(): string {
-      return crypto.randomBytes(8).toString('hex');
+      return (Math.random() + 1).toString(36).substring(2,7);
    }
 
    /**
@@ -210,8 +226,8 @@ export class LobbyService {
     */
    private async setLobby(lobbyId: string, lobby: Lobby): Promise<void> {
       this.setAsync(lobby.id, JSON.stringify(lobby))
-         .then((err: Error, reply: any) => {
-            if (err) throw new Error('Couldn\'t update lobby');
+         .then((reply: any) => {
+            if (reply != 'OK') throw new Error('Couldn\'t update lobby');
          });
    }
 
