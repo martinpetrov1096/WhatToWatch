@@ -4,7 +4,6 @@ import { io, Socket } from "socket.io-client";
 import { GameNavbar } from '../components/game/navbar';
 import { GameVote } from '../components/game/vote';
 import { GameOverview } from '../components/game/overview';
-//import { useStateRef } from 'react-usestateref';
 import { CardDetails } from '../components/game/details';
 import { InvalidGame } from "./invalid";
 import { config } from "../config";
@@ -60,7 +59,7 @@ export const GameRoute = () => {
 
             const inPrevSwipes = curVal?.findIndex((swipe) => swipe.id === swipeId);
             if (inPrevSwipes !== -1) {
-               const newPrevSwipes = curVal;
+               const newPrevSwipes = JSON.parse(JSON.stringify(curVal));
                if (vote === 'yes') {
                   ++newPrevSwipes[inPrevSwipes].numLikes;
                } else if ( vote === 'no') {
@@ -69,12 +68,12 @@ export const GameRoute = () => {
                return newPrevSwipes;
             }
             return curVal;
-         })
+         });
          setNextSwipes((curVal) => {
             console.log(curVal)
             const inNextSwipes = curVal?.findIndex((swipe) => swipe.id === swipeId);
             if (inNextSwipes !== -1) {
-               const newNextSwipes = curVal;
+               const newNextSwipes = JSON.parse(JSON.stringify(curVal));
                console.log('inNext swipes');
                if (vote === 'yes') {
                   ++newNextSwipes[inNextSwipes].numLikes;

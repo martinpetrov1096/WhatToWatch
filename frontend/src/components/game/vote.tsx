@@ -11,9 +11,7 @@ interface IVoteProp {
 
 export const GameVote = (props: IVoteProp) => {
 
-   useEffect(() => {
-     // console.log(props.curSwipe);
-   })
+
    return (
       <div>
          <h1>GameVote</h1>
@@ -21,7 +19,10 @@ export const GameVote = (props: IVoteProp) => {
          <div>
             <button onClick={()=>props.vote('yes')}>Yes</button>
             <button onClick={()=>props.vote('no')}>No</button>
+            <h1>Num Likes: {props.curSwipe?.numLikes}</h1>
          </div>
       </div>
    );
+
+
 }
