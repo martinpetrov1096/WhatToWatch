@@ -1,11 +1,10 @@
-import { ISwipeModel } from '../../types/swipe';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { ICardModel } from '../../types/card';
+import { ISwipe } from '../../types/swipe';
 import { config } from '../../config';
 
 interface ICardProp {
-   cards: Array<ICardModel>;
+   cards: Array<ISwipe>;
 }
 interface ParamTypes {
    cardId: string

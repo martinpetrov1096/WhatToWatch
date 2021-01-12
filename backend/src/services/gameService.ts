@@ -4,7 +4,7 @@ import crypto  from 'crypto';
 import  { promisify } from 'util'
 import config from '../config/config';
 import { Lobby } from '../models/lobbyModel';
-import { Game, Result } from '../models/gameModel';
+import { Game, Result, Swipe } from '../models/gameModel';
 import axios, { AxiosResponse } from 'axios';
 export class GameService {
 
@@ -38,11 +38,15 @@ export class GameService {
       const lock = await this.redlock.lock(resource, 1000);
       try {
          const game = await this.getGame(gameId);
-
          this.checkStatus(game);
 
+         /* If game.swipes isn't yet an array, make it one */
+         if (!game.swipes) {
+            game.swipes = new Array<Swipe>();
+         }
+
          ++game.numPlayers;
-         
+       
          await this.setGame(game.id, game);
          lock.unlock();
 
@@ -80,7 +84,7 @@ export class GameService {
       }
    }
 
-   public async genSwipes(gameId: string): Promise<Array<Result>> {
+   public async genSwipes(gameId: string): Promise<Array<Swipe>> {
 
       const game = await this.getGame(gameId);
       const results = await this.getResults(game);
@@ -89,28 +93,33 @@ export class GameService {
       const lock = await this.redlock.lock(resource, 1000)
       try {
          this.checkStatus(game);
+         const newSwipes: Array<Swipe> = results.map((res: Result): Swipe => {
+            const swipe = res as Swipe;
+            swipe.numLikes = 0;
+            swipe.numDislikes = 0;
+            return swipe;
+         });
 
-         results.forEach(async(result) => {
-            /* Mostly to make typescript happy */
-            if (result.id == undefined) {
-               return;
-            }
-            /* If the result isn't already in the map, add it */
-            if (game.swipes.get(result.id) == -1) {
-               game.swipes.set(result.id, 0);
+         //console.log(newSwipes)
+         newSwipes.forEach((swipe) => {
+            /* Just to double check the swipes don't already exist */
+            if (!game.swipes.find((s) => swipe.id == s.id)) {
+               game.swipes.push(swipe);
             }
          });
+         // console.log(newSwipes)
+         
          await this.setGame(gameId, game);
          lock.unlock();
+         return game.swipes;
       }
       catch(err: any) {
          lock.unlock();
          throw new Error(err.message);
       }
-      return results;
    }
 
-   public async voteYes(gameId: string, swipeId: number): Promise<Game> {
+   public async vote(gameId: string, swipeId: number, vote: 'yes' | 'no'): Promise<Array<Swipe>> {
 
       const resource = 'locks:' + gameId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -121,16 +130,20 @@ export class GameService {
           * If the value is in the map, increment
           * its vote count. Otherwise, throw an error
           */
-         const numSwipes = game.swipes.get(swipeId);
-         if (numSwipes) {
-            game.swipes.set(swipeId, numSwipes+1);
+         const swipeIdx = game.swipes.findIndex((swipe) => swipe.id == swipeId);
+         if (swipeIdx != -1) {            
+            if (vote == 'yes') {
+               ++game.swipes[swipeIdx].numLikes;
+            } else {
+               ++game.swipes[swipeIdx].numDislikes;
+            }
          } else {
             throw new Error('Didn\'t find this swipe in this game');
          }
          await this.setGame(gameId, game);
          lock.unlock();
 
-         return game;
+         return game.swipes;
       } 
       catch(err: any) {
          lock.unlock();
@@ -151,8 +164,8 @@ export class GameService {
 
    private async setGame(gameId: string, game: Game): Promise<void> {
       this.setAsync(gameId, JSON.stringify(game))
-         .then((err: Error, reply: string) => {
-            if (err) throw new Error('Couldn\'t update game');
+         .then((reply: any) => {
+            if (reply != 'OK') throw new Error('Couldn\'t update lobby');
          });
    }
 
@@ -168,12 +181,13 @@ export class GameService {
       let results = axios.get(config.movieDbApi.discover + game.type, {
          params: params,
       }).then((res: AxiosResponse) => {
+         console.log(res.data.results);
          if (res.status != 200) {
             throw new Error('Moviedb API Error');
          }
-         return res.data as Array<Result>;
-      });
 
+         return res.data.results as Array<Result>;
+      });
       return results;
    }
 

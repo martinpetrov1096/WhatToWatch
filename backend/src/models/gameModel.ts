@@ -1,15 +1,7 @@
 import { Lobby } from './lobbyModel';
 
-export type Swipes = Map<number, number>;
-export interface Game extends Lobby{
-
-   page: number;
-   swipes: Swipes;
-
-}
 
 export interface Result {
-
    adult?: boolean;
    backdrop_path?: string;
    genre_ids?: Array<number>;
@@ -24,6 +16,13 @@ export interface Result {
    video?: boolean;
    vote_average?: number;
    vote_count?: number;
-
 }
 
+export interface Swipe extends Result {
+   numLikes: number;
+   numDislikes: number;
+}
+export interface Game extends Lobby{
+   page: number;
+   swipes: Array<Swipe>;
+}

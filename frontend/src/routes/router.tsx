@@ -16,7 +16,7 @@ export const Router = function() {
             <Route exact path="/lobby/:lobbyId">
                <LobbyRoute/>
             </Route>
-            <Route path="/game/">
+            <Route path="/game/:gameId">
                <GameRoute/>
             </Route>
             <Route exact path="/">

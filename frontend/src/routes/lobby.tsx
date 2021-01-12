@@ -1,4 +1,4 @@
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import axios from 'axios';
@@ -29,47 +29,52 @@ export const LobbyRoute = function() {
       genre: [],
       minRating: 1
    });
-   let updateFlag = useRef<boolean>(true);
 
-   /* Init socket io client and add all functions */
+   ///////////////////////////////////////////////////////////////////////////
+   /////////////////////////// USE EFFECT FUNCTIONS //////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
+
+   /**
+    * When the component gets mounted, 
+    * initiate the socketio client and 
+    * define all of the socket.on 
+    * event functions
+    */
    useEffect(() => {
       socket =io(config.server.url + '/lobby', {
          query: {
             'gameId': lobbyId
          }
       });
-      socket.on('connection', () => {
-         console.log('connected');
-      });
-
+      // socket.on('connection', () => {
+      //    console.log('connected');
+      // });
       socket.on('update', (lobby: Lobby) => {
          console.log('new value');
          setLobby(lobby);
       });
-      socket.on('conn', (newLobby: Lobby) => {
-         console.log('new conn')
-         setLobby({
-            ...lobby,
-            type: newLobby.type,
-            genre: newLobby.genre,
-            numPlayers: newLobby.numPlayers,
-            minRating: newLobby.minRating
-         });
-      })
-
-      /**
-       * Need mySocket so we can reference
-       * it when the cleanup is happening
-       */
+      // socket.on('conn', (newLobby: Lobby) => {
+      //    console.log('new conn')
+      //    setLobby(newLobby);
+      // });
+      socket.on('error', (err: Error) => {
+         console.log(err.message);
+         switch(err.message) {
+            case 'game has already started':
+               socket.disconnect();
+         }
+      });
       return () => {
-         console.log('cleanup')
+         console.log('lobby cleanup');
          socket.disconnect();
       }
    }, []);
+
    /**
-    * Check that lobbyId is valid each time it
-    * changes its value. If it isn't redirect 
-    * to the invalid page
+    * Monitor lobbyId. If it is changed, 
+    * verify that it is a proper lobbyId.
+    * If it isn't, redirect to the error
+    * page
     */
    useEffect(() => {
       axios.get('http://' + config.server.url + '/game', {
@@ -88,41 +93,70 @@ export const LobbyRoute = function() {
       })
    }, [lobbyId]);
 
+   /**
+    * Monitor lobby.playing. If it is
+    * set to true, disconnect the socket,
+    * and go to the game route, and emit
+    * start
+    */
+   useEffect(() => {
+      if (lobby.playing) {
+         socket.disconnect();
+         history.push('/game/' + lobbyId + '/vote');
+      }
+   }, [lobby.playing]);
 
 
+   ///////////////////////////////////////////////////////////////////////////
+   ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
+   ///////////////////////////////////////////////////////////////////////////
+
+   /**
+    * Function that will be bound to onClick
+    * event for the start button. If clicked, it
+    * will set the lobby playing to true, and 
+    * the useEffect handler will handle the rest.
+    */
+   const startGame = useRef(() => {
+      socket.emit('start');
+      setLobby({
+         ...lobby,
+         playing: true
+      });
+   });
+
+   /**
+    * Function that will be bound to onClick
+    * event for the movie/tv radio buttons
+    */
    const setType = useRef((newType: 'movie' | 'tv') => {
+      socket.emit('changeType', newType);
       setLobby({
          ...lobby,
          type: newType
       });
-      socket.emit('changeType', newType);
    })
 
 
-   /**
-    * The following handle the rating
-    */
-   const setMinRating = useRef((rating: number) => {
+   // /**
+   //  * The following handle the rating
+   //  */
+   // const setMinRating = useRef((rating: number) => {
 
-      if (rating > 0 && rating < 10) {
-         lobby.minRating = rating;
-         setLobby({
-            ...lobby,
-            minRating: rating
-         });
-   //      socket.emit('change', 'tv-show');
-      }
-   });
+   //    if (rating > 0 && rating < 10) {
+   //       lobby.minRating = rating;
+   //       setLobby({
+   //          ...lobby,
+   //          minRating: rating
+   //       });
+   // //      socket.emit('change', 'tv-show');
+   //       }
+   // });
 
-   const handleRatingChange = useRef((event: any) => {
-      const newRating = parseInt(event.target.value);
-      setMinRating.current(newRating);
-   });
-
-   const start = useRef(() => {
-      socket.emit('start');
-      console.log('yo')
-   });
+   // const handleRatingChange = useRef((event: any) => {
+   //    const newRating = parseInt(event.target.value);
+   //    setMinRating.current(newRating);
+   // });
 
 
    return (
@@ -131,9 +165,9 @@ export const LobbyRoute = function() {
          <h1>Lobby</h1>
          <h2>LobbyId: {lobbyId}</h2>
 
-         <button onClick={() => setLobby({...lobby, minRating: lobby.minRating-1})}>-</button>
+         {/* <button onClick={() => setLobby({...lobby, minRating: lobby.minRating-1})}>-</button>
          <input type="text" value={lobby.minRating.toString()} onChange={handleRatingChange.current}/>
-         <button onClick={() => setMinRating.current(lobby.minRating+1)}>+</button>
+         <button onClick={() => setMinRating.current(lobby.minRating+1)}>+</button> */}
 
          <form>
             <input type="radio" id="tvBtn" name="type" value="tv" checked={lobby.type === 'tv'} onChange={()=>setType.current('tv')}/>
@@ -142,9 +176,7 @@ export const LobbyRoute = function() {
             <label htmlFor="movie">Movie</label>
          </form>
 
-         <Link to={'/game/' + lobbyId + '/vote'}>
-            <button onClick={()=>start.current()}>Start Game</button>
-         </Link>
+         <button onClick={startGame.current}>Start Game</button>
       </div>
    )
 }

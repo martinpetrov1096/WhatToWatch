@@ -1,14 +1,19 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { config } from '../../config';
-import { ICardModel } from '../../types/card';
+import { ISwipe } from '../../types/swipe';
 
 import { GameCard } from './card';
 interface IVoteProp {
    vote: (v: 'yes' | 'no') => void;
-   curSwipe: ICardModel;
+   curSwipe: ISwipe | undefined;
 }
 
 export const GameVote = (props: IVoteProp) => {
+
+   useEffect(() => {
+     // console.log(props.curSwipe);
+   })
    return (
       <div>
          <h1>GameVote</h1>
