@@ -5,6 +5,7 @@ import axios from 'axios';
 import { config } from '../config/config';
 import { ILobby } from '../types/lobby';
 import { GenreSelector } from '../components/lobby/genreSelector'
+import { MinRating } from '../components/lobby/minRating';
 
 interface LobbyParamTypes {
    lobbyId: string;
@@ -106,6 +107,7 @@ export const LobbyRoute = function() {
    const startGame = useCallback(() => {
       socket.emit('start');
    }, []);
+
    const setType = useCallback((newType: 'movie' | 'tv') => {
       socket.emit('changeType', newType);
    }, []);
@@ -113,13 +115,17 @@ export const LobbyRoute = function() {
    const addGenre = useCallback((genreId: number) => {
       socket.emit('addGenre', genreId);
       console.log('adding genre');
+   }, []);
 
-   }, [lobby.genres]);
    const delGenre = useCallback((genreId: number) => {
       socket.emit('delGenre', genreId);
       console.log('deleting genre');
+   }, []);
 
-   }, [lobby.genres]);
+   const changeMinRating = useCallback((MinRating: number) => {
+      socket.emit('changeMinRating', MinRating);
+      console.log('changing minimum rating');
+   }, []);
 
    // /**
    //  * The following handle the rating
@@ -148,9 +154,8 @@ export const LobbyRoute = function() {
          <h1>Lobby</h1>
          <h2>LobbyId: {lobbyId}</h2>
          <GenreSelector type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres}/>
-         {/* <button onClick={() => setLobby({...lobby, minRating: lobby.minRating-1})}>-</button>
-         <input type="text" value={lobby.minRating.toString()} onChange={handleRatingChange.current}/>
-         <button onClick={() => setMinRating.current(lobby.minRating+1)}>+</button> */}
+         <MinRating curMinRating={lobby.minRating} changeMinRating={changeMinRating} />
+
 
          <form>
             <input type="radio" id="tvBtn" name="type" value="tv" checked={lobby.type === 'tv'} onChange={()=>setType('tv')}/>

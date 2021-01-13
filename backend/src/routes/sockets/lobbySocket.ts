@@ -72,6 +72,18 @@ export const lobbySocket = (socket: any) => {
       }
    });
 
+   socket.on('changeMinRating', (minRating: number) => {
+      lobbyService.changeMinRating(lobbyId, minRating)
+         .then((lobby: ILobby) => {
+            socket.emit('update', lobby);
+            socket.to(lobbyId).emit('update', lobby);
+         })
+         .catch((err: any) => {
+            console.log(err.message);
+            socket.emit('error', err.message);
+         });
+   });
+
    socket.on('changeType', (type: any) => {
       if (typeof type != 'string' && (type != 'movie' && type != 'tv')) {
          socket.emit('error', new Error('type must be a string that is either \'tv-show\' or \'movie\''))

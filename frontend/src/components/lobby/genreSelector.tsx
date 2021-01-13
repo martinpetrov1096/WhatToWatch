@@ -1,14 +1,14 @@
 import genre from '../../config/genres.json';
 
 
-interface GenreSelectorParamTypes {
+interface IGenreSelectorParamTypes {
    type: 'movie' | 'tv';
    addGenre: (genreId: number) => void;
    delGenre: (genreId: number) => void;
    curGenres: Array<number>;
 }
 
-export const GenreSelector = (props: GenreSelectorParamTypes) => {
+export const GenreSelector = (props: IGenreSelectorParamTypes) => {
 
    const genres = genre[props.type].map((genre) => {
       return (

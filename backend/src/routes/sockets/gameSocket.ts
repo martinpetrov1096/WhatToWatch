@@ -14,6 +14,17 @@ export const gameSocket = (socket: any) => {
          socket.join(gameId);
          socket.emit('connection', game);
          socket.to(gameId).emit('newConn', game.numPlayers);
+
+         /**
+          * Check if new swipes have a length
+          * of 0. If they do, no more swipes left
+          * so disconnect
+          */
+         if (game.swipes.length == 0) {
+            socket.emit('noNewSwipes');
+            socket.to(gameId).emit('noNewSwipes');
+            socket.disconnect();
+         }
       })
       .catch((err: any) => {
          console.log(err.message);
@@ -38,6 +49,17 @@ export const gameSocket = (socket: any) => {
       console.log('generating new swipes');
       gameService.genSwipes(gameId)
          .then((newSwipes: Array<ISwipe>) => {
+            
+            /**
+             * Check if new swipes have a length
+             * of 0. If they do, no more swipes left
+             * so disconnect
+             */
+            if (newSwipes.length == 0) {
+               socket.emit('noNewSwipes');
+               socket.to(gameId).emit('noNewSwipes');
+               socket.disconnect();
+            }
             socket.emit('newSwipes', newSwipes);
             socket.to(gameId).emit('newSwipes', newSwipes);
          })

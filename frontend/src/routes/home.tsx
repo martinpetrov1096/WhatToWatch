@@ -44,19 +44,22 @@ export const HomeRoute = function() {
     * changes its value. 
     */
    useEffect(() => {
-      axios.get('http://' + config.server.url + '/game', {
-         params: {
-            id: joinCode
-         }
-      }).then((res) => {
-         if (res.status === 200) {
-            setValidCode(true);
-         } else {
+      if (joinCode.length == 5) {
+         axios.get('http://' + config.server.url + '/game', {
+            params: {
+               id: joinCode
+            }
+         }).then((res) => {
+            if (res.status === 200) {
+               setValidCode(true);
+            } else {
+               setValidCode(false);
+            }
+         }).catch(() => {
             setValidCode(false);
-         }
-      }).catch(() => {
-         setValidCode(false);
-      })
+         });
+      }
+
    }, [joinCode]);
 
    return (

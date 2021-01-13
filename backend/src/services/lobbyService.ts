@@ -1,6 +1,6 @@
 import redis, { RedisClient } from 'redis';
 import  Redlock from 'redlock';
-import config from '../config/config';
+import config from '../config/config.json';
 import crypto  from 'crypto';
 import { ILobby } from '../models/lobby';
 import  { promisify } from 'util'
@@ -32,12 +32,14 @@ export class LobbyService {
       }
       return LobbyService.instance;
    }
+   ///////////////////////////////////////////////////////////////////////////
+   ////////////////////////////// CORE METHODS ///////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
 
    /**
     * Returns the id of the newly created lobby
     */
    public new(type: 'movie' | 'tv'): ILobby {
-
       const newlobby: ILobby = {
          id: this.genlobbyId(),
          playing: false,
@@ -46,12 +48,10 @@ export class LobbyService {
          genres: new Array<number>(),
          minRating: 0,
       }
-
       /* Add to redis, don't need to use lock here */
       this.client.set(newlobby.id, JSON.stringify(newlobby), (err, reply) => {
          if (err) throw err;
       });
-
       return newlobby;
    }
 
@@ -72,7 +72,6 @@ export class LobbyService {
          lock.unlock();
          throw new Error(err.message);
       }
-
    }
 
    public async checkLobby(lobbyId: string): Promise<boolean> {
@@ -96,7 +95,6 @@ export class LobbyService {
       const lock = await this.redlock.lock(resource, 1000);
       try {
          const lobby = await this.getLobby(lobbyId);
-
          --lobby.numPlayers;    
 
          /* If all players have left, and game isn't playing, delete the lobby */
@@ -116,15 +114,33 @@ export class LobbyService {
       }
    }
 
-
-   public async addGenre(lobbyId: string, genre: number): Promise<ILobby> {
-
+   public async start(lobbyId: string): Promise<ILobby> {
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
       try {
          const lobby = await this.getLobby(lobbyId);
          this.checkStatus(lobby);
 
+         lobby.playing = true;
+         await this.setLobby(lobbyId, lobby);
+         lock.unlock();
+         return lobby;
+      }
+      catch(err: any) {
+         lock.unlock();
+         throw new Error(err.message);
+      }   
+   }
+   ///////////////////////////////////////////////////////////////////////////
+   ///////////////////////////// FILTER METHODS //////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
+
+   public async addGenre(lobbyId: string, genre: number): Promise<ILobby> {
+      const resource = 'locks:' + lobbyId;
+      const lock = await this.redlock.lock(resource, 1000);
+      try {
+         const lobby = await this.getLobby(lobbyId);
+         this.checkStatus(lobby);
 
          /**
           * Verify that genre isn't already in the list 
@@ -132,8 +148,6 @@ export class LobbyService {
           */
          if (lobby.genres.indexOf(genre) == -1 && genres[lobby.type].map((g)=> g.id).includes(genre)) {
             lobby.genres.push(genre);
-
-
          }
          await this.setLobby(lobbyId, lobby);
          lock.unlock();
@@ -147,7 +161,6 @@ export class LobbyService {
    }
 
    public async delGenre(lobbyId: string, genre: number): Promise<ILobby> {
-
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
       try {
@@ -168,8 +181,29 @@ export class LobbyService {
       }
    }
 
-   public async changeType(lobbyId: string, type: 'movie' | 'tv'): Promise<ILobby> {
+   public async changeMinRating(lobbyId: string, minRating: number): Promise<ILobby> {
+      if (minRating < 1 || minRating > 9) {
+         throw new Error('Rating must be a number between 1-9');
+      }
+      const resource = 'locks:' + lobbyId;
+      const lock = await this.redlock.lock(resource, 1000);
+      try {
+         const lobby = await this.getLobby(lobbyId);
+         this.checkStatus(lobby);
+         lobby.minRating = minRating;
 
+         await this.setLobby(lobbyId, lobby);
+         lock.unlock();
+         
+         return lobby;
+      }
+      catch(err: any) {
+         lock.unlock();
+         throw new Error(err.message);
+      }
+   }
+
+   public async changeType(lobbyId: string, type: 'movie' | 'tv'): Promise<ILobby> {
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
       try {
@@ -180,33 +214,16 @@ export class LobbyService {
          await this.setLobby(lobbyId, lobby);
          lock.unlock();
          
-      return lobby;
-      }
-      catch(err: any) {
-         lock.unlock();
-         throw new Error(err.message);
-      }
-   }
-
-   public async start(lobbyId: string): Promise<ILobby> {
-
-      const resource = 'locks:' + lobbyId;
-      const lock = await this.redlock.lock(resource, 1000);
-      try {
-         const lobby = await this.getLobby(lobbyId);
-         this.checkStatus(lobby);
-
-         lobby.playing = true;
-         await this.setLobby(lobbyId, lobby);
-         lock.unlock();
          return lobby;
       }
       catch(err: any) {
          lock.unlock();
          throw new Error(err.message);
       }
-      
    }
+   ///////////////////////////////////////////////////////////////////////////
+   ///////////////////////// PRIVATE HELPER METHODS //////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
 
    private genlobbyId(): string {
       return (Math.random() + 1).toString(36).substring(2,7);

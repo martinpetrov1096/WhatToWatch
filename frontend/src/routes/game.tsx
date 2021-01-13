@@ -64,26 +64,39 @@ export const GameRoute = () => {
             'gameId': gameId
          }
       });
+
       socket.on('newSwipes', (swipes: Array<ISwipe>) => {
          console.log(swipes.length);
          setNextSwipes((oldNextSwipes) => {
             return oldNextSwipes.concat(...swipes);
          });
       });
+
+      /**
+       * If there aren't any more swipes, 
+       * just disconnect
+       */
+      socket.on('noNewSwipes', () => {
+         console.log('no new swipes left, disconnecting');
+         socket.disconnect();
+      });
+
       socket.on('newConn', (numPlayers: number) => {
          console.log('new player joined');
          setNumPlayers(numPlayers);
       });
+
       socket.on('newDisconn', (numPlayers: number) => {
          console.log('player left');
          setNumPlayers(numPlayers);
       });
+
       socket.on('connection', (game: IGame) => {
          console.log('connected');
          setNumPlayers(game.numPlayers);
          setNextSwipes(game.swipes);
-
       });
+
       socket.on('voted', ({swipeId, vote}: {swipeId: number, vote: 'yes' | 'no'}) => {
          /**
           * Need to setPrevSwipes and grab the 

@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import config from './config/config';
+import config from './config/config.json';
 import gameRouter from './routes/gameRoute';
 import testRouter from './testing/testRoute';
 import { errors } from 'celebrate';

@@ -1,15 +1,15 @@
 import redis, { RedisClient } from 'redis';
 import  Redlock, { Lock } from 'redlock';
-import crypto  from 'crypto';
 import  { promisify } from 'util'
-import config from '../config/config';
-import { ILobby } from '../models/lobby';
+import config from '../config/config.json';
 import { IGame, IResult, ISwipe } from '../models/game';
 import axios, { AxiosResponse } from 'axios';
+import { ApiService } from './apiService';
 export class GameService {
 
    private static instance: GameService;
    private client: RedisClient;
+   private apiService: ApiService;
    private redlock: Redlock;
    private getAsync: any;
    private setAsync: any;
@@ -20,9 +20,13 @@ export class GameService {
          retryDelay: 50,
          retryJitter: 50
       });
+      /**
+       * Create async versions of the redis getters
+       * and setters
+       */
+      this.apiService = ApiService.getInstance();
       this.getAsync = promisify(this.client.get).bind(this.client);
       this.setAsync = promisify(this.client.set).bind(this.client);
-
    }
 
    public static getInstance(): GameService {
@@ -32,6 +36,9 @@ export class GameService {
       }
       return GameService.instance;
    }
+   ///////////////////////////////////////////////////////////////////////////
+   ////////////////////////////// CORE METHODS ///////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
 
    public async connect(gameId: string): Promise<IGame> {
       const resource = 'locks:' + gameId;
@@ -45,13 +52,7 @@ export class GameService {
           * first page of results and add it
           */
          if (!game.swipes) {
-            const results = await this.getResults(game);
-               game.swipes = results.map((res: IResult): ISwipe => {
-               const swipe = res as ISwipe;
-               swipe.numLikes = 0;
-               swipe.numDislikes = 0;
-               return swipe;
-            });
+            game.swipes = await this.apiService.getSwipes(game);
          }
 
          ++game.numPlayers;
@@ -110,22 +111,25 @@ export class GameService {
 
    public async genSwipes(gameId: string): Promise<Array<ISwipe>> {
 
+      /**
+       * Check if game.swipes.length has anything in it
+       * If it doesn't, this likely means that there are
+       * no more results left to return. In this case, 
+       * to avoid hitting the movieDb api, just return 
+       * empty here
+       */
       const game = await this.getGame(gameId);
-      const results = await this.getResults(game);
+      if (game.swipes.length == 0) {
+         return [];
+      }
+      const newSwipes = await this.apiService.getSwipes(game);
 
       const resource = 'locks:' + gameId;
       const lock = await this.redlock.lock(resource, 1000)
       try {
          this.checkStatus(game);
-         const newSwipes: Array<ISwipe> = results.map((res: IResult): ISwipe => {
-            const swipe = res as ISwipe;
-            swipe.numLikes = 0;
-            swipe.numDislikes = 0;
-            return swipe;
-         });
 
          for (const swipe of newSwipes) {
-            console.log(swipe.id);
             if (game.swipes.find((s) => swipe.id == s.id) != undefined) {
                console.log('problem')
                throw new Error('Swipes already exist');
@@ -180,7 +184,9 @@ export class GameService {
          throw new Error(err.message);
       }
    }
-
+   ///////////////////////////////////////////////////////////////////////////
+   ///////////////////////// PRIVATE HELPER METHODS //////////////////////////
+   ///////////////////////////////////////////////////////////////////////////
 
    private async getGame(gameId: string): Promise<IGame> {
       return await this.getAsync(gameId)
@@ -206,9 +212,11 @@ export class GameService {
          'api_key': config.movieDbApi.apiKey,
          'with_genres': game.genres.toString(),
          'vote_average.gte': game.minRating,
-         'page': game.page
-      }
+         'page': game.page,
+         ...config.movieDbApi.defaults
 
+      }
+      console.log(params);
       let results = axios.get(config.movieDbApi.discover + game.type, {
          params: params,
       }).then((res: AxiosResponse) => {
