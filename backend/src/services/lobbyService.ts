@@ -97,7 +97,10 @@ export class LobbyService {
          const lobby = await this.getLobby(lobbyId);
          --lobby.numPlayers;    
 
-         /* If all players have left, and game isn't playing, delete the lobby */
+         /**
+          * If all players have left, and game
+          * isn't playing, delete the lobby
+          */
          if (lobby.numPlayers == 0 && !lobby.playing) {
             this.client.del(lobby.id, () => {
                lock.unlock();
@@ -209,11 +212,15 @@ export class LobbyService {
       try {
          const lobby = await this.getLobby(lobbyId);
          this.checkStatus(lobby);
+         /**
+          * Since genres are different for
+          * movies and tv shows, need to 
+          * reset genres
+          */
          lobby.genres = [];
          lobby.type = type;
          await this.setLobby(lobbyId, lobby);
          lock.unlock();
-         
          return lobby;
       }
       catch(err: any) {

@@ -4,10 +4,6 @@ import config from '../config/config.json';
 export class ApiService {
    private static instance: ApiService;
 
-   private constructor() {
-
-   }
-
    public static getInstance(): ApiService {
       if (!ApiService.instance) {
          ApiService.instance = new ApiService();
@@ -16,7 +12,6 @@ export class ApiService {
    }
 
    public async getSwipes(game: IGame): Promise<Array<ISwipe>> {
-
       const results = await this.getResults(game);
       return results.map((res: IResult): ISwipe => {
          const swipe= res as ISwipe;
@@ -27,7 +22,6 @@ export class ApiService {
    }
 
    private async getResults(game: IGame): Promise<Array<IResult>> {
-      /** */
       const params = {
          'api_key': config.movieDbApi.apiKey,
          'with_genres': game.genres.toString(),
@@ -36,16 +30,13 @@ export class ApiService {
          ...config.movieDbApi.defaults
 
       }
-      console.log(params);
-      let results = axios.get(config.movieDbApi.discover + game.type, {
+      return axios.get(config.movieDbApi.discover + game.type, {
          params: params,
       }).then((res: AxiosResponse) => {
          if (res.status != 200) {
             throw new Error('Moviedb API Error');
          }
-         console.log(res.data.results);
          return res.data.results as Array<IResult>;
       });
-      return results;
    }
 }

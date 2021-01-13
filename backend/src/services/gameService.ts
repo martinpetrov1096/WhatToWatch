@@ -1,5 +1,5 @@
 import redis, { RedisClient } from 'redis';
-import  Redlock, { Lock } from 'redlock';
+import  Redlock from 'redlock';
 import  { promisify } from 'util'
 import config from '../config/config.json';
 import { IGame, IResult, ISwipe } from '../models/game';
@@ -54,12 +54,9 @@ export class GameService {
          if (!game.swipes) {
             game.swipes = await this.apiService.getSwipes(game);
          }
-
          ++game.numPlayers;
-       
          await this.setGame(game.id, game);
          lock.unlock();
-
          return game;
       } 
       catch(err: any) {
@@ -92,7 +89,10 @@ export class GameService {
          this.checkStatus(game);
          --game.numPlayers;    
 
-         /* If all players have left, and game isn't playing, delete the game */
+         /**
+          * If all players have left, and game
+          * isn't playing, delete the game
+          */
          if (game.numPlayers == 0 && game.playing) {
             this.client.del(game.id, () => {
                lock.unlock();
@@ -131,7 +131,6 @@ export class GameService {
 
          for (const swipe of newSwipes) {
             if (game.swipes.find((s) => swipe.id == s.id) != undefined) {
-               console.log('problem')
                throw new Error('Swipes already exist');
             }
          }

@@ -18,14 +18,10 @@ export const GenreSelector = (props: IGenreSelectorParamTypes) => {
          </div>
       );
    })
-
-   console.log(genre[props.type]);
    return (
       <div>
          {genres}
-
       </div>
-
    );
 
 

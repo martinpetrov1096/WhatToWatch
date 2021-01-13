@@ -5,7 +5,7 @@
       "port": 6379
    },
    "movieDbApi": {
-      "apiKey": "1f23c6a51dd72c02a2f8b3d0f6756c28",
+      "apiKey": "",
       "discover": "https://api.themoviedb.org/3/discover/",
       "defaults": {
          "include_adult": false,

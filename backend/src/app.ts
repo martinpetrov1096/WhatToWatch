@@ -2,14 +2,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import config from './config/config.json';
 import gameRouter from './routes/gameRoute';
-import testRouter from './testing/testRoute';
 import { errors } from 'celebrate';
 import { createServer } from 'http';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 
 import { lobbySocket } from './routes/sockets/lobbySocket';
 import { gameSocket } from './routes/sockets/gameSocket';
- 
 import gameMiddleware from './middleware/gameMiddleware';
 ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////// EXPRESS CONFIG /////////////////////////////
@@ -17,9 +15,7 @@ import gameMiddleware from './middleware/gameMiddleware';
 
 const app = express();
 app.use(bodyParser.json());
-
 app.use('/game', gameRouter);
-app.use('/test', testRouter);
 app.use(errors());
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////// SOCKET IO CONFIG ////////////////////////////

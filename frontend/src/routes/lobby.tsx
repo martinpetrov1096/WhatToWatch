@@ -44,7 +44,7 @@ export const LobbyRoute = function() {
       });
 
       socket.on('update', (lobby: ILobby) => {
-         console.log('new value');
+         console.log('updating');
          setLobby((oldLobby: ILobby) => {
             return JSON.parse(JSON.stringify(lobby));
          });

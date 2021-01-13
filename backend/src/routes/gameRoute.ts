@@ -37,7 +37,6 @@ router.get('/', celebrate({
    } else {
       return res.status(404).json({'Status': 'Not Found'});
    }
-
 });
 
 export default router;

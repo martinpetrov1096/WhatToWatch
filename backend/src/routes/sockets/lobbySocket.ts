@@ -5,7 +5,6 @@ import { ILobby } from '../../models/lobby';
 ///////////////////////////////// CONFIG //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-
 const lobbyService = LobbyService.getInstance();
 ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////// SOCKET ROUTES //////////////////////////////
@@ -14,9 +13,8 @@ const lobbyService = LobbyService.getInstance();
 export const lobbySocket = (socket: any) => {
 
    let lobbyId = socket.handshake.query.gameId;
-   console.log('updating' + lobbyId);
+   console.log('Connected to lobby: ' + lobbyId);
 
-   /* On connection, connect */
    lobbyService.connect(lobbyId)
       .then((lobby: ILobby) => {
          socket.join(lobbyId);

@@ -66,7 +66,6 @@ export const GameRoute = () => {
       });
 
       socket.on('newSwipes', (swipes: Array<ISwipe>) => {
-         console.log(swipes.length);
          setNextSwipes((oldNextSwipes) => {
             return oldNextSwipes.concat(...swipes);
          });

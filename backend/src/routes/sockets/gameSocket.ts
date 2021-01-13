@@ -1,12 +1,12 @@
 import { GameService } from '../../services/gameService';
-import { IGame, IResult, ISwipe } from '../../models/game';
+import { IGame, ISwipe } from '../../models/game';
 
 const gameService = GameService.getInstance();
 
 export const gameSocket = (socket: any) => {
 
    let gameId = socket.handshake.query.gameId;
-   console.log(gameId);
+   console.log('Connected to game: ' + gameId);
 
    /* On connection, send client the game */
    gameService.connect(gameId)
@@ -44,8 +44,10 @@ export const gameSocket = (socket: any) => {
    });
 
    socket.on('genNewSwipes', () => {
-      /* Generate more results, and then
-      send them to everyone */
+      /**
+       * Generate more results, and then
+       * send them to everyone
+       */
       console.log('generating new swipes');
       gameService.genSwipes(gameId)
          .then((newSwipes: Array<ISwipe>) => {
@@ -83,6 +85,4 @@ export const gameSocket = (socket: any) => {
             socket.emit('error', err);
          });
    });
-
-   
 }

@@ -1,6 +1,5 @@
 import { ILobby } from './lobby';
 
-
 export interface IResult {
    adult?: boolean;
    backdrop_path?: string;
@@ -17,7 +16,6 @@ export interface IResult {
    vote_average?: number;
    vote_count?: number;
 }
-
 export interface ISwipe extends IResult {
    numLikes: number;
    numDislikes: number;
