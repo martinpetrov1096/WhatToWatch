@@ -6,7 +6,7 @@ import { GameVote } from '../components/game/vote';
 import { GameOverview } from '../components/game/overview';
 import { CardDetails } from '../components/game/details';
 import { InvalidGame } from "./invalid";
-import { config } from "../config";
+import { config } from "../config/config";
 import { ISwipe } from "../types/swipe";
 import { IGame } from "../types/game";
 import axios from "axios";

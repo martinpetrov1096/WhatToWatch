@@ -39,8 +39,11 @@ export class GameService {
       try {
          const game = await this.getGame(gameId);
          this.checkStatus(game);
-
-         /* If game.swipes isn't yet an array, make it one */
+         game.page = 1;
+         /**
+          * If game.swipes doesn't exist yet, grab the
+          * first page of results and add it
+          */
          if (!game.swipes) {
             const results = await this.getResults(game);
                game.swipes = results.map((res: IResult): ISwipe => {
@@ -201,17 +204,18 @@ export class GameService {
       /** */
       const params = {
          'api_key': config.movieDbApi.apiKey,
-         'with_genre': game.genre.toString(),
+         'with_genres': game.genres.toString(),
          'vote_average.gte': game.minRating,
          'page': game.page
       }
+
       let results = axios.get(config.movieDbApi.discover + game.type, {
          params: params,
       }).then((res: AxiosResponse) => {
          if (res.status != 200) {
             throw new Error('Moviedb API Error');
          }
-
+         console.log(res.data.results);
          return res.data.results as Array<IResult>;
       });
       return results;

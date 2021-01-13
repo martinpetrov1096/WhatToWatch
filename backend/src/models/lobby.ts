@@ -5,7 +5,7 @@ export interface ILobby {
    playing: boolean;
    type: 'movie' | 'tv';
    numPlayers: number;
-   genre: Array<number>;
+   genres: Array<number>;
    minRating: number;
 }
 

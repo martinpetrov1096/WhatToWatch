@@ -4,7 +4,7 @@ import config from '../config/config';
 import crypto  from 'crypto';
 import { ILobby } from '../models/lobby';
 import  { promisify } from 'util'
-
+import genres from '../config/genres.json';
 
 export class LobbyService {
 
@@ -43,7 +43,7 @@ export class LobbyService {
          playing: false,
          type: type,
          numPlayers: 0,
-         genre: new Array<number>(),
+         genres: new Array<number>(),
          minRating: 0,
       }
 
@@ -125,8 +125,15 @@ export class LobbyService {
          const lobby = await this.getLobby(lobbyId);
          this.checkStatus(lobby);
 
-         if (lobby.genre.indexOf(genre) == -1) {
-            lobby.genre.push(genre);
+
+         /**
+          * Verify that genre isn't already in the list 
+          * of genres, and that it is a valid genre
+          */
+         if (lobby.genres.indexOf(genre) == -1 && genres[lobby.type].map((g)=> g.id).includes(genre)) {
+            lobby.genres.push(genre);
+
+
          }
          await this.setLobby(lobbyId, lobby);
          lock.unlock();
@@ -147,9 +154,9 @@ export class LobbyService {
          const lobby = await this.getLobby(lobbyId);
          this.checkStatus(lobby);
 
-         const genreIdx = lobby.genre.indexOf(genre);
+         const genreIdx = lobby.genres.indexOf(genre);
          if (genreIdx != -1) {
-            lobby.genre.splice(genreIdx, 1);
+            lobby.genres.splice(genreIdx, 1);
          }
          await this.setLobby(lobbyId, lobby);
          lock.unlock();
@@ -168,7 +175,7 @@ export class LobbyService {
       try {
          const lobby = await this.getLobby(lobbyId);
          this.checkStatus(lobby);
-
+         lobby.genres = [];
          lobby.type = type;
          await this.setLobby(lobbyId, lobby);
          lock.unlock();

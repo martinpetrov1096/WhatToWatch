@@ -1,7 +1,7 @@
 
 import { Link, useParams } from 'react-router-dom'
 import { ISwipe } from '../../types/swipe';
-import { config } from '../../config';
+import { config } from '../../config/config';
 import { useEffect } from 'react';
 interface ICardProp {
    card: ISwipe | undefined;

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { config } from '../config';
+import { config } from '../config/config';
 
 export const HomeRoute = function() {
 

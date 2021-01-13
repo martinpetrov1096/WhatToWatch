@@ -39,12 +39,14 @@ export const lobbySocket = (socket: any) => {
          });
    });
 
-   socket.on('addGenre', (genre: any) => {
+   socket.on('addGenre', (genre: number) => {
+      console.log('adding genre');
       if (typeof genre != 'number') {
          socket.emit('error', new Error('Genre must be a number'))
       } else {
          lobbyService.addGenre(lobbyId, genre)
             .then((lobby: ILobby) => {
+               socket.emit('update', lobby);
                socket.to(lobbyId).emit('update', lobby);
             })
             .catch((err: any) => {
@@ -60,6 +62,7 @@ export const lobbySocket = (socket: any) => {
       } else {
          lobbyService.delGenre(lobbyId, genre)
             .then((lobby: ILobby) => {
+               socket.emit('update', lobby);
                socket.to(lobbyId).emit('update', lobby);
             })
             .catch((err: any) => {
@@ -75,6 +78,7 @@ export const lobbySocket = (socket: any) => {
       } else {
          lobbyService.changeType(lobbyId, type)
             .then((lobby: ILobby) => {
+               socket.emit('update', lobby);
                socket.to(lobbyId).emit('update', lobby);
             })
             .catch((err: any) => {

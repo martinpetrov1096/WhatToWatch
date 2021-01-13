@@ -1,9 +1,11 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import axios from 'axios';
-import { config } from '../config';
+import { config } from '../config/config';
 import { ILobby } from '../types/lobby';
+import { GenreSelector } from '../components/lobby/genreSelector'
+
 interface LobbyParamTypes {
    lobbyId: string;
 }
@@ -19,7 +21,7 @@ export const LobbyRoute = function() {
       playing: false,
       numPlayers: 1,
       type: 'movie',
-      genre: [],
+      genres: [],
       minRating: 1
    });
 
@@ -39,19 +41,13 @@ export const LobbyRoute = function() {
             'gameId': lobbyId
          }
       });
-      // socket.on('connection', () => {
-      //    console.log('connected');
-      // });
+
       socket.on('update', (lobby: ILobby) => {
          console.log('new value');
          setLobby((oldLobby: ILobby) => {
-            return lobby;
+            return JSON.parse(JSON.stringify(lobby));
          });
       });
-      // socket.on('conn', (newLobby: Lobby) => {
-      //    console.log('new conn')
-      //    setLobby(newLobby);
-      // });
       socket.on('error', (err: string) => {
          console.log(err);
          switch(err) {
@@ -106,28 +102,24 @@ export const LobbyRoute = function() {
    ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
    ///////////////////////////////////////////////////////////////////////////
 
-   /**
-    * Function that will be bound to onClick
-    * event for the start button. If clicked, it
-    * will set the lobby playing to true, and 
-    * the useEffect handler will handle the rest.
-    */
+
    const startGame = useCallback(() => {
       socket.emit('start');
    }, []);
-
-   /**
-    * Function that will be bound to onClick
-    * event for the movie/tv radio buttons
-    */
    const setType = useCallback((newType: 'movie' | 'tv') => {
       socket.emit('changeType', newType);
-      setLobby({
-         ...lobby,
-         type: newType
-      });
-   }, [lobby]);
+   }, []);
 
+   const addGenre = useCallback((genreId: number) => {
+      socket.emit('addGenre', genreId);
+      console.log('adding genre');
+
+   }, [lobby.genres]);
+   const delGenre = useCallback((genreId: number) => {
+      socket.emit('delGenre', genreId);
+      console.log('deleting genre');
+
+   }, [lobby.genres]);
 
    // /**
    //  * The following handle the rating
@@ -155,7 +147,7 @@ export const LobbyRoute = function() {
          
          <h1>Lobby</h1>
          <h2>LobbyId: {lobbyId}</h2>
-
+         <GenreSelector type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres}/>
          {/* <button onClick={() => setLobby({...lobby, minRating: lobby.minRating-1})}>-</button>
          <input type="text" value={lobby.minRating.toString()} onChange={handleRatingChange.current}/>
          <button onClick={() => setMinRating.current(lobby.minRating+1)}>+</button> */}
@@ -168,6 +160,7 @@ export const LobbyRoute = function() {
          </form>
 
          <button onClick={startGame}>Start Game</button>
+         <button onClick={()=>lobby.genres.includes(2) ? addGenre(2) : delGenre(2)}>Add genre</button>
       </div>
    )
 }

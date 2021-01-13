@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { config } from '../../config';
+import { config } from '../../config/config';
 import { ISwipe } from '../../types/swipe';
 
 import { GameCard } from './card';
