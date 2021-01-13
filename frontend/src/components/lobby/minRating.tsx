@@ -9,7 +9,7 @@ export const MinRating = (props: IMinRatingParamTypes) => {
 
    const handleChange = useCallback((event: any) => {
       props.changeMinRating(parseInt(event.target.value));
-   }, []);
+   }, [props]);
 
    return (
       <div>
@@ -18,5 +18,4 @@ export const MinRating = (props: IMinRatingParamTypes) => {
          <button onClick={() => props.changeMinRating(props.curMinRating+1)}>-</button>
       </div>
    );
-
 }

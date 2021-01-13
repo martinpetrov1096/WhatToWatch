@@ -2,20 +2,19 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import axios from 'axios';
-import { config } from '../config/config';
+import config from '../config/config.json';
 import { ILobby } from '../types/lobby';
 import { GenreSelector } from '../components/lobby/genreSelector'
 import { MinRating } from '../components/lobby/minRating';
 
-interface LobbyParamTypes {
+interface ILobbyParamTypes {
    lobbyId: string;
 }
-
 
 let socket: Socket;
 export const LobbyRoute = function() {
    
-   const { lobbyId } = useParams<LobbyParamTypes>();
+   const { lobbyId } = useParams<ILobbyParamTypes>();
    const history = useHistory();
    const [lobby, setLobby] = useState<ILobby>({
       id: lobbyId,
@@ -97,12 +96,9 @@ export const LobbyRoute = function() {
          history.push('/game/' + lobbyId + '/vote');
       }
    }, [lobby]);
-
-
    ///////////////////////////////////////////////////////////////////////////
    ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
    ///////////////////////////////////////////////////////////////////////////
-
 
    const startGame = useCallback(() => {
       socket.emit('start');
@@ -127,43 +123,18 @@ export const LobbyRoute = function() {
       console.log('changing minimum rating');
    }, []);
 
-   // /**
-   //  * The following handle the rating
-   //  */
-   // const setMinRating = useRef((rating: number) => {
-
-   //    if (rating > 0 && rating < 10) {
-   //       lobby.minRating = rating;
-   //       setLobby({
-   //          ...lobby,
-   //          minRating: rating
-   //       });
-   // //      socket.emit('change', 'tv-show');
-   //       }
-   // });
-
-   // const handleRatingChange = useRef((event: any) => {
-   //    const newRating = parseInt(event.target.value);
-   //    setMinRating.current(newRating);
-   // });
-
-
    return (
       <div>
-         
          <h1>Lobby</h1>
          <h2>LobbyId: {lobbyId}</h2>
          <GenreSelector type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres}/>
          <MinRating curMinRating={lobby.minRating} changeMinRating={changeMinRating} />
-
-
          <form>
             <input type="radio" id="tvBtn" name="type" value="tv" checked={lobby.type === 'tv'} onChange={()=>setType('tv')}/>
             <label htmlFor="tv">TV-Show</label>
             <input type="radio" id="movieBtn" name="type" value="movie" checked={lobby.type === 'movie'} onChange={()=>setType('movie')}/>
             <label htmlFor="movie">Movie</label>
          </form>
-
          <button onClick={startGame}>Start Game</button>
          <button onClick={()=>lobby.genres.includes(2) ? addGenre(2) : delGenre(2)}>Add genre</button>
       </div>

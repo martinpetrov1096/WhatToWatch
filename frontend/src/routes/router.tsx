@@ -7,9 +7,6 @@ import { InvalidGame } from './invalid';
 
 export const Router = function() {
 
-
-
-   
    return (
       <BrowserRouter>
          <Switch>
@@ -27,8 +24,5 @@ export const Router = function() {
             </Route>
          </Switch>
       </BrowserRouter>
-
-
-   )
-
+   );
 }

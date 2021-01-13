@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { config } from '../../config/config';
 import { ISwipe } from '../../types/swipe';
-
 import { GameCard } from './card';
 
 interface IVoteProp {
@@ -10,7 +7,6 @@ interface IVoteProp {
    curSwipe: ISwipe | undefined;
 }
 export const GameVote = (props: IVoteProp) => {
-
 
    return (
       <div>
@@ -22,6 +18,4 @@ export const GameVote = (props: IVoteProp) => {
          </div>
       </div>
    );
-
-
 }

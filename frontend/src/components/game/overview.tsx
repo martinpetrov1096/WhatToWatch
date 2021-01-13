@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { ISwipe } from "../../types/swipe"
 import { GameCard } from "./card";
 

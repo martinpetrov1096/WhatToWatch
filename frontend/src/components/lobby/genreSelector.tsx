@@ -1,6 +1,5 @@
 import genre from '../../config/genres.json';
 
-
 interface IGenreSelectorParamTypes {
    type: 'movie' | 'tv';
    addGenre: (genreId: number) => void;
@@ -17,12 +16,10 @@ export const GenreSelector = (props: IGenreSelectorParamTypes) => {
             <label htmlFor={genre.name}>{genre.name}</label>
          </div>
       );
-   })
+   });
    return (
       <div>
          {genres}
       </div>
    );
-
-
 }

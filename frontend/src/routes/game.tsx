@@ -1,25 +1,24 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Switch,Route, useParams, Redirect, useHistory } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
+import { Switch,Route, useParams, useHistory } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { GameNavbar } from '../components/game/navbar';
 import { GameVote } from '../components/game/vote';
 import { GameOverview } from '../components/game/overview';
 import { CardDetails } from '../components/game/details';
 import { InvalidGame } from "./invalid";
-import { config } from "../config/config";
+import config from '../config/config.json';
 import { ISwipe } from "../types/swipe";
 import { IGame } from "../types/game";
 import axios from "axios";
 
-
-interface GameParamTypes {
+interface IGameParamTypes {
    gameId: string;
-}
+};
 let socket: Socket;
 export const GameRoute = () => {
 
    /* Get the game ID, and if invalid, redirect */
-   const { gameId } = useParams<GameParamTypes>();
+   const { gameId } = useParams<IGameParamTypes>();
    const [numPlayers, setNumPlayers] = useState<number>(0);
    const [prevSwipes, setPrevSwipes] = useState<Array<ISwipe>>([]);
    const [nextSwipes, setNextSwipes] = useState<Array<ISwipe>>([]);
@@ -28,7 +27,7 @@ export const GameRoute = () => {
    /////////////////////////// USE EFFECT FUNCTIONS //////////////////////////
    ///////////////////////////////////////////////////////////////////////////
 
-      /**
+   /**
     * Monitor lobbyId. If it is changed, 
     * verify that it is a proper lobbyId.
     * If it isn't, redirect to the error
@@ -58,6 +57,7 @@ export const GameRoute = () => {
     * event functions
     */
    useEffect(() => {
+
       /* Init socket io client */
       socket = io(config.server.url + '/game', {
          query: {
@@ -97,6 +97,7 @@ export const GameRoute = () => {
       });
 
       socket.on('voted', ({swipeId, vote}: {swipeId: number, vote: 'yes' | 'no'}) => {
+
          /**
           * Need to setPrevSwipes and grab the 
           * current value from the callback. This way,
@@ -116,6 +117,7 @@ export const GameRoute = () => {
             }
             return curVal;
          });
+
          /**
           * Need to setNextSwipes and grab the 
           * current value from the callback. This way,
@@ -137,6 +139,7 @@ export const GameRoute = () => {
             return curVal;
          });
       });
+
       socket.on('error', (err: Error) => {
          console.log(err);
       });
@@ -149,7 +152,7 @@ export const GameRoute = () => {
          console.log('game cleanup');
          socket.disconnect();
       }
-   }, []);
+   }, [gameId]);
 
    /**
     * Monitor @nextSwipes so we can make 
@@ -165,13 +168,7 @@ export const GameRoute = () => {
          socket.emit('genNewSwipes');
          console.log('getting more swipes');
       }
-
    }, [nextSwipes, prevSwipes]);
-
-   useEffect(() => {
-   }, [prevSwipes])
-
-
    ///////////////////////////////////////////////////////////////////////////
    ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
    ///////////////////////////////////////////////////////////////////////////

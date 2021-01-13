@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { config } from '../config/config';
+import config from '../config/config.json';
+
 
 export const HomeRoute = function() {
 
@@ -18,6 +19,7 @@ export const HomeRoute = function() {
          _setJoinCode(code);
       }
    }
+
    const handleJoinCodeChange = (event: any) => {
       setJoinCode(event.target.value);
    }
@@ -44,7 +46,7 @@ export const HomeRoute = function() {
     * changes its value. 
     */
    useEffect(() => {
-      if (joinCode.length == 5) {
+      if (joinCode.length === 5) {
          axios.get('http://' + config.server.url + '/game', {
             params: {
                id: joinCode
@@ -67,12 +69,11 @@ export const HomeRoute = function() {
          <h1>WhatToWatch</h1>
          <h3>Valid Code: {validCode.toString()}</h3>
          <button onClick={newGame.current}>New</button>
-
          <input type="text" value={joinCode} onChange={handleJoinCodeChange}/>
          <h3>{joinCode}</h3>
          <Link to={'/lobby/' + joinCode}>
             <button disabled={!validCode}>Join</button>
          </Link>
       </div>
-   )
+   );
 }
