@@ -1,5 +1,5 @@
 import { LobbyService } from '../../services/lobbyService';
-import { Lobby } from '../../models/lobbyModel';
+import { ILobby } from '../../models/lobby';
 
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONFIG //////////////////////////////////
@@ -18,24 +18,24 @@ export const lobbySocket = (socket: any) => {
 
    /* On connection, connect */
    lobbyService.connect(lobbyId)
-      .then((lobby: Lobby) => {
+      .then((lobby: ILobby) => {
          socket.join(lobbyId);
          socket.emit('update', lobby);
          socket.to(lobbyId).emit('update', lobby);
       })
       .catch(err => {
          console.log(err.message);
-         socket.emit('error', err);
+         socket.emit('error', err.message);
       });
 
    socket.on('disconnect', () => {
       lobbyService.disconnect(lobbyId)
-         .then((lobby: Lobby) => {
+         .then((lobby: ILobby) => {
             socket.to(lobbyId).emit('update', lobby);
          }) 
          .catch((err: any) => {
             console.log(err.message);
-            socket.emit('error', err);
+            socket.emit('error', err.message);
          });
    });
 
@@ -44,12 +44,12 @@ export const lobbySocket = (socket: any) => {
          socket.emit('error', new Error('Genre must be a number'))
       } else {
          lobbyService.addGenre(lobbyId, genre)
-            .then((lobby: Lobby) => {
+            .then((lobby: ILobby) => {
                socket.to(lobbyId).emit('update', lobby);
             })
             .catch((err: any) => {
                console.log(err.message);
-               socket.emit('error', err);
+               socket.emit('error', err.message);
             });
       }
    });
@@ -59,12 +59,12 @@ export const lobbySocket = (socket: any) => {
          socket.emit('error', new Error('Genre must be a number'))
       } else {
          lobbyService.delGenre(lobbyId, genre)
-            .then((lobby: Lobby) => {
+            .then((lobby: ILobby) => {
                socket.to(lobbyId).emit('update', lobby);
             })
             .catch((err: any) => {
                console.log(err.message);
-               socket.emit('error', err);
+               socket.emit('error', err.message);
             });
       }
    });
@@ -74,25 +74,25 @@ export const lobbySocket = (socket: any) => {
          socket.emit('error', new Error('type must be a string that is either \'tv-show\' or \'movie\''))
       } else {
          lobbyService.changeType(lobbyId, type)
-            .then((lobby: Lobby) => {
+            .then((lobby: ILobby) => {
                socket.to(lobbyId).emit('update', lobby);
             })
             .catch((err: any) => {
                console.log(err.message);
-               socket.emit('error', err);
+               socket.emit('error', err.message);
             });
       }
    });
 
    socket.on('start', () => {
       lobbyService.start(lobbyId)
-         .then((lobby: Lobby) => {
-          //  socket.emit('update', lobby);
+         .then((lobby: ILobby) => {
+            socket.emit('update', lobby);
             socket.to(lobbyId).emit('update', lobby);
          })
          .catch((err: any) => {
             console.log(err.message);
-            socket.emit('error', err);
+            socket.emit('error', err.message);
          });
    });
 };

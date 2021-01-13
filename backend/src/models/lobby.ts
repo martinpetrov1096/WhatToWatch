@@ -1,5 +1,5 @@
 
-export interface Lobby {
+export interface ILobby {
 
    id: string;
    playing: boolean;

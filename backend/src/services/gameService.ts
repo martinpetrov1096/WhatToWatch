@@ -3,8 +3,8 @@ import  Redlock, { Lock } from 'redlock';
 import crypto  from 'crypto';
 import  { promisify } from 'util'
 import config from '../config/config';
-import { Lobby } from '../models/lobbyModel';
-import { Game, Result, Swipe } from '../models/gameModel';
+import { ILobby } from '../models/lobby';
+import { IGame, IResult, ISwipe } from '../models/game';
 import axios, { AxiosResponse } from 'axios';
 export class GameService {
 
@@ -33,7 +33,7 @@ export class GameService {
       return GameService.instance;
    }
 
-   public async connect(gameId: string): Promise<Game> {
+   public async connect(gameId: string): Promise<IGame> {
       const resource = 'locks:' + gameId;
       const lock = await this.redlock.lock(resource, 1000);
       try {
@@ -42,7 +42,13 @@ export class GameService {
 
          /* If game.swipes isn't yet an array, make it one */
          if (!game.swipes) {
-            game.swipes = new Array<Swipe>();
+            const results = await this.getResults(game);
+               game.swipes = results.map((res: IResult): ISwipe => {
+               const swipe = res as ISwipe;
+               swipe.numLikes = 0;
+               swipe.numDislikes = 0;
+               return swipe;
+            });
          }
 
          ++game.numPlayers;
@@ -58,7 +64,22 @@ export class GameService {
       }
    }
 
-   public async disconnect(gameId: string): Promise<Game> {
+   public async checkGame(gameId: string): Promise<boolean> {
+      const resource = 'locks:' + gameId;
+      const lock = await this.redlock.lock(resource, 1000);
+
+      try {
+         const game = await this.getGame(gameId);
+         lock.unlock();
+         return game.id == gameId && game.playing;
+      }
+      catch(err: any) {
+         lock.unlock();
+         return false;
+      }
+   }
+
+   public async disconnect(gameId: string): Promise<IGame> {
       const resource = 'locks:' + gameId;
       const lock = await this.redlock.lock(resource, 1000);
       try {
@@ -84,7 +105,7 @@ export class GameService {
       }
    }
 
-   public async genSwipes(gameId: string): Promise<Array<Swipe>> {
+   public async genSwipes(gameId: string): Promise<Array<ISwipe>> {
 
       const game = await this.getGame(gameId);
       const results = await this.getResults(game);
@@ -93,25 +114,25 @@ export class GameService {
       const lock = await this.redlock.lock(resource, 1000)
       try {
          this.checkStatus(game);
-         const newSwipes: Array<Swipe> = results.map((res: Result): Swipe => {
-            const swipe = res as Swipe;
+         const newSwipes: Array<ISwipe> = results.map((res: IResult): ISwipe => {
+            const swipe = res as ISwipe;
             swipe.numLikes = 0;
             swipe.numDislikes = 0;
             return swipe;
          });
 
-         //console.log(newSwipes)
-         newSwipes.forEach((swipe) => {
-            /* Just to double check the swipes don't already exist */
-            if (!game.swipes.find((s) => swipe.id == s.id)) {
-               game.swipes.push(swipe);
+         for (const swipe of newSwipes) {
+            console.log(swipe.id);
+            if (game.swipes.find((s) => swipe.id == s.id) != undefined) {
+               console.log('problem')
+               throw new Error('Swipes already exist');
             }
-         });
-         // console.log(newSwipes)
+         }
+         game.swipes = game.swipes.concat(newSwipes);
          
          await this.setGame(gameId, game);
          lock.unlock();
-         return game.swipes;
+         return newSwipes;
       }
       catch(err: any) {
          lock.unlock();
@@ -119,7 +140,7 @@ export class GameService {
       }
    }
 
-   public async vote(gameId: string, swipeId: number, vote: 'yes' | 'no'): Promise<Array<Swipe>> {
+   public async vote(gameId: string, swipeId: number, vote: 'yes' | 'no'): Promise<Array<ISwipe>> {
 
       const resource = 'locks:' + gameId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -140,6 +161,12 @@ export class GameService {
          } else {
             throw new Error('Didn\'t find this swipe in this game');
          }
+         
+         /**
+          * Increment the page for the next
+          * time more swipes are requested
+          */
+         ++game.page;
          await this.setGame(gameId, game);
          lock.unlock();
 
@@ -152,7 +179,7 @@ export class GameService {
    }
 
 
-   private async getGame(gameId: string): Promise<Game> {
+   private async getGame(gameId: string): Promise<IGame> {
       return await this.getAsync(gameId)
       .then((reply: string) => {
          if (!reply) {
@@ -162,7 +189,7 @@ export class GameService {
       });
    }
 
-   private async setGame(gameId: string, game: Game): Promise<void> {
+   private async setGame(gameId: string, game: IGame): Promise<void> {
       this.setAsync(gameId, JSON.stringify(game))
          .then((reply: any) => {
             if (reply != 'OK') throw new Error('Couldn\'t update lobby');
@@ -170,7 +197,7 @@ export class GameService {
    }
 
 
-   private async getResults(game: Game): Promise<Array<Result>> {
+   private async getResults(game: IGame): Promise<Array<IResult>> {
       /** */
       const params = {
          'api_key': config.movieDbApi.apiKey,
@@ -181,17 +208,16 @@ export class GameService {
       let results = axios.get(config.movieDbApi.discover + game.type, {
          params: params,
       }).then((res: AxiosResponse) => {
-         console.log(res.data.results);
          if (res.status != 200) {
             throw new Error('Moviedb API Error');
          }
 
-         return res.data.results as Array<Result>;
+         return res.data.results as Array<IResult>;
       });
       return results;
    }
 
-   private checkStatus(game: Game): void {
+   private checkStatus(game: IGame): void {
       if (!game.playing) {
          throw new Error('Game is still in lobby');
       }

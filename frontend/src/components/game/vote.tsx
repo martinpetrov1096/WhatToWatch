@@ -4,11 +4,11 @@ import { config } from '../../config';
 import { ISwipe } from '../../types/swipe';
 
 import { GameCard } from './card';
+
 interface IVoteProp {
    vote: (v: 'yes' | 'no') => void;
    curSwipe: ISwipe | undefined;
 }
-
 export const GameVote = (props: IVoteProp) => {
 
 
@@ -19,7 +19,6 @@ export const GameVote = (props: IVoteProp) => {
          <div>
             <button onClick={()=>props.vote('yes')}>Yes</button>
             <button onClick={()=>props.vote('no')}>No</button>
-            <h1>Num Likes: {props.curSwipe?.numLikes}</h1>
          </div>
       </div>
    );

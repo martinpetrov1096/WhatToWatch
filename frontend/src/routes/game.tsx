@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Switch,Route, useParams, Redirect } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Switch,Route, useParams, Redirect, useHistory } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { GameNavbar } from '../components/game/navbar';
 import { GameVote } from '../components/game/vote';
@@ -8,6 +8,8 @@ import { CardDetails } from '../components/game/details';
 import { InvalidGame } from "./invalid";
 import { config } from "../config";
 import { ISwipe } from "../types/swipe";
+import { IGame } from "../types/game";
+import axios from "axios";
 
 
 interface GameParamTypes {
@@ -18,12 +20,36 @@ export const GameRoute = () => {
 
    /* Get the game ID, and if invalid, redirect */
    const { gameId } = useParams<GameParamTypes>();
+   const [numPlayers, setNumPlayers] = useState<number>(0);
    const [prevSwipes, setPrevSwipes] = useState<Array<ISwipe>>([]);
    const [nextSwipes, setNextSwipes] = useState<Array<ISwipe>>([]);
-   
+   const history = useHistory();
    ///////////////////////////////////////////////////////////////////////////
    /////////////////////////// USE EFFECT FUNCTIONS //////////////////////////
    ///////////////////////////////////////////////////////////////////////////
+
+      /**
+    * Monitor lobbyId. If it is changed, 
+    * verify that it is a proper lobbyId.
+    * If it isn't, redirect to the error
+    * page
+    */
+   useEffect(() => {
+      axios.get('http://' + config.server.url + '/game', {
+         params: {
+            id: gameId
+         }
+      }).then((res) => {
+         if (res.data.Status !== 'Game') {
+            history.push('/error');
+            socket.disconnect();
+         }
+      })
+      .catch(() => {
+         history.push('/error');
+         socket.disconnect();
+      })
+   }, [gameId]);
 
    /**
     * When the component gets mounted, 
@@ -32,31 +58,40 @@ export const GameRoute = () => {
     * event functions
     */
    useEffect(() => {
-      console.log('initing')
+      /* Init socket io client */
       socket = io(config.server.url + '/game', {
          query: {
             'gameId': gameId
          }
       });
-
       socket.on('newSwipes', (swipes: Array<ISwipe>) => {
-         setNextSwipes(nextSwipes.concat(...swipes));
-        
+         console.log(swipes.length);
+         setNextSwipes((oldNextSwipes) => {
+            return oldNextSwipes.concat(...swipes);
+         });
       });
-      socket.on('connection', () => {
+      socket.on('newConn', (numPlayers: number) => {
+         console.log('new player joined');
+         setNumPlayers(numPlayers);
+      });
+      socket.on('newDisconn', (numPlayers: number) => {
+         console.log('player left');
+         setNumPlayers(numPlayers);
+      });
+      socket.on('connection', (game: IGame) => {
          console.log('connected');
+         setNumPlayers(game.numPlayers);
+         setNextSwipes(game.swipes);
+
       });
-      
-      socket.on('voted', ({swipeId, vote}:any) => {
-
-         if (vote !== 'yes' && vote !== 'no') {
-            return;
-         }
-         console.log(vote + swipeId);
-
+      socket.on('voted', ({swipeId, vote}: {swipeId: number, vote: 'yes' | 'no'}) => {
+         /**
+          * Need to setPrevSwipes and grab the 
+          * current value from the callback. This way,
+          * we can actually get the recent value of
+          * prevSwipes
+          */
          setPrevSwipes((curVal) => {
-            console.log(curVal)
-
             const inPrevSwipes = curVal?.findIndex((swipe) => swipe.id === swipeId);
             if (inPrevSwipes !== -1) {
                const newPrevSwipes = JSON.parse(JSON.stringify(curVal));
@@ -69,8 +104,13 @@ export const GameRoute = () => {
             }
             return curVal;
          });
+         /**
+          * Need to setNextSwipes and grab the 
+          * current value from the callback. This way,
+          * we can actually get the recent value of
+          * nextSwipes
+          */
          setNextSwipes((curVal) => {
-            console.log(curVal)
             const inNextSwipes = curVal?.findIndex((swipe) => swipe.id === swipeId);
             if (inNextSwipes !== -1) {
                const newNextSwipes = JSON.parse(JSON.stringify(curVal));
@@ -85,38 +125,62 @@ export const GameRoute = () => {
             return curVal;
          });
       });
+      socket.on('error', (err: Error) => {
+         console.log(err);
+      });
       
+      /**
+       * Return a function that disconnects from 
+       * the socket so we can cleanup
+       */
       return () => {
          console.log('game cleanup');
          socket.disconnect();
       }
    }, []);
 
+   /**
+    * Monitor @nextSwipes so we can make 
+    * sure that we don't run out of cards
+    * If we do, request more swipes via
+    * the socket client. To prevent this
+    * from occurring before the server
+    * can send all of the existing swipes,
+    * we check that prevSwipes.length !== 0
+    */
    useEffect(() => {
-      if (nextSwipes.length === 0) {
+      if (nextSwipes.length === 0 && prevSwipes.length !== 0) {
          socket.emit('genNewSwipes');
          console.log('getting more swipes');
       }
 
-   }, [nextSwipes]);
+   }, [nextSwipes, prevSwipes]);
+
+   useEffect(() => {
+   }, [prevSwipes])
 
 
-
-
-
-   const voteFunc = (vote: 'yes' | 'no') => {
+   ///////////////////////////////////////////////////////////////////////////
+   ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
+   ///////////////////////////////////////////////////////////////////////////
+   /**
+    * A function that can be passed as a
+    * param to the vote card to vote 
+    * yes or no
+    * @param vote the vote
+    */
+   const voteFunc = useCallback((vote: 'yes' | 'no') => {
       if (nextSwipes[0] === undefined) {
          return;
       }
       if (nextSwipes[0].id === undefined) {
          return;
       }
-      const curVote = nextSwipes[0];
       if (vote === 'yes') {
-         ++curVote.numLikes;
+         //++curVote.numLikes;
          socket.emit('vote', { gameId: gameId, swipeId: nextSwipes[0].id, vote: 'yes' });
       } else {
-         ++curVote.numDislikes;
+        // ++curVote.numDislikes;
          socket.emit('vote',  { gameId: gameId, swipeId: nextSwipes[0].id, vote: 'no'});
       }
       setPrevSwipes([
@@ -124,8 +188,7 @@ export const GameRoute = () => {
          ...prevSwipes
       ]);
       setNextSwipes(nextSwipes.slice(1,));
-   }
-
+   }, [nextSwipes, prevSwipes, gameId]);
 
    return (
       <div>
@@ -144,7 +207,6 @@ export const GameRoute = () => {
                <InvalidGame/>
             </Route>
          </Switch>
-         <button onClick={()=>socket.emit('genNewSwipes')}>new swipes</button>
       </div>
    );
 }

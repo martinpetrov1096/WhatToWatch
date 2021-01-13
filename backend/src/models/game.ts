@@ -1,7 +1,7 @@
-import { Lobby } from './lobbyModel';
+import { ILobby } from './lobby';
 
 
-export interface Result {
+export interface IResult {
    adult?: boolean;
    backdrop_path?: string;
    genre_ids?: Array<number>;
@@ -18,11 +18,11 @@ export interface Result {
    vote_count?: number;
 }
 
-export interface Swipe extends Result {
+export interface ISwipe extends IResult {
    numLikes: number;
    numDislikes: number;
 }
-export interface Game extends Lobby{
+export interface IGame extends ILobby{
    page: number;
-   swipes: Array<Swipe>;
+   swipes: Array<ISwipe>;
 }

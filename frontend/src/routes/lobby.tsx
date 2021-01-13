@@ -1,27 +1,20 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import axios from 'axios';
 import { config } from '../config';
+import { ILobby } from '../types/lobby';
 interface LobbyParamTypes {
    lobbyId: string;
 }
 
-interface Lobby {
-   id: string;
-   playing: boolean;
-   type: 'movie' | 'tv';
-   numPlayers: number;
-   genre: Array<number>;
-   minRating: number;
-}
 
 let socket: Socket;
 export const LobbyRoute = function() {
    
    const { lobbyId } = useParams<LobbyParamTypes>();
    const history = useHistory();
-   const [lobby, setLobby] = useState<Lobby>({
+   const [lobby, setLobby] = useState<ILobby>({
       id: lobbyId,
       playing: false,
       numPlayers: 1,
@@ -49,17 +42,19 @@ export const LobbyRoute = function() {
       // socket.on('connection', () => {
       //    console.log('connected');
       // });
-      socket.on('update', (lobby: Lobby) => {
+      socket.on('update', (lobby: ILobby) => {
          console.log('new value');
-         setLobby(lobby);
+         setLobby((oldLobby: ILobby) => {
+            return lobby;
+         });
       });
       // socket.on('conn', (newLobby: Lobby) => {
       //    console.log('new conn')
       //    setLobby(newLobby);
       // });
-      socket.on('error', (err: Error) => {
-         console.log(err.message);
-         switch(err.message) {
+      socket.on('error', (err: string) => {
+         console.log(err);
+         switch(err) {
             case 'game has already started':
                socket.disconnect();
          }
@@ -82,7 +77,7 @@ export const LobbyRoute = function() {
             id: lobbyId
          }
       }).then((res) => {
-         if (res.status !== 200) {
+         if (res.data.Status !== 'Lobby') {
             history.push('/error');
             socket.disconnect();
          }
@@ -104,7 +99,7 @@ export const LobbyRoute = function() {
          socket.disconnect();
          history.push('/game/' + lobbyId + '/vote');
       }
-   }, [lobby.playing]);
+   }, [lobby]);
 
 
    ///////////////////////////////////////////////////////////////////////////
@@ -117,25 +112,21 @@ export const LobbyRoute = function() {
     * will set the lobby playing to true, and 
     * the useEffect handler will handle the rest.
     */
-   const startGame = useRef(() => {
+   const startGame = useCallback(() => {
       socket.emit('start');
-      setLobby({
-         ...lobby,
-         playing: true
-      });
-   });
+   }, []);
 
    /**
     * Function that will be bound to onClick
     * event for the movie/tv radio buttons
     */
-   const setType = useRef((newType: 'movie' | 'tv') => {
+   const setType = useCallback((newType: 'movie' | 'tv') => {
       socket.emit('changeType', newType);
       setLobby({
          ...lobby,
          type: newType
       });
-   })
+   }, [lobby]);
 
 
    // /**
@@ -170,13 +161,13 @@ export const LobbyRoute = function() {
          <button onClick={() => setMinRating.current(lobby.minRating+1)}>+</button> */}
 
          <form>
-            <input type="radio" id="tvBtn" name="type" value="tv" checked={lobby.type === 'tv'} onChange={()=>setType.current('tv')}/>
+            <input type="radio" id="tvBtn" name="type" value="tv" checked={lobby.type === 'tv'} onChange={()=>setType('tv')}/>
             <label htmlFor="tv">TV-Show</label>
-            <input type="radio" id="movieBtn" name="type" value="movie" checked={lobby.type === 'movie'} onChange={()=>setType.current('movie')}/>
+            <input type="radio" id="movieBtn" name="type" value="movie" checked={lobby.type === 'movie'} onChange={()=>setType('movie')}/>
             <label htmlFor="movie">Movie</label>
          </form>
 
-         <button onClick={startGame.current}>Start Game</button>
+         <button onClick={startGame}>Start Game</button>
       </div>
    )
 }

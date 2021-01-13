@@ -2,6 +2,7 @@ import express from 'express';
 
 import { celebrate, Joi, Segments } from 'celebrate';
 import { LobbyService } from '../services/lobbyService';
+import { GameService } from '../services/gameService';
 
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONFIG //////////////////////////////////
@@ -9,6 +10,7 @@ import { LobbyService } from '../services/lobbyService';
 
 const router = express.Router();
 const lobbyService = LobbyService.getInstance();
+const gameService = GameService.getInstance();
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// ROUTES //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -27,11 +29,15 @@ router.get('/', celebrate({
       return res.status(400).json({'Error': 'Missing Id'});
    }
    const id = req.query.id.toString();
+
    if (await lobbyService.checkLobby(id)) {
-      return res.status(200).json();
+      return res.status(200).json({'Status': 'Lobby'});
+   } else if (await gameService.checkGame(id)) {
+      return res.status(200).json({'Status': 'Game'});
    } else {
-      return res.status(404).json();
+      return res.status(404).json({'Status': 'Not Found'});
    }
+
 });
 
 export default router;

@@ -2,7 +2,7 @@ import redis, { RedisClient } from 'redis';
 import  Redlock from 'redlock';
 import config from '../config/config';
 import crypto  from 'crypto';
-import { Lobby } from '../models/lobbyModel';
+import { ILobby } from '../models/lobby';
 import  { promisify } from 'util'
 
 
@@ -36,9 +36,9 @@ export class LobbyService {
    /**
     * Returns the id of the newly created lobby
     */
-   public new(type: 'movie' | 'tv'): Lobby {
+   public new(type: 'movie' | 'tv'): ILobby {
 
-      const newlobby: Lobby = {
+      const newlobby: ILobby = {
          id: this.genlobbyId(),
          playing: false,
          type: type,
@@ -55,7 +55,7 @@ export class LobbyService {
       return newlobby;
    }
 
-   public async connect(lobbyId: string): Promise<Lobby> {
+   public async connect(lobbyId: string): Promise<ILobby> {
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
       try {
@@ -82,7 +82,7 @@ export class LobbyService {
       try {
          const lobby = await this.getLobby(lobbyId);
          lock.unlock();
-         return lobby.id == lobbyId;
+         return lobby.id == lobbyId && !lobby.playing;
       }
       catch(err: any) {
          lock.unlock();
@@ -91,7 +91,7 @@ export class LobbyService {
 
    }
 
-   public async disconnect(lobbyId: string): Promise<Lobby> {
+   public async disconnect(lobbyId: string): Promise<ILobby> {
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
       try {
@@ -117,7 +117,7 @@ export class LobbyService {
    }
 
 
-   public async addGenre(lobbyId: string, genre: number): Promise<Lobby> {
+   public async addGenre(lobbyId: string, genre: number): Promise<ILobby> {
 
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -139,7 +139,7 @@ export class LobbyService {
       }
    }
 
-   public async delGenre(lobbyId: string, genre: number): Promise<Lobby> {
+   public async delGenre(lobbyId: string, genre: number): Promise<ILobby> {
 
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -161,7 +161,7 @@ export class LobbyService {
       }
    }
 
-   public async changeType(lobbyId: string, type: 'movie' | 'tv'): Promise<Lobby> {
+   public async changeType(lobbyId: string, type: 'movie' | 'tv'): Promise<ILobby> {
 
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -181,7 +181,7 @@ export class LobbyService {
       }
    }
 
-   public async start(lobbyId: string): Promise<Lobby> {
+   public async start(lobbyId: string): Promise<ILobby> {
 
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -209,7 +209,7 @@ export class LobbyService {
     * Helper function that gets the lobby from redis
     * @param lobbyId The id of the lobby you wish to get
     */
-   private async getLobby(lobbyId: string): Promise<Lobby> {
+   private async getLobby(lobbyId: string): Promise<ILobby> {
       return await this.getAsync(lobbyId)
       .then((reply: string) => {
          if (!reply) {
@@ -224,7 +224,7 @@ export class LobbyService {
     * @lobbyId The id of the lobby
     * @lobby The version of the lobby you want saved
     */
-   private async setLobby(lobbyId: string, lobby: Lobby): Promise<void> {
+   private async setLobby(lobbyId: string, lobby: ILobby): Promise<void> {
       this.setAsync(lobby.id, JSON.stringify(lobby))
          .then((reply: any) => {
             if (reply != 'OK') throw new Error('Couldn\'t update lobby');
@@ -236,7 +236,7 @@ export class LobbyService {
     * be accessed from lobbyService
     * @param lobby The lobby to check
     */
-   private checkStatus(lobby: Lobby): void {
+   private checkStatus(lobby: ILobby): void {
       if (lobby.playing) {
          throw new Error('game has already started');
       }
