@@ -16,6 +16,6 @@ export interface ISwipe {
    vote_count?: number;
    numLikes: number;
    numDislikes: number;
-   vote?: boolean;
+   vote?: 'yes' | 'no';
 }
 

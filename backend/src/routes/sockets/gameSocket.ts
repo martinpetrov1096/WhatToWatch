@@ -23,7 +23,6 @@ export const gameSocket = (socket: any) => {
          if (game.swipes.length == 0) {
             socket.emit('noNewSwipes');
             socket.to(gameId).emit('noNewSwipes');
-            socket.disconnect();
          }
       })
       .catch((err: any) => {
@@ -60,7 +59,6 @@ export const gameSocket = (socket: any) => {
             if (newSwipes.length == 0) {
                socket.emit('noNewSwipes');
                socket.to(gameId).emit('noNewSwipes');
-               socket.disconnect();
             }
             socket.emit('newSwipes', newSwipes);
             socket.to(gameId).emit('newSwipes', newSwipes);

@@ -10,6 +10,9 @@ import config from '../config/config.json';
 import { ISwipe } from "../types/swipe";
 import { IGame } from "../types/game";
 import axios from "axios";
+import { Loading } from "../components/game/loading";
+import { Results } from "./results";
+import { NoSwipesLeft } from "../components/game/no-swipes-left";
 
 interface IGameParamTypes {
    gameId: string;
@@ -20,8 +23,10 @@ export const GameRoute = () => {
    /* Get the game ID, and if invalid, redirect */
    const { gameId } = useParams<IGameParamTypes>();
    const [numPlayers, setNumPlayers] = useState<number>(0);
-   const [prevSwipes, setPrevSwipes] = useState<Array<ISwipe>>([]);
-   const [nextSwipes, setNextSwipes] = useState<Array<ISwipe>>([]);
+ //  const [prevSwipes, setPrevSwipes] = useState<Array<ISwipe>>([]);
+  // const [nextSwipes, setNextSwipes] = useState<Array<ISwipe>>([]);
+   const [swipes, setSwipes] = useState<Array<ISwipe>>([]);
+   const [curSwipeIdx, setCurSwipeIdx] = useState<number>(0);
    const history = useHistory();
    ///////////////////////////////////////////////////////////////////////////
    /////////////////////////// USE EFFECT FUNCTIONS //////////////////////////
@@ -48,7 +53,7 @@ export const GameRoute = () => {
          history.push('/error');
          socket.disconnect();
       })
-   }, [gameId]);
+   }, [gameId, history]);
 
    /**
     * When the component gets mounted, 
@@ -66,8 +71,9 @@ export const GameRoute = () => {
       });
 
       socket.on('newSwipes', (swipes: Array<ISwipe>) => {
-         setNextSwipes((oldNextSwipes) => {
-            return oldNextSwipes.concat(...swipes);
+         console.log('Got new swipes');
+         setSwipes((oldSwipes) => {
+            return oldSwipes.concat(...swipes);
          });
       });
 
@@ -76,67 +82,55 @@ export const GameRoute = () => {
        * just disconnect
        */
       socket.on('noNewSwipes', () => {
-         console.log('no new swipes left, disconnecting');
-         socket.disconnect();
+         console.log('No new swipes left');
+         
+         /**
+          * Setting curSwipeIdx to -99
+          * indicates that there are no
+          * more cards left
+          */
+         setCurSwipeIdx((oldIdx) => {
+            if (oldIdx === -1) {
+               return -99;
+            }
+            return oldIdx;
+         });
       });
 
       socket.on('newConn', (numPlayers: number) => {
-         console.log('new player joined');
+         console.log('A new player joined');
          setNumPlayers(numPlayers);
       });
 
       socket.on('newDisconn', (numPlayers: number) => {
-         console.log('player left');
+         console.log('A player left');
          setNumPlayers(numPlayers);
       });
 
       socket.on('connection', (game: IGame) => {
-         console.log('connected');
+         console.log('Connected');
          setNumPlayers(game.numPlayers);
-         setNextSwipes(game.swipes);
+
+         /**
+          * Setting curSwipeIdx to -99
+          * indicates that there are no
+          * more cards left
+          */
+         if (game.swipes.length === 0) {
+            setCurSwipeIdx(-99);
+         }
+         setSwipes(game.swipes);
       });
 
       socket.on('voted', ({swipeId, vote}: {swipeId: number, vote: 'yes' | 'no'}) => {
-
-         /**
-          * Need to setPrevSwipes and grab the 
-          * current value from the callback. This way,
-          * we can actually get the recent value of
-          * prevSwipes
-          */
-         setPrevSwipes((curVal) => {
-            const inPrevSwipes = curVal?.findIndex((swipe) => swipe.id === swipeId);
-            if (inPrevSwipes !== -1) {
-               const newPrevSwipes = JSON.parse(JSON.stringify(curVal));
-               if (vote === 'yes') {
-                  ++newPrevSwipes[inPrevSwipes].numLikes;
-               } else if ( vote === 'no') {
-                  ++newPrevSwipes[inPrevSwipes].numDislikes;
-               }
-               return newPrevSwipes;
+         setSwipes((oldSwipes) => {
+            const idx = oldSwipes.findIndex((swipe) => swipe.id === swipeId);
+            if (idx === -1) {
+               return oldSwipes;
             }
-            return curVal;
-         });
-
-         /**
-          * Need to setNextSwipes and grab the 
-          * current value from the callback. This way,
-          * we can actually get the recent value of
-          * nextSwipes
-          */
-         setNextSwipes((curVal) => {
-            const inNextSwipes = curVal?.findIndex((swipe) => swipe.id === swipeId);
-            if (inNextSwipes !== -1) {
-               const newNextSwipes = JSON.parse(JSON.stringify(curVal));
-               console.log('inNext swipes');
-               if (vote === 'yes') {
-                  ++newNextSwipes[inNextSwipes].numLikes;
-               } else if ( vote === 'no') {
-                  ++newNextSwipes[inNextSwipes].numDislikes;
-               }
-              return newNextSwipes;
-            }
-            return curVal;
+            const newSwipes = JSON.parse(JSON.stringify(oldSwipes));
+            vote === 'yes' ? ++newSwipes[idx].numLikes : ++newSwipes[idx].numDislikes;
+            return newSwipes;
          });
       });
 
@@ -153,25 +147,23 @@ export const GameRoute = () => {
          socket.disconnect();
       }
    }, [gameId]);
-
+   
    /**
-    * Monitor @nextSwipes so we can make 
-    * sure that we don't run out of cards
-    * If we do, request more swipes via
-    * the socket client. To prevent this
-    * from occurring before the server
-    * can send all of the existing swipes,
-    * we check that prevSwipes.length !== 0
+    * Monitor @swipes to watch when new
+    * cards get added. If they get added,
+    * and @curSwipeIdx == -1, it means that
+    * we were waiting for more cards, so we 
+    * need to update the current card
     */
    useEffect(() => {
-      if (nextSwipes.length === 0 && prevSwipes.length !== 0) {
-         socket.emit('genNewSwipes');
-         console.log('getting more swipes');
+      if (curSwipeIdx === -1) {
+         setCurSwipeIdx(swipes.findIndex((swipe) => swipe.vote === undefined));
       }
-   }, [nextSwipes, prevSwipes]);
+   }, [swipes, curSwipeIdx]);
    ///////////////////////////////////////////////////////////////////////////
    ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
    ///////////////////////////////////////////////////////////////////////////
+
    /**
     * A function that can be passed as a
     * param to the vote card to vote 
@@ -179,38 +171,41 @@ export const GameRoute = () => {
     * @param vote the vote
     */
    const voteFunc = useCallback((vote: 'yes' | 'no') => {
-      if (nextSwipes[0] === undefined) {
-         return;
-      }
-      if (nextSwipes[0].id === undefined) {
-         return;
-      }
+      
       if (vote === 'yes') {
-         //++curVote.numLikes;
-         socket.emit('vote', { gameId: gameId, swipeId: nextSwipes[0].id, vote: 'yes' });
+         socket.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'yes' });
+         swipes[curSwipeIdx].vote = 'yes';
       } else {
-        // ++curVote.numDislikes;
-         socket.emit('vote',  { gameId: gameId, swipeId: nextSwipes[0].id, vote: 'no'});
+         socket.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'no' });
+         swipes[curSwipeIdx].vote = 'no';
       }
-      setPrevSwipes([
-         nextSwipes[0],
-         ...prevSwipes
-      ]);
-      setNextSwipes(nextSwipes.slice(1,));
-   }, [nextSwipes, prevSwipes, gameId]);
+
+      /**
+       * After voting, set the curSwipeIdx to the next
+       * one. If curSwipeIdx === -1, request for more 
+       * swipes. When they are receieved a useEffect 
+       * call will update curSwipeIdx. 
+       */
+      const nextSwipe = swipes.findIndex((swipe) => swipe.vote === undefined);
+      if (nextSwipe === -1) {
+         socket.emit('genNewSwipes');
+         console.log('getting new swipes');
+      }
+      setCurSwipeIdx(nextSwipe);
+   }, [swipes, gameId, curSwipeIdx]);
 
    return (
       <div>
          <GameNavbar/>
          <Switch>
             <Route exact path="/game/:gameId/vote">
-               <GameVote vote={voteFunc} curSwipe={nextSwipes[0]}/>
+               {curSwipeIdx === -1 ? <Loading/> : curSwipeIdx=== -99 ? <NoSwipesLeft/> : <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]}/>}
             </Route>
             <Route exact path="/game/:gameId/overview/">
-               <GameOverview swipes={prevSwipes} />
+               <GameOverview swipes={swipes.filter((x) => x.vote !== undefined)} />
             </Route>
             <Route exact path="/game/:gameId/details/:cardId">
-               <CardDetails cards={nextSwipes}/>
+               <CardDetails cards={swipes}/>
             </Route>
             <Route path="/game">
                <InvalidGame/>
