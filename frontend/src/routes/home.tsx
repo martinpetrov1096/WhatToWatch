@@ -1,7 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config/config.json';
+import ReactCodeInput from 'react-code-input';
+import * as Global from '../styles/global';
+import { Title, Description, HomeBG, GameSection, Header, JoinSection, NewButton, JoinButton, OrHeader} from '../styles/routes/home';
 
 
 export const HomeRoute = function() {
@@ -18,10 +21,6 @@ export const HomeRoute = function() {
       if (code.length <= 5) {
          _setJoinCode(code);
       }
-   }
-
-   const handleJoinCodeChange = (event: any) => {
-      setJoinCode(event.target.value);
    }
 
    /**
@@ -65,15 +64,21 @@ export const HomeRoute = function() {
    }, [joinCode]);
 
    return (
-      <div>
-         <h1>WhatToWatch</h1>
-         <h3>Valid Code: {validCode.toString()}</h3>
-         <button onClick={newGame.current}>New</button>
-         <input type="text" value={joinCode} onChange={handleJoinCodeChange}/>
-         <h3>{joinCode}</h3>
-         <Link to={'/lobby/' + joinCode}>
-            <button disabled={!validCode}>Join</button>
-         </Link>
-      </div>
+      <HomeBG>
+         <Header>
+            <Title>What-To-Watch</Title>
+            <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </Description>
+         </Header>
+         <GameSection>
+            <NewButton onClick={newGame.current}>NEW</NewButton>
+            <OrHeader>OR</OrHeader>
+            <JoinSection>
+               <ReactCodeInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" onChange={setJoinCode} value={joinCode || '     '}/>
+               <Link to={'/lobby/' + joinCode}>
+                  <JoinButton disabled={!validCode}>JOIN</JoinButton>
+               </Link>
+            </JoinSection>
+         </GameSection>
+      </HomeBG>
    );
 }
