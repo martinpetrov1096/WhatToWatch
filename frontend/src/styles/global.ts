@@ -4,7 +4,7 @@ export const color = {
    primary: '#3B406B',
    secondary: '#FF616F'
 }
-export const transition = 'all .2s ease-in-out';
+export const transition = 'all .2s ease-in';
 
 export const Button = styled.button`
    transition: ${transition};

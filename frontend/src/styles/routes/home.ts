@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import * as Global from '../global';
 
 export const HomeBG = styled(Global.PurpleBG)`
@@ -9,7 +9,8 @@ export const HomeBG = styled(Global.PurpleBG)`
 `;
 
 export const Header = styled.div`
-   flex-grow: 2;
+   flex-basis: 1;
+   flex-grow: 1;
    display: flex;
    flex-flow: column;
    align-items: center;
@@ -28,11 +29,12 @@ export const Description = styled.h6`
 `;
 
 export const GameSection = styled.div`
-   flex-grow: 3;
+   flex-basis: 2;
+   flex-grow: 2;
    display: flex;
    flex-flow: column;
    align-items: center;
-   justify-content: space-around;
+   justify-content: flex-start;
 `;
 
 export const JoinSection = styled.div`
@@ -49,12 +51,13 @@ export const JoinSection = styled.div`
 
 export const JoinButton = styled(Global.Button)`
    disabled: ${(props: any) => props.disabled};
-
-
 `
 export const NewButton = styled(Global.Button)`
+   background-color: ${Global.color.secondary};
+   border-color: ${Global.color.secondary};
 `;
 
 export const OrHeader = styled.h2`
-   font-size: max(5vw, 30px);
+   font-size: 30px;
+   margin: 10px;
 `;

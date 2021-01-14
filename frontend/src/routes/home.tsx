@@ -5,13 +5,13 @@ import config from '../config/config.json';
 import ReactCodeInput from 'react-code-input';
 import * as Global from '../styles/global';
 import { Title, Description, HomeBG, GameSection, Header, JoinSection, NewButton, JoinButton, OrHeader} from '../styles/routes/home';
-
+import { useHistory } from 'react-router-dom';
 
 export const HomeRoute = function() {
 
    const [joinCode, _setJoinCode] = useState<string>('');
    const [validCode, setValidCode] = useState<boolean>(false)
-
+   const history = useHistory();
    /**
     * These two functions are just used to
     * wrap the setJoinCode so that we can
@@ -28,17 +28,18 @@ export const HomeRoute = function() {
     * since it isn't ever being updated to the 
     * dom
     */
-   const newGame = useRef(() => {
+   const newGame = useCallback(() => {
       axios.post('http://' + config.server.url + '/game')
          .then((res) => {
             if (res.status === 200) {
                setJoinCode(res.data.id);
+               history.push('/lobby/' + res.data.id);
             }
          })
          .catch((err)=> {
             console.log(err);
          });
-   });
+   },[joinCode]);
 
    /**
     * Check if join code is valid each time it
@@ -70,7 +71,7 @@ export const HomeRoute = function() {
             <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </Description>
          </Header>
          <GameSection>
-            <NewButton onClick={newGame.current}>NEW</NewButton>
+            <NewButton onClick={newGame}>NEW GAME</NewButton>
             <OrHeader>OR</OrHeader>
             <JoinSection>
                <ReactCodeInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" onChange={setJoinCode} value={joinCode || '     '}/>
