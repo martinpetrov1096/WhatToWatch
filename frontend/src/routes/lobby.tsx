@@ -2,10 +2,13 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import axios from 'axios';
+import Switch from 'react-switch';
 import config from '../config/config.json';
 import { ILobby } from '../types/lobby';
 import { GenreSelector } from '../components/lobby/genreSelector'
 import { MinRating } from '../components/lobby/minRating';
+import * as Lobby from '../styles/routes/lobby';
+import { color, Button } from '../styles/global';
 
 interface ILobbyParamTypes {
    lobbyId: string;
@@ -67,7 +70,7 @@ export const LobbyRoute = function() {
     * If it isn't, redirect to the error
     * page
     */
-   useEffect(() => {
+   useEffect(() => { //TODO: Add back later
       axios.get('http://' + config.server.url + '/game', {
          params: {
             id: lobbyId
@@ -95,7 +98,7 @@ export const LobbyRoute = function() {
          socket.disconnect();
          history.push('/game/' + lobbyId + '/vote');
       }
-   }, [lobby]);
+   }, [lobby, history, lobbyId]);
    ///////////////////////////////////////////////////////////////////////////
    ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
    ///////////////////////////////////////////////////////////////////////////
@@ -123,20 +126,37 @@ export const LobbyRoute = function() {
       console.log('changing minimum rating');
    }, []);
 
+   const TypeSwitchParams = {
+      checkedIcon: false,
+      uncheckedIcon: false,
+      offColor: color.primaryDark,
+      onColor: color.primaryDark,
+      offHandleColor: color.secondary,
+      onHandleColor: color.secondary,
+      height: 22,
+      handleDiameter: 26
+   }
+
    return (
-      <div>
-         <h1>Lobby</h1>
-         <h2>LobbyId: {lobbyId}</h2>
-         <GenreSelector type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres}/>
+      <Lobby.BG>
+         <Lobby.Title>What-To-Watch</Lobby.Title>
+         <Lobby.IDWrapper>
+            <Lobby.ID>{lobbyId[0]}</Lobby.ID>
+            <Lobby.ID>{lobbyId[1]}</Lobby.ID>
+            <Lobby.ID>{lobbyId[2]}</Lobby.ID>
+            <Lobby.ID>{lobbyId[3]}</Lobby.ID>
+            <Lobby.ID>{lobbyId[4]}</Lobby.ID>
+
+         </Lobby.IDWrapper>
+         <Lobby.TypeWrapper>
+            <Lobby.Type>MOVIE</Lobby.Type>
+            <Switch checked={lobby.type=='tv'} onChange={(checked) => checked ? setType('tv') : setType('movie')} {...TypeSwitchParams}/>
+            <Lobby.Type>TV SHOW</Lobby.Type>
+         </Lobby.TypeWrapper>
+         <GenreSelector type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres} />
          <MinRating curMinRating={lobby.minRating} changeMinRating={changeMinRating} />
-         <form>
-            <input type="radio" id="tvBtn" name="type" value="tv" checked={lobby.type === 'tv'} onChange={()=>setType('tv')}/>
-            <label htmlFor="tv">TV-Show</label>
-            <input type="radio" id="movieBtn" name="type" value="movie" checked={lobby.type === 'movie'} onChange={()=>setType('movie')}/>
-            <label htmlFor="movie">Movie</label>
-         </form>
-         <button onClick={startGame}>Start Game</button>
-         <button onClick={()=>lobby.genres.includes(2) ? addGenre(2) : delGenre(2)}>Add genre</button>
-      </div>
-   )
+
+         <Button onClick={startGame}>Start Game</Button>
+      </Lobby.BG>
+   );
 }

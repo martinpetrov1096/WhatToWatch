@@ -1,7 +1,10 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { ISwipe } from '../../types/swipe';
 import config from '../../config/config.json';
-interface ICardProp {
+import * as Card from '../../styles/components/card';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import useMeasure from "use-measure";
+export interface ICardProp {
    card: ISwipe | undefined;
 }
 interface GameCardParamTypes {
@@ -10,18 +13,21 @@ interface GameCardParamTypes {
 
 export const GameCard = (props: ICardProp) => {
    const { gameId } = useParams<GameCardParamTypes>();
-   
-   if (props.card == undefined) {
+   const cardRef = useRef(null);
+   const history = useHistory();
+
+
+   const goToDetails = useCallback(() => {
+      if (props.card) {
+         history.push('/game/' + gameId + '/details/' + props.card.id);
+      }
+   }, [props.card]);
+
+   if (props.card === undefined) {
       return <h1>Empty</h1>
    } else {
       return (
-         <div key={props.card.id}>
-            <Link to={'/game/' + gameId + '/details/' + props.card.id}> 
-               <h1>{props.card.original_title}</h1>
-               {/* <img src={config.movieDb.posterUrl + props.card.poster_path} alt=""/> */}
-               <h1>Num Likes: {props.card.numLikes}</h1>
-            </Link>
-         </div>
+         <Card.Main posterUrl={(config.movieDb.posterUrl + props.card.poster_path).toString()} key={props.card.id} onClick={goToDetails}/>
       );
    }
 

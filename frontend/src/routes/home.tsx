@@ -4,7 +4,7 @@ import axios from 'axios';
 import config from '../config/config.json';
 import ReactCodeInput from 'react-code-input';
 import * as Global from '../styles/global';
-import { Title, Description, HomeBG, GameSection, Header, JoinSection, NewButton, JoinButton, OrHeader} from '../styles/routes/home';
+import * as Home from '../styles/routes/home';
 import { useHistory } from 'react-router-dom';
 
 export const HomeRoute = function() {
@@ -65,21 +65,21 @@ export const HomeRoute = function() {
    }, [joinCode]);
 
    return (
-      <HomeBG>
-         <Header>
-            <Title>What-To-Watch</Title>
-            <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </Description>
-         </Header>
-         <GameSection>
-            <NewButton onClick={newGame}>NEW GAME</NewButton>
-            <OrHeader>OR</OrHeader>
-            <JoinSection>
+      <Home.BG>
+         <Home.Header>
+            <Home.Title>What-To-Watch</Home.Title>
+            <Home.Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </Home.Description>
+         </Home.Header>
+         <Home.GameSection>
+            <Home.NewButton onClick={newGame}>NEW GAME</Home.NewButton>
+            <Home.OrHeader>OR</Home.OrHeader>
+            <Home.JoinSection>
                <ReactCodeInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" onChange={setJoinCode} value={joinCode || '     '}/>
                <Link to={'/lobby/' + joinCode}>
-                  <JoinButton disabled={!validCode}>JOIN</JoinButton>
+                  <Home.JoinButton disabled={!validCode}>JOIN</Home.JoinButton>
                </Link>
-            </JoinSection>
-         </GameSection>
-      </HomeBG>
+            </Home.JoinSection>
+         </Home.GameSection>
+      </Home.BG>
    );
 }

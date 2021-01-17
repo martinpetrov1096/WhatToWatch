@@ -1,7 +1,7 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import { LobbyRoute } from './lobby';
-import { GameRoute } from './game';
+import { GameRoute } from './game/game';
 import { HomeRoute } from './home';
 import { InvalidGame } from './invalid';
 

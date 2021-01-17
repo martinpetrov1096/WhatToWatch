@@ -1,4 +1,5 @@
-import { useCallback } from "react"
+import { useCallback } from "react";
+import * as Lobby from '../../styles/routes/lobby';
 
 interface IMinRatingParamTypes {
    curMinRating: number;
@@ -12,10 +13,10 @@ export const MinRating = (props: IMinRatingParamTypes) => {
    }, [props]);
 
    return (
-      <div>
-         <button onClick={() => props.changeMinRating(props.curMinRating-1)}>-</button>
-         <input type="text" value={props.curMinRating} onChange={handleChange}/>
-         <button onClick={() => props.changeMinRating(props.curMinRating+1)}>-</button>
-      </div>
+      <Lobby.MinRatingWrapper>
+         <Lobby.MinRatingButton onClick={() => props.changeMinRating(props.curMinRating-1)}>-</Lobby.MinRatingButton>
+         <Lobby.MinRatingInput type="number" value={props.curMinRating} onChange={handleChange} min="0" max="1"/>
+         <Lobby.MinRatingButton onClick={() => props.changeMinRating(props.curMinRating+1)}>+</Lobby.MinRatingButton>
+      </Lobby.MinRatingWrapper>
    );
 }

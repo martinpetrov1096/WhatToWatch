@@ -1,19 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Switch,Route, useParams, useHistory } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
-import { GameNavbar } from '../components/game/navbar';
-import { GameVote } from '../components/game/vote';
-import { GameOverview } from '../components/game/overview';
-import { CardDetails } from '../components/game/details';
-import { InvalidGame } from "./invalid";
-import config from '../config/config.json';
-import { ISwipe } from "../types/swipe";
-import { IGame } from "../types/game";
+import { GameNavbar } from '../../components/game/navbar';
+import { GameVote } from './vote';
+import { GameOverview } from './overview';
+import { CardDetails } from './details';
+import { InvalidGame } from "../invalid";
+import config from '../../config/config.json';
+import { ISwipe } from "../../types/swipe";
+import { IGame } from "../../types/game";
 import axios from "axios";
-import { Loading } from "../components/game/loading";
-import { Results } from "./results";
-import { NoSwipesLeft } from "../components/game/no-swipes-left";
-
+import * as Game from '../../styles/routes/game';
 interface IGameParamTypes {
    gameId: string;
 };
@@ -38,22 +35,22 @@ export const GameRoute = () => {
     * If it isn't, redirect to the error
     * page
     */
-   useEffect(() => {
-      axios.get('http://' + config.server.url + '/game', {
-         params: {
-            id: gameId
-         }
-      }).then((res) => {
-         if (res.data.Status !== 'Game') {
-            history.push('/error');
-            socket.disconnect();
-         }
-      })
-      .catch(() => {
-         history.push('/error');
-         socket.disconnect();
-      })
-   }, [gameId, history]);
+   // useEffect(() => { //TODO: Uncomment
+   //    axios.get('http://' + config.server.url + '/game', {
+   //       params: {
+   //          id: gameId
+   //       }
+   //    }).then((res) => {
+   //       if (res.data.Status !== 'Game') {
+   //          history.push('/error');
+   //          socket.disconnect();
+   //       }
+   //    })
+   //    .catch(() => {
+   //       history.push('/error');
+   //       socket.disconnect();
+   //    })
+   // }, [gameId, history]);
 
    /**
     * When the component gets mounted, 
@@ -195,13 +192,15 @@ export const GameRoute = () => {
    }, [swipes, gameId, curSwipeIdx]);
 
    return (
-      <div>
-         <GameNavbar/>
+      <Game.Wrapper>
+
          <Switch>
             <Route exact path="/game/:gameId/vote">
-               {curSwipeIdx === -1 ? <Loading/> : curSwipeIdx=== -99 ? <NoSwipesLeft/> : <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]}/>}
+               <GameNavbar/>
+               <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]} swipeIdx={curSwipeIdx}/>
             </Route>
             <Route exact path="/game/:gameId/overview/">
+               <GameNavbar/>
                <GameOverview swipes={swipes.filter((x) => x.vote !== undefined)} />
             </Route>
             <Route exact path="/game/:gameId/details/:cardId">
@@ -211,6 +210,6 @@ export const GameRoute = () => {
                <InvalidGame/>
             </Route>
          </Switch>
-      </div>
+      </Game.Wrapper>
    );
 }

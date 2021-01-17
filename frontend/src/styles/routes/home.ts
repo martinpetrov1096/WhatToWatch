@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import * as Global from '../global';
 
-export const HomeBG = styled(Global.PurpleBG)`
+export const BG = styled(Global.PurpleBG)`
    display: flex;
    flex-flow: column;
    align-items: center;
    justify-content: space-around;
+   width: calc(100% - 20px);
+   height: calc(100% - 20px);
 `;
 
 export const Header = styled.div`
@@ -51,7 +53,8 @@ export const JoinSection = styled.div`
 
 export const JoinButton = styled(Global.Button)`
    disabled: ${(props: any) => props.disabled};
-`
+`;
+
 export const NewButton = styled(Global.Button)`
    background-color: ${Global.color.secondary};
    border-color: ${Global.color.secondary};

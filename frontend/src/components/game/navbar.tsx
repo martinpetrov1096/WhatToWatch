@@ -1,11 +1,21 @@
-import { Link } from 'react-router-dom';
-
+import { useState, useEffect, useCallback } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import * as Nav from '../../styles/components/navbar';
 export const GameNavbar = () => {
-   
+   const history = useHistory();
+   const [onVoteView, setOnVoteView] = useState(true);
+
+   const navigateTo = useCallback((loc: string) => {
+      history.push(loc);
+      setOnVoteView(loc === 'vote');
+   }, [history]);
+
    return (
-      <nav>
-         <Link to="vote">Vote</Link>
-         <Link to="overview">Overview</Link>
-      </nav>
+
+      <Nav.Wrapper onVoteView={onVoteView}>
+         <h6 onClick={() => navigateTo('vote')}>Vote</h6>
+         <h6 onClick={() => navigateTo('overview')}>Overview</h6>
+      </Nav.Wrapper>
+
    );
 }
