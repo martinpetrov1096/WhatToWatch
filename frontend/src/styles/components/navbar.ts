@@ -9,8 +9,6 @@ type NavStyleProps = {
 export const Wrapper = styled.nav`
    align-self: center;
    padding: 30px 0 10px 0;
-   
-
    display: flex;
    flex-basis: 800px;
    flex-flow: row nowrap;
@@ -23,9 +21,6 @@ export const Wrapper = styled.nav`
       text-align: center;
       text-decoration: none;
       font-size: 20px;
-
-
-
    }
    > * { // Needed since styled-components created a div
       &:first-child {
@@ -35,9 +30,6 @@ export const Wrapper = styled.nav`
             color: ${(props: NavStyleProps) => (!props.onVoteView) ? Global.color.secondary : 'white'} !important;
          }
    }
-
-
-
 `;
 
 export const Link = styled.a`

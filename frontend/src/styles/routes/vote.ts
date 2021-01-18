@@ -1,6 +1,9 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import * as Global from '../global';
 
+type CardWrapperStyleProp = {
+   justVoted: boolean;
+}
 
 export const Wrapper = styled(Global.PurpleBG)`
    // Account for 60px nav and 20px padding
@@ -12,6 +15,24 @@ export const Wrapper = styled(Global.PurpleBG)`
    align-items: center;
 `;
 
+const voteYesKeyframe = () => keyframes`
+   50% {
+      transform: translateX(400px) rotate(45deg) rotateY(180deg);
+   }
+   to {
+      transform: translateX(0) rotateY(180deg);
+   }
+`;
+
+const voteNoKeyframe = () => keyframes`
+   50% {
+      transform: translateX(-400px) rotate(-45deg) rotateY(180deg);
+   }
+   to {
+      transform: translateX(0) rotateY(180deg);
+   }
+`;
+
 export const CardWrapper = styled.div`
    flex-basis: 400px;
    flex-shrink: 2;
@@ -19,7 +40,7 @@ export const CardWrapper = styled.div`
    justify-content: center;
    align-items: center;
    width: min(500px, 100%);
-
+   animation: ${(props: CardWrapperStyleProp) => props.justVoted ? css`${voteYesKeyframe()} 1s ease-in-out` : 'none'};
 `;
 
 export const VoteWrapper = styled.div`
@@ -29,6 +50,7 @@ export const VoteWrapper = styled.div`
    display: flex;
    flex-flow: row nowrap;
    justify-content: space-around;
+
 
 `;
 

@@ -15,4 +15,6 @@ export const Main = styled.div`
    background-position: center;
    background-size: cover;
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+   transition: all 1s ease-in-out;
 `;

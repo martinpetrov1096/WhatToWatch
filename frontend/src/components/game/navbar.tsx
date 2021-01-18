@@ -3,12 +3,13 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import * as Nav from '../../styles/components/navbar';
 export const GameNavbar = () => {
    const history = useHistory();
-   const [onVoteView, setOnVoteView] = useState(true);
+   const location = useLocation();
+   const [onVoteView, setOnVoteView] = useState(location.pathname.includes('vote'));
 
    const navigateTo = useCallback((loc: string) => {
       history.push(loc);
       setOnVoteView(loc === 'vote');
-   }, [history]);
+   }, []);
 
    return (
 

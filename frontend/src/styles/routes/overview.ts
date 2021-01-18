@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import * as Global from '../global';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { CircularProgressbar } from 'react-circular-progressbar';
 
 export const Wrapper = styled.div`
    width: 100%;
@@ -34,6 +33,7 @@ export const StatusWrapper = styled.div`
    > * {
       flex-basis: 80px;
    }
+   
    @media only screen and (max-width: 500px) {
       padding-top: 20px;
       width: min(500px, 100%);
@@ -45,8 +45,6 @@ export const StatusWrapper = styled.div`
 
 
 export const ProgressBar = styled(CircularProgressbar)`
-
-   flex-grow: 0;
    // On mobile, CircularProgressBar gets 100% width
    width: 50px !important;
    height: 50px;
