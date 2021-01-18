@@ -6,7 +6,7 @@ type CardStyleProps = {
 }
 
 export const Main = styled.div`
-   padding-bottom: 100%;
+   padding-bottom: min(100%, 60vh);
    border-radius: 5%;
    width: 66.6%;
    max-width: 450px;
