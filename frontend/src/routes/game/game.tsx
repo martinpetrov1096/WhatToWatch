@@ -192,8 +192,6 @@ export const GameRoute = () => {
    }, [swipes, gameId, curSwipeIdx]);
 
    return (
-      <Game.Wrapper>
-
          <Switch>
             <Route exact path="/game/:gameId/vote">
                <GameNavbar/>
@@ -210,6 +208,5 @@ export const GameRoute = () => {
                <InvalidGame/>
             </Route>
          </Switch>
-      </Game.Wrapper>
    );
 }

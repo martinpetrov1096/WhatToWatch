@@ -8,24 +8,31 @@ type NavStyleProps = {
 
 export const Wrapper = styled.nav`
    align-self: center;
-   padding: 20px;
-   width: 100%;
-   max-width: 800px;
+   padding: 30px 0 10px 0;
+   
+
    display: flex;
+   flex-basis: 800px;
    flex-flow: row nowrap;
    align-items: center;
-   justify-content: space-around;
+   justify-content: center;
+   > h6 {
+      flex-basis: 400px;
+      flex-shrink: 1;
+      flex-grow: 0;
+      text-align: center;
+      text-decoration: none;
+      font-size: 20px;
+
+
+
+   }
    > * { // Needed since styled-components created a div
       &:first-child {
          color: ${(props: NavStyleProps) => props.onVoteView ? Global.color.secondary : 'white'} !important;
-         text-decoration: none !important;
-         
-         font-size: 20px;
       }
       &:nth-child(2) {
             color: ${(props: NavStyleProps) => (!props.onVoteView) ? Global.color.secondary : 'white'} !important;
-            text-decoration: none;
-            font-size: 20px;
          }
    }
 
