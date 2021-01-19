@@ -2,7 +2,7 @@ import redis, { RedisClient } from 'redis';
 import  Redlock from 'redlock';
 import config from '../config/config.json';
 import crypto  from 'crypto';
-import { ILobby } from '../models/lobby';
+import { ILobby } from '../types/lobby';
 import  { promisify } from 'util'
 import genres from '../config/genres.json';
 

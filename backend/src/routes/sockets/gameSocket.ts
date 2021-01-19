@@ -1,5 +1,5 @@
 import { GameService } from '../../services/gameService';
-import { IGame, ISwipe } from '../../models/game';
+import { IGame, ISwipe } from '../../types/game';
 
 const gameService = GameService.getInstance();
 

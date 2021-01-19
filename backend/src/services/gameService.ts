@@ -2,7 +2,7 @@ import redis, { RedisClient } from 'redis';
 import  Redlock from 'redlock';
 import  { promisify } from 'util'
 import config from '../config/config.json';
-import { IGame, IResult, ISwipe } from '../models/game';
+import { IGame, IResult, ISwipe } from '../types/game';
 import axios, { AxiosResponse } from 'axios';
 import { ApiService } from './apiService';
 export class GameService {
