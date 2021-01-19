@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as Global from '../global';
+import * as Global from '../../global';
 
 type NavStyleProps = {
    onVoteView: boolean;

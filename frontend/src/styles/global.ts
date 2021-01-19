@@ -5,7 +5,7 @@ export const color = {
    primaryDark: '#2B2F54',
    secondary: '#FF616F'
 }
-export const transition = 'all .2s ease-in';
+export const transition = 'all .15s ease-in-out';
 
 export const Button = styled.button`
    transition: ${transition};
@@ -24,8 +24,15 @@ export const Button = styled.button`
    }
 `;
 
+export const ButtonSecondary = styled(Button)`
+   pointer-events: none !important;
+   border: none !important;
+   background-color: ${color.secondary}};
+`;
+
+
 export const PurpleBG = styled.div`
-   background-color: ${color.primary}};
+
 
    margin: 0;
    padding: 10px;

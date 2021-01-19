@@ -1,7 +1,7 @@
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { ISwipe } from '../../types/swipe';
 import config from '../../config/config.json';
-import * as Card from '../../styles/components/card';
+import * as Card from '../../styles/components/game/card';
 import { Loading } from '../loading';
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';

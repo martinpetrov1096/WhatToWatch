@@ -1,5 +1,5 @@
 import styled, { keyframes, css} from 'styled-components';
-import * as Global from '../global';
+import * as Global from '../../global';
 
 const rotateKeyframe = () => keyframes`
    100% {

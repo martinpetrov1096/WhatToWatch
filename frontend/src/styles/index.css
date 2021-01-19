@@ -54,4 +54,5 @@ body, html {
    padding: 0;
    color: white;
    background-color: #3B406B;
+   user-select: none; 
 }
