@@ -1,9 +1,6 @@
 import styled, { keyframes, css} from 'styled-components';
 import * as Global from '../global';
 
-
-export {};
-
 const rotateKeyframe = () => keyframes`
    100% {
       transform: rotate(360deg);

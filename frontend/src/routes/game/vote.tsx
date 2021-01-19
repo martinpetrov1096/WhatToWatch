@@ -22,6 +22,14 @@ export const GameVote = (props: IVoteProp) => {
       }
 
       /**
+       * If the player already voted on
+       * this card, don't do anything
+       */
+      if (props.curSwipe.vote) {
+         return;
+      }
+
+      /**
        * Set vote, then after 500ms,
        * get the next card, and then
        * after another 500ms, setVote
@@ -38,33 +46,29 @@ export const GameVote = (props: IVoteProp) => {
 
 
    useEffect(() => {
-      switch(props.swipeIdx) {
-         // case -1:
-         //    setCurView(
-         //       <h1>Loading . . . </h1>
-         //    );
-         //    break;
-         case -99:
-            setCurView(
-               <Vote.Wrapper>
-                  <h1>No Swipes Left</h1>
-               </Vote.Wrapper>
-            );
-            break;
-         default:
-            setCurView(
-               <Vote.Wrapper>
-                  <Vote.CardWrapper vote={curVote}>
-                     <GameCard card={props.curSwipe}/>
-                  </Vote.CardWrapper>
-                  <Vote.VoteWrapper>
-                     <Vote.YesButton onClick={()=>vote('no')}/>
-                     <Vote.NoButton onClick={()=>vote('yes')}/>
-                  </Vote.VoteWrapper>
+      if (props.swipeIdx === -99) {
+         setCurView(
+            <Vote.Wrapper>
+               <h1>No Swipes Left</h1>
+            </Vote.Wrapper>
+         );
+      }
+      else {      
+         setCurView(
+            <Vote.Wrapper>
+               <Vote.CardWrapper vote={curVote}>
+                  <GameCard card={props.curSwipe}/>
+               </Vote.CardWrapper>
+               <Vote.VoteWrapper>
+                  {/* Only allow to vote once per card by 
+                        only having the button work when 
+                        curVote != 'yes' or 'no' */}
+                  <Vote.NoButton onClick={()=> curVote ? ()=>{} : vote('no')}/>
+                  <Vote.YesButton onClick={()=> curVote ? ()=>{} : vote('yes')}/>
+               </Vote.VoteWrapper>
 
-               </Vote.Wrapper>
-            );
-            break;
+            </Vote.Wrapper>
+         );
       }
    }, [props, curVote, vote]);
 

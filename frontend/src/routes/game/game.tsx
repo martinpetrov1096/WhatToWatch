@@ -35,22 +35,22 @@ export const GameRoute = () => {
     * If it isn't, redirect to the error
     * page
     */
-   // useEffect(() => { //TODO: Uncomment
-   //    axios.get('http://' + config.server.url + '/game', {
-   //       params: {
-   //          id: gameId
-   //       }
-   //    }).then((res) => {
-   //       if (res.data.Status !== 'Game') {
-   //          history.push('/error');
-   //          socket.disconnect();
-   //       }
-   //    })
-   //    .catch(() => {
-   //       history.push('/error');
-   //       socket.disconnect();
-   //    })
-   // }, [gameId, history]);
+   useEffect(() => { //TODO: Uncomment
+      axios.get('http://' + config.server.url + '/game', {
+         params: {
+            id: gameId
+         }
+      }).then((res) => {
+         if (res.data.Status !== 'Game') {
+            history.push('/error');
+            socket.disconnect();
+         }
+      })
+      .catch(() => {
+         history.push('/error');
+         socket.disconnect();
+      })
+   }, [gameId, history]);
 
    /**
     * When the component gets mounted, 
@@ -148,7 +148,7 @@ export const GameRoute = () => {
    /**
     * Monitor @swipes to watch when new
     * cards get added. If they get added,
-    * and @curSwipeIdx == -1, it means that
+    * and if @curSwipeIdx == -1, it means that
     * we were waiting for more cards, so we 
     * need to update the current card
     */
@@ -205,7 +205,7 @@ export const GameRoute = () => {
                <CardDetails cards={swipes}/>
             </Route>
             <Route path="/game">
-               <InvalidGame/>
+               <InvalidGame apology="Sorry, this page doesn't exist :("/>
             </Route>
          </Switch>
    );

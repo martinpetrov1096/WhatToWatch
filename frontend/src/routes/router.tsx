@@ -20,7 +20,7 @@ export const Router = function() {
                <HomeRoute/>
             </Route>
             <Route path="/">
-               <InvalidGame/>
+               <InvalidGame apology="Sorry, this game or page doesn't exist :("/>
             </Route>
          </Switch>
       </BrowserRouter>
