@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
-import * as Global from '../global';
+import * as Global from '../../global';
 
 
 export const Wrapper = styled(Global.PurpleBG)`

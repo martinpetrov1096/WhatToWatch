@@ -10,7 +10,7 @@ import config from '../../config/config.json';
 import { ISwipe } from "../../types/swipe";
 import { IGame } from "../../types/game";
 import axios from "axios";
-import * as Game from '../../styles/routes/game';
+import * as Game from '../../styles/routes/game/game';
 interface IGameParamTypes {
    gameId: string;
 };

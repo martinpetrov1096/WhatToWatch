@@ -14,7 +14,6 @@ export const GameNavbar = () => {
    return (
 
       <Nav.Wrapper onVoteView={onVoteView}>
-         <h6 onClick={() => navigateTo('/')}>What-To-Watch</h6>
          <h6 onClick={() => navigateTo('vote')}>Vote</h6>
          <h6 onClick={() => navigateTo('overview')}>Overview</h6>
       </Nav.Wrapper>

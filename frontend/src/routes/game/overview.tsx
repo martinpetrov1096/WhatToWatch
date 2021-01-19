@@ -3,7 +3,7 @@ import 'react-circular-progressbar/dist/styles.css';
 
 import { ISwipe } from "../../types/swipe"
 import { GameCard } from "../../components/game/card";
-import * as Overview from '../../styles/routes/overview';
+import * as Overview from '../../styles/routes/game/overview';
 import * as Global from '../../styles/global';
 interface IGameOverviewProp {
    swipes: Array<ISwipe>

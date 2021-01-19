@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ISwipe } from '../../types/swipe';
 import { GameCard } from '../../components/game/card';
-import * as Vote from '../../styles/routes/vote';
+import * as Vote from '../../styles/routes/game/vote';
 interface IVoteProp {
    vote: (v: 'yes' | 'no') => void;
    curSwipe: ISwipe | undefined;
