@@ -1,9 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import * as Global from '../global';
 
-type CardWrapperStyleProp = {
-   justVoted: boolean;
-}
 
 export const Wrapper = styled(Global.PurpleBG)`
    // Account for 60px nav and 20px padding
@@ -16,23 +13,28 @@ export const Wrapper = styled(Global.PurpleBG)`
 `;
 
 const voteYesKeyframe = () => keyframes`
-   50% {
-      transform: translateX(400px) rotate(45deg) rotateY(180deg);
-   }
-   to {
-      transform: translateX(0) rotateY(180deg);
-   }
+50% {
+   transform: translateX(400px) rotate(45deg) rotateY(90deg);
+
+}
+to {
+   transform: translateX(0) rotateY(360deg);
+}
 `;
 
 const voteNoKeyframe = () => keyframes`
    50% {
-      transform: translateX(-400px) rotate(-45deg) rotateY(180deg);
+      transform: translateX(-400px) rotate(-45deg) rotateY(90deg);
+
    }
    to {
-      transform: translateX(0) rotateY(180deg);
+      transform: translateX(0) rotateY(360deg);
    }
 `;
 
+type CardWrapperStyleProp = {
+   vote: 'yes' | 'no' | undefined;
+}
 export const CardWrapper = styled.div`
    flex-basis: 400px;
    flex-shrink: 2;
@@ -40,7 +42,7 @@ export const CardWrapper = styled.div`
    justify-content: center;
    align-items: center;
    width: min(500px, 100%);
-   animation: ${(props: CardWrapperStyleProp) => props.justVoted ? css`${voteYesKeyframe()} 1s ease-in-out` : 'none'};
+   animation: ${(props: CardWrapperStyleProp) => props.vote !== undefined ? (props.vote === 'yes' ? css`${voteYesKeyframe()} .75s ease-in-out` : css`${voteNoKeyframe()} .75s ease-in-out`)   : 'none'};
 `;
 
 export const VoteWrapper = styled.div`

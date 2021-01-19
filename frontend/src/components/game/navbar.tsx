@@ -9,7 +9,7 @@ export const GameNavbar = () => {
    const navigateTo = useCallback((loc: string) => {
       history.push(loc);
       setOnVoteView(loc === 'vote');
-   }, []);
+   }, [history]);
 
    return (
 

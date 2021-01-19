@@ -10,36 +10,51 @@ interface IVoteProp {
 export const GameVote = (props: IVoteProp) => {
 
    const [curView, setCurView] = useState(<h1>Loading . . . </h1>);
-   const [justVoted, setJustVoted] = useState<boolean>(false);
+   const [curVote, setCurVote] = useState<'yes' | 'no' | undefined>(undefined);
 
    const vote = useCallback((v: 'yes' | 'no') => {
+      /**
+       * If the current swipe is undefined,
+       * then don't do anything
+       */
+      if (props.curSwipe === undefined) {
+         return;
+      }
 
-      setJustVoted(true);
-      console.log(justVoted);
+      /**
+       * Set vote, then after 500ms,
+       * get the next card, and then
+       * after another 500ms, setVote
+       * to be undefined
+       */
+      setCurVote(v);
       setTimeout(() => {
-         setJustVoted(false);
          props.vote(v);
-      }, 1000);
-
-   }, [props, justVoted]);
+      }, 363);
+      setTimeout(() => {
+         setCurVote(undefined);
+      }, 750);
+   }, [props]);
 
 
    useEffect(() => {
       switch(props.swipeIdx) {
-         case -1:
-            setCurView(
-               <h1>Loading . . . </h1>
-            );
-            break;
+         // case -1:
+         //    setCurView(
+         //       <h1>Loading . . . </h1>
+         //    );
+         //    break;
          case -99:
             setCurView(
-               <h1>No Swipes Left</h1>
+               <Vote.Wrapper>
+                  <h1>No Swipes Left</h1>
+               </Vote.Wrapper>
             );
             break;
-         default: 
+         default:
             setCurView(
                <Vote.Wrapper>
-                  <Vote.CardWrapper justVoted={justVoted}>
+                  <Vote.CardWrapper vote={curVote}>
                      <GameCard card={props.curSwipe}/>
                   </Vote.CardWrapper>
                   <Vote.VoteWrapper>
@@ -51,7 +66,7 @@ export const GameVote = (props: IVoteProp) => {
             );
             break;
       }
-   }, [props, justVoted, vote]);
+   }, [props, curVote, vote]);
 
    return curView;
 }
