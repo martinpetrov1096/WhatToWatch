@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { CircularProgressbar } from 'react-circular-progressbar';
 
 export const Wrapper = styled.div`
-
    width: 100%;
    display: flex;
    flex-flow: row wrap;
@@ -10,23 +9,19 @@ export const Wrapper = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-
-   width: 500px;
+   width: 90%;
+   max-width: 500px;
    height: auto;
    display: flex;
    flex-flow: column nowrap;
    align-items: center;
    justify-content: space-around;
    padding: 40px 0;
-
-   @media only screen and (max-width: 500px) {
-      width: 90%;
-   }
 `;
 
 export const StatusWrapper = styled.div`
    padding-top: 20px;
-   width: 500px;
+   width: min(500px, 100%);
    display: flex;
    flex-flow: row nowrap;
    justify-content: center;
@@ -35,15 +30,7 @@ export const StatusWrapper = styled.div`
    > * {
       flex-basis: 80px;
    }
-   
-   @media only screen and (max-width: 500px) {
-      padding-top: 20px;
-      width: min(500px, 100%);
-      flex-flow: row nowrap;
-   }
 `;
-
-
 
 
 export const ProgressBar = styled(CircularProgressbar)`
