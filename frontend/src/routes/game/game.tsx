@@ -35,8 +35,8 @@ export const GameRoute = () => {
     * If it isn't, redirect to the error
     * page
     */
-   useEffect(() => { //TODO: Uncomment
-      axios.get('http://' + config.server.url + '/game', {
+   useEffect(() => {
+      axios.get(config.server.url + 'game', {
          params: {
             id: gameId
          }
@@ -61,7 +61,7 @@ export const GameRoute = () => {
    useEffect(() => {
 
       /* Init socket io client */
-      socket = io(config.server.url + '/game', {
+      socket = io(config.server.url + 'game', {
          query: {
             'gameId': gameId
          }

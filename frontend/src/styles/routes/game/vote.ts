@@ -70,10 +70,10 @@ const Button = styled.button`
 `;
 
 export const NoButton = styled(Button)`
-   background-image: url("https://cdn.glitch.com/f885813f-4542-461e-9e2c-c21e4f424ee4%2FrejectButton.e604d513.svg?v=1591586148426");
+   background-image: url("/assets/dislike-btn.svg");
 `;
 
 export const YesButton = styled(Button)`
-   background-image: url("https://cdn.glitch.com/f885813f-4542-461e-9e2c-c21e4f424ee4%2FheartButton.1f05d0b6.svg?v=1591586129623");
+   background-image: url("/assets/like-btn.svg");
 `;
 

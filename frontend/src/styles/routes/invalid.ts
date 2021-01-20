@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import * as Global from '../global';
 
 export const Wrapper = styled.div`
-   width: 100%;   
+   width: 95%;   
    height: 100%;
 
    display: flex;

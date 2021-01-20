@@ -204,30 +204,6 @@ export class GameService {
          });
    }
 
-
-   private async getResults(game: IGame): Promise<Array<IResult>> {
-      /** */
-      const params = {
-         'api_key': config.movieDbApi.apiKey,
-         'with_genres': game.genres.toString(),
-         'vote_average.gte': game.minRating,
-         'page': game.page,
-         ...config.movieDbApi.defaults
-
-      }
-      console.log(params);
-      let results = axios.get(config.movieDbApi.discover + game.type, {
-         params: params,
-      }).then((res: AxiosResponse) => {
-         if (res.status != 200) {
-            throw new Error('Moviedb API Error');
-         }
-         console.log(res.data.results);
-         return res.data.results as Array<IResult>;
-      });
-      return results;
-   }
-
    private checkStatus(game: IGame): void {
       if (!game.playing) {
          throw new Error('Game is still in lobby');

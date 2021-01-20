@@ -41,7 +41,7 @@ export const LobbyRoute = function() {
     * event functions
     */
    useEffect(() => {
-      socket =io(config.server.url + '/lobby', {
+      socket =io(config.server.url + 'lobby', {
          query: {
             'gameId': lobbyId
          }
@@ -72,8 +72,8 @@ export const LobbyRoute = function() {
     * If it isn't, redirect to the error
     * page
     */
-   useEffect(() => { //TODO: Add back later
-      axios.get('http://' + config.server.url + '/game', {
+   useEffect(() => {
+      axios.get(config.server.url + 'game/', {
          params: {
             id: lobbyId
          }

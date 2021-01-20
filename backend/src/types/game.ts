@@ -7,6 +7,7 @@ export interface IResult {
    id?: number;
    original_language?: string;
    original_title?: string;
+   original_name?: string;  /* Movies have original_title, TV shows have original_name */
    overview?: string;
    popularity?: number;
    poster_path?: string;

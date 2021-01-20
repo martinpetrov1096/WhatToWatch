@@ -29,17 +29,24 @@ export const HomeRoute = function() {
     * dom
     */
    const newGame = useCallback(() => {
-      axios.post('http://' + config.server.url + '/game')
+      axios.post(config.server.url + config.server.newGame)
          .then((res) => {
             if (res.status === 200) {
                setJoinCode(res.data.id);
-               history.push('/lobby/' + res.data.id);
+
+               /**
+                * Add a small delay just to make sure
+                * we can enter the game
+                */
+               setTimeout(() => {
+                  history.push('/lobby/' + res.data.id);
+               }, 250);
             }
          })
          .catch((err)=> {
             console.log(err);
          });
-   },[joinCode]);
+   },[history]);
 
    /**
     * Check if join code is valid each time it
@@ -47,7 +54,7 @@ export const HomeRoute = function() {
     */
    useEffect(() => {
       if (joinCode.length === 5) {
-         axios.get('http://' + config.server.url + '/game', {
+         axios.get(config.server.url + 'game/', {
             params: {
                id: joinCode
             }

@@ -34,7 +34,6 @@ export const StatusWrapper = styled.div`
 
 
 export const ProgressBar = styled(CircularProgressbar)`
-   // On mobile, CircularProgressBar gets 100% width
    width: 50px !important;
    height: 50px;
 `;

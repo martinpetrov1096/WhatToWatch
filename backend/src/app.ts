@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import config from './config/config.json';
 import gameRouter from './routes/gameRoute';
+import detailsRouter from './routes/detailsRoute';
 import { errors } from 'celebrate';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -16,6 +17,7 @@ import gameMiddleware from './middleware/gameMiddleware';
 const app = express();
 app.use(bodyParser.json());
 app.use('/game', gameRouter);
+app.use('/details', detailsRouter);
 app.use(errors());
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////// SOCKET IO CONFIG ////////////////////////////
