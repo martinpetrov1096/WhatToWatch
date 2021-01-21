@@ -1,5 +1,5 @@
 bin/
 node_modules/
-config/config.json
-config/config-rel.json
+src/config/config.json
+src/config/config-rel.json
 src/config/config.ts
