@@ -5,7 +5,7 @@
       "profileUrl": "https://www.themoviedb.org/t/p/w138_and_h175_face"
    },
    "server": {
-      "url": "http://localhost:3000/",
+      "url": "/",
       "newGame": "game/",
       "details": "details/"
    }
