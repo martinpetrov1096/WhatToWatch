@@ -11,7 +11,7 @@ RUN yarn install
 
 # Bundle app source
 COPY . .
-
+COPY ./bin ./bin
 RUN yarn build
 
 EXPOSE 80
