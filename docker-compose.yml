@@ -3,13 +3,14 @@ version: '3.8'
 
 services:
   what-to-watch:
-    container_name: backend
+    container_name: what-to-watch
     build:
       context: backend/
     network_mode: proxynet
     ports: 
       - 5002:8080
   redis:
+    container_name: redis
     image: redis
     network_mode: proxynet
     
