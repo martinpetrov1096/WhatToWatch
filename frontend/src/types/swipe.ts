@@ -1,4 +1,3 @@
-
 export interface ISwipe {
    adult?: boolean;
    backdrop_path?: string;

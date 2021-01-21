@@ -50,8 +50,6 @@ export const Card = styled.div`
 
    display: flex;
    flex-flow: row nowrap;
-
-
 `;
 
 type DetailsPosterImageProps = {
@@ -85,11 +83,8 @@ export const InfoWrapper = styled.div`
    }
 `;
 
-
-
 export const Title = styled.h2`
    font-size: max(3vw, 30px);
-
    text-align: center;
 `;
 

@@ -10,9 +10,8 @@ interface IExtraDetailsProp {
 
 export const GameExtraDetails = (props: IExtraDetailsProp) => {
 
-
-
    const [details, setDetails] = useState<any>(undefined);
+
    useEffect(() => {
       axios.get(config.server.url + config.server.details, {
          params: {
@@ -25,7 +24,6 @@ export const GameExtraDetails = (props: IExtraDetailsProp) => {
          }
       });
    }, [props.cardId, props.type]);
-
 
    const cast = useMemo(() => {
       if (!details?.credits) {
@@ -67,7 +65,6 @@ export const GameExtraDetails = (props: IExtraDetailsProp) => {
          </ExtraDetails.Wrapper>
 
       );
-
    } else {
       return <Loading/>;
    }

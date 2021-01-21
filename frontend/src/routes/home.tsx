@@ -1,11 +1,9 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config/config.json';
 import ReactCodeInput from 'react-code-input';
-import * as Global from '../styles/global';
 import * as Home from '../styles/routes/home';
-import { useHistory } from 'react-router-dom';
 
 export const HomeRoute = function() {
 

@@ -1,20 +1,22 @@
 import { useParams, useHistory } from 'react-router-dom';
+import { buildStyles } from 'react-circular-progressbar';
 import { ISwipe } from '../../types/swipe';
 import config from '../../config/config.json';
 import genre from '../../config/genres.json';
-import * as Details from '../../styles/routes/game/details';
-import { buildStyles } from 'react-circular-progressbar';
 import { useState, useEffect, useMemo } from 'react';
-import axios, { AxiosResponse } from 'axios';
-import * as Global from '../../styles/global';
 import { GameExtraDetails } from '../../components/game/extra-details';
+import * as Details from '../../styles/routes/game/details';
+import * as Global from '../../styles/global';
+
 interface ICardProp {
    cards: Array<ISwipe>;
 }
 interface ParamTypes {
    cardId: string
 }
+
 export const CardDetails = (props: ICardProp) => {
+
    const  { cardId } = useParams<ParamTypes>();
    const history = useHistory();
    
@@ -94,26 +96,15 @@ export const CardDetails = (props: ICardProp) => {
                                  pathColor: Global.color.secondary,
                                  trailColor: Global.color.primaryDark
                               })}
-                           />
+                        />
                         <h5>User Vote</h5>
                      </Details.VoteWrapper>
-
                      <Details.Description>{curCard?.overview}</Details.Description>
-
                   </Details.DescriptionVoteWrapper>
-
                   <GameExtraDetails cardId={cardId} type={type}/>
                </Details.InfoWrapper>
             </Details.Card>
-         </Details.ContentWrapper>
-
-
-           
+         </Details.ContentWrapper>   
       </Details.Wrapper>
-
-
-         
-
-
    );
 }

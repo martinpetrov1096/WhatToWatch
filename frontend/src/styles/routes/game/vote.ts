@@ -1,7 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import * as Global from '../../global';
 
-
 export const Wrapper = styled(Global.PurpleBG)`
    // Account for 60px nav and 20px padding
    height: calc(100vh - 80px); 
@@ -15,7 +14,6 @@ export const Wrapper = styled(Global.PurpleBG)`
 const voteYesKeyframe = () => keyframes`
 50% {
    transform: translateX(400px) rotate(45deg) rotateY(90deg);
-
 }
 to {
    transform: translateX(0) rotateY(360deg);
@@ -25,7 +23,6 @@ to {
 const voteNoKeyframe = () => keyframes`
    50% {
       transform: translateX(-400px) rotate(-45deg) rotateY(90deg);
-
    }
    to {
       transform: translateX(0) rotateY(360deg);
@@ -52,12 +49,9 @@ export const VoteWrapper = styled.div`
    display: flex;
    flex-flow: row nowrap;
    justify-content: space-around;
-
-
 `;
 
 const Button = styled.button`
-
    width: 100%;
    height: 100%;
    box-shadow: none;

@@ -2,7 +2,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import axios from 'axios';
-
 import config from '../config/config.json';
 import { ILobby } from '../types/lobby';
 import { LobbyGenres } from '../components/lobby/genres'
@@ -10,7 +9,7 @@ import { LobbyMinRating } from '../components/lobby/min-rating';
 import { LobbyID } from '../components/lobby/id';
 import { LobbyType } from '../components/lobby/type';
 import * as Lobby from '../styles/routes/lobby';
-import { color, Button } from '../styles/global';
+import { Button } from '../styles/global';
 
 interface ILobbyParamTypes {
    lobbyId: string;
@@ -128,8 +127,6 @@ export const LobbyRoute = function() {
       console.log('changing minimum rating');
    }, []);
 
-
-
    return (
       <Lobby.BG>
          <Lobby.Title>What-To-Watch</Lobby.Title>
@@ -137,8 +134,6 @@ export const LobbyRoute = function() {
          <LobbyType type={lobby.type} setType={setType} />
          <LobbyMinRating curMinRating={lobby.minRating} changeMinRating={changeMinRating} />
          <LobbyGenres type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres} />
-
-
          <Button onClick={startGame}>START</Button>
       </Lobby.BG>
    );

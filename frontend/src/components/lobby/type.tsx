@@ -1,4 +1,4 @@
-import { color, Button } from '../../styles/global';
+import { color } from '../../styles/global';
 import * as Type from '../../styles/components/lobby/type';
 import Switch from 'react-switch';
 
@@ -18,8 +18,6 @@ interface LobbyTypeProps {
    setType: (t: 'tv' | 'movie') => void;
 }
 
-
-
 export const LobbyType = (props: LobbyTypeProps) => {
 
    return (
@@ -28,7 +26,5 @@ export const LobbyType = (props: LobbyTypeProps) => {
          <Switch checked={props.type==='tv'} onChange={(checked) => checked ? props.setType('tv') : props.setType('movie')} {...TypeSwitchParams}/>
          <Type.Category>TV SHOW</Type.Category>
       </Type.Wrapper>
-
    );
-
 }

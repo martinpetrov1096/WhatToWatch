@@ -7,6 +7,7 @@ interface IVoteProp {
    curSwipe: ISwipe | undefined;
    swipeIdx: number;
 }
+
 export const GameVote = (props: IVoteProp) => {
 
    const [curView, setCurView] = useState(<h1>Loading . . . </h1>);
@@ -66,7 +67,6 @@ export const GameVote = (props: IVoteProp) => {
                   <Vote.NoButton onClick={()=> curVote ? ()=>{} : vote('no')}/>
                   <Vote.YesButton onClick={()=> curVote ? ()=>{} : vote('yes')}/>
                </Vote.VoteWrapper>
-
             </Vote.Wrapper>
          );
       }

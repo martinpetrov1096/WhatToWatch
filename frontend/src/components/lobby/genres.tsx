@@ -1,7 +1,5 @@
 import genre from '../../config/genres.json';
-
 import * as Genres from '../../styles/components/lobby/genres';
-
 
 interface IGenreSelectorParamTypes {
    type: 'movie' | 'tv';

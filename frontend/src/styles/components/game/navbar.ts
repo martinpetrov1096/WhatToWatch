@@ -5,7 +5,6 @@ type NavStyleProps = {
    onVoteView: boolean;
 }
 
-
 export const Wrapper = styled.nav`
    align-self: center;
    padding: 30px 0 10px 0;

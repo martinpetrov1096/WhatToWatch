@@ -1,5 +1,3 @@
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-
 import * as ID from '../../styles/components/lobby/id';
 
 interface IIDProps {
@@ -15,10 +13,6 @@ export const LobbyID = (props: IIDProps) => {
          <ID.Element>{props.lobbyId[2]}</ID.Element>
          <ID.Element>{props.lobbyId[3]}</ID.Element>
          <ID.Element>{props.lobbyId[4]}</ID.Element>
-         {/* <CopyToClipboard text={props.lobbyId}>
-            <ID.ShareButton>SHARE</ID.ShareButton>
-
-         </CopyToClipboard> */}
       </ID.Wrapper>
    );
 }

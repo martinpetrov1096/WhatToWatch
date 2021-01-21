@@ -1,10 +1,10 @@
 import { buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-
 import { ISwipe } from "../../types/swipe"
 import { GameCard } from "../../components/game/card";
 import * as Overview from '../../styles/routes/game/overview';
 import * as Global from '../../styles/global';
+import 'react-circular-progressbar/dist/styles.css';
+
 interface IGameOverviewProp {
    swipes: Array<ISwipe>
 }
@@ -36,5 +36,3 @@ export const GameOverview = (props: IGameOverviewProp) => {
       </Overview.Wrapper>
    );
 }
-
-// swipes.sort((a: ISwipe, b: ISwipe) => {})

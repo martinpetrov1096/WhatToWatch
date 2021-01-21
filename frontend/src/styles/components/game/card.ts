@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import * as Global from '../../global';
 
 type CardStyleProps = {
    posterUrl: string;

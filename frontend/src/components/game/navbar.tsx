@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useState, useCallback } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import * as Nav from '../../styles/components/game/navbar';
+
 export const GameNavbar = () => {
+   
    const history = useHistory();
    const location = useLocation();
    const [onVoteView, setOnVoteView] = useState(location.pathname.includes('vote'));
@@ -17,6 +19,5 @@ export const GameNavbar = () => {
          <h6 onClick={() => navigateTo('vote')}>Vote</h6>
          <h6 onClick={() => navigateTo('overview')}>Overview</h6>
       </Nav.Wrapper>
-
    );
 }

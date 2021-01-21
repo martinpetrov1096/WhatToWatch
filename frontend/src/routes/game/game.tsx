@@ -10,7 +10,6 @@ import config from '../../config/config.json';
 import { ISwipe } from "../../types/swipe";
 import { IGame } from "../../types/game";
 import axios from "axios";
-import * as Game from '../../styles/routes/game/game';
 interface IGameParamTypes {
    gameId: string;
 };
@@ -20,8 +19,6 @@ export const GameRoute = () => {
    /* Get the game ID, and if invalid, redirect */
    const { gameId } = useParams<IGameParamTypes>();
    const [numPlayers, setNumPlayers] = useState<number>(0);
- //  const [prevSwipes, setPrevSwipes] = useState<Array<ISwipe>>([]);
-  // const [nextSwipes, setNextSwipes] = useState<Array<ISwipe>>([]);
    const [swipes, setSwipes] = useState<Array<ISwipe>>([]);
    const [curSwipeIdx, setCurSwipeIdx] = useState<number>(0);
    const history = useHistory();

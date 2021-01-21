@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import * as Global from '../../global';
-
 
 export const Wrapper = styled.div`
    margin-bottom: 30px;

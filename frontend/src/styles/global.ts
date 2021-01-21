@@ -1,10 +1,11 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const color = {
    primary: '#3B406B',
    primaryDark: '#2B2F54',
    secondary: '#FF616F'
 }
+
 export const transition = 'all .15s ease-in-out';
 
 export const Button = styled.button`
@@ -30,10 +31,7 @@ export const ButtonSecondary = styled(Button)`
    background-color: ${color.secondary}};
 `;
 
-
 export const PurpleBG = styled.div`
-
-
    margin: 0;
    padding: 10px;
 `;

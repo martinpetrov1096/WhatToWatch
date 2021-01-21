@@ -21,6 +21,5 @@ export const LobbyMinRating = (props: IMinRatingParamTypes) => {
             <MinRating.Button onClick={() => props.changeMinRating(props.curMinRating+1)}>+</MinRating.Button>
          </MinRating.SelectionWrapper>
       </MinRating.Wrapper>
-
    );
 }
