@@ -1,0 +1,18 @@
+FROM node:12
+
+# Create app directory
+WORKDIR /app
+
+# Install app dependencies
+COPY package.json ./
+COPY yarn.lock ./
+
+RUN yarn install
+
+# Bundle app source
+COPY . .
+
+RUN yarn build
+
+EXPOSE 80
+CMD [ "yarn", "start" ]
