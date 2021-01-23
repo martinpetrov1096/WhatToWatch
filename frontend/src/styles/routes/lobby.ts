@@ -19,5 +19,9 @@ export const Title = styled.h1`
    font-size: max(5vw, 30px);
 `;
 
-
+export const Heading = styled.h4`
+   max-width: 800px;
+   font-size: max(.75vw, 12px);
+   text-align: center;
+`;
 
