@@ -21,11 +21,6 @@ export const HomeRoute = function() {
       }
    }
 
-   /**
-    * newGame should use useRef vs useState
-    * since it isn't ever being updated to the 
-    * dom
-    */
    const newGame = useCallback(() => {
       axios.post(config.server.url + config.server.newGame)
          .then((res) => {
@@ -73,7 +68,7 @@ export const HomeRoute = function() {
       <Home.BG>
          <Home.Header>
             <Home.Title>What-To-Watch</Home.Title>
-            <Home.Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </Home.Description>
+            <Home.Description>A quick and easy way to coordinate with friends to decided on what to watch</Home.Description>
          </Home.Header>
          <Home.GameSection>
             <Home.NewButton onClick={newGame}>NEW GAME</Home.NewButton>

@@ -97,7 +97,14 @@ export const LobbyRoute = function() {
    useEffect(() => {
       if (lobby.playing) {
          socket.disconnect();
-         history.push('/game/' + lobbyId + '/vote');
+         /**
+          * Add a small delay just to make sure
+          * we can enter the game
+          */
+         setTimeout(() => {
+            history.push('/game/' + lobbyId + '/vote');
+         }, 250);
+
       }
    }, [lobby, history, lobbyId]);
    ///////////////////////////////////////////////////////////////////////////
@@ -130,7 +137,14 @@ export const LobbyRoute = function() {
    return (
       <Lobby.BG>
          <Lobby.Title>What-To-Watch</Lobby.Title>
+         <Lobby.Heading>
+            Click Share to copy the link to the clipboard.
+            Also, while you're waiting for everyone to join, 
+            help us help you to find what to watch by narrowing 
+            down the choices
+         </Lobby.Heading>
          <LobbyID lobbyId={lobbyId}/>
+ 
          <LobbyType type={lobby.type} setType={setType} />
          <LobbyMinRating curMinRating={lobby.minRating} changeMinRating={changeMinRating} />
          <LobbyGenres type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres} />

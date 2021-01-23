@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import * as ID from '../../styles/components/lobby/id';
 
 interface IIDProps {
