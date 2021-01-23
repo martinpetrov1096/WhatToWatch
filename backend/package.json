@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start": "export NODE_ENV=prod && node ./bin/app.js",
+    "start": "export NODE_ENV=prod && ts-node-dev ./bin/app.js",
     "dev": "export NODE_ENV=dev && ts-node-dev ./src/app.ts"
   },
   "devDependencies": {

@@ -39,6 +39,21 @@ gameIO.on('connection', gameSocket);
 
 
 
+/**
+ * Check that all env variables exist before starting
+ */
+if (!process.env.API_KEY) {
+   console.error('Missing API_KEY env variable');
+   process.exit(1);
+}
+if (!process.env.DB_IP) {
+   console.error('Missing DB_IP env variable');
+   process.exit(1);
+}
+if (!process.env.DB_PORT) {
+   console.error('Missing DB_PORT env variable');
+   process.exit(1);
+}
 
 httpServer.listen(config.port, () => {
    console.log('what-to-watch listening on port ' + config.port);

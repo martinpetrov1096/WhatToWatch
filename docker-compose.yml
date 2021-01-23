@@ -5,10 +5,12 @@ services:
   what-to-watch:
     container_name: what-to-watch
     build:
-      context: backend/
+      context: ./
     network_mode: proxynet
     ports: 
       - 5002:8080
+    env_file:
+      - whattowatch.env 
   redis:
     container_name: redis
     image: redis
