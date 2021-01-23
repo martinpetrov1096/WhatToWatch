@@ -9,6 +9,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { lobbySocket } from './routes/sockets/lobbySocket';
 import { gameSocket } from './routes/sockets/gameSocket';
+import history from 'connect-history-api-fallback';
 import gameMiddleware from './middleware/gameMiddleware';
 ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////// EXPRESS CONFIG /////////////////////////////
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use('/api/game', gameRouter);
 app.use('/api/details', detailsRouter);
 
+app.use(history());
 app.use(express.static(path.join(__dirname, '/build')));
 app.use(errors());
 ///////////////////////////////////////////////////////////////////////////
