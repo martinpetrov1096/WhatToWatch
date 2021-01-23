@@ -191,11 +191,11 @@ export const GameRoute = () => {
    return (
          <Switch>
             <Route exact path="/game/:gameId/vote">
-               <GameNavbar/>
+               <GameNavbar route="vote"/>
                <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]} swipeIdx={curSwipeIdx}/>
             </Route>
             <Route exact path="/game/:gameId/overview/">
-               <GameNavbar/>
+               <GameNavbar route="overview"/>
                <GameOverview swipes={swipes.filter((x) => x.vote !== undefined)} />
             </Route>
             <Route exact path="/game/:gameId/details/:cardId">

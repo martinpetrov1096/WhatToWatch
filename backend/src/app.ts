@@ -18,10 +18,11 @@ const app = express();
 
 
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '/build')));
 app.use('/game', gameRouter);
 app.use('/details', detailsRouter);
 
-app.use(express.static(path.join(__dirname, '/build')));
+
 app.use(errors());
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////// SOCKET IO CONFIG ////////////////////////////
