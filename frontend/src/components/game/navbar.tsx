@@ -2,20 +2,24 @@ import { useState, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import * as Nav from '../../styles/components/game/navbar';
 
-export const GameNavbar = () => {
+
+interface IGameNavbarProps {
+   route: 'vote' | 'overview';
+}
+
+export const GameNavbar = (props: IGameNavbarProps) => {
    
    const history = useHistory();
-   const location = useLocation();
-   const [onVoteView, setOnVoteView] = useState(location.pathname.includes('vote'));
+
+  
 
    const navigateTo = useCallback((loc: string) => {
       history.push(loc);
-      setOnVoteView(loc === 'vote');
    }, [history]);
 
    return (
 
-      <Nav.Wrapper onVoteView={onVoteView}>
+      <Nav.Wrapper onVoteView={props.route==='vote'}>
          <h6 onClick={() => navigateTo('vote')}>Vote</h6>
          <h6 onClick={() => navigateTo('overview')}>Overview</h6>
       </Nav.Wrapper>
