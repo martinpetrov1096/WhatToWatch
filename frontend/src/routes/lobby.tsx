@@ -72,7 +72,7 @@ export const LobbyRoute = function() {
     * page
     */
    useEffect(() => {
-      axios.get(config.server.url + 'game/', {
+      axios.get(config.server.url + config.server.newGame, {
          params: {
             id: lobbyId
          }

@@ -6,7 +6,7 @@
    },
    "server": {
       "url": "/",
-      "newGame": "game/",
-      "details": "details/"
+      "newGame": "api/game/",
+      "details": "api/details/"
    }
 }
