@@ -15,7 +15,7 @@ export class GameService {
    private setAsync: any;
 
    private constructor() {
-      this.client = redis.createClient(config.db.port, config.db.ip);
+      this.client = redis.createClient(parseInt(process.env.DB_PORT ?? ''), process.env.DB_IP);
       this.redlock = new Redlock([this.client], {
          retryDelay: 50,
          retryJitter: 50
