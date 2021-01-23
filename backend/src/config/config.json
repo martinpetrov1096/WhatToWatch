@@ -1,0 +1,21 @@
+{
+   "port": 8080,
+   "movieDbApi": {
+      "discover": {
+         "url": "https://api.themoviedb.org/3/discover/",
+         "defaults": {
+            "include_adult": false,
+            "language": "en-US",
+            "vote_count.gte": "200",
+            "sort_by": "popularity.desc"
+         }
+      },
+      "details": {
+         "url": "https://api.themoviedb.org/3/",
+         "defaults": {
+            "language": "en-US",
+            "append_to_response": "videos,reviews,credits"
+         }
+      }
+   }
+}
