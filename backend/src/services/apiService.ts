@@ -38,7 +38,7 @@ export class ApiService {
    public async getDetails(id: number, type: 'movie' | 'tv') {
       return axios.get(config.movieDbApi.details.url + type + '/' + id, {
          params: {
-            'api_key': config.movieDbApi.apiKey,
+            'api_key': process.env.API_KEY,
             ...config.movieDbApi.details.defaults
          }
       }).then((res: AxiosResponse) => {
@@ -57,7 +57,7 @@ export class ApiService {
    private async getResults(game: IGame): Promise<Array<IResult>> {
       return axios.get(config.movieDbApi.discover.url + game.type, {
          params: {
-            'api_key': config.movieDbApi.apiKey,
+            'api_key': process.env.API_KEY,
             'with_genres': game.genres.toString(),
             'vote_average.gte': game.minRating,
             'page': game.page,
@@ -81,7 +81,7 @@ export class ApiService {
       const results = game.genres.map((genre: number) => {
          return axios.get(config.movieDbApi.discover.url + game.type, {
             params: {
-               'api_key': config.movieDbApi.apiKey,
+               'api_key': process.env.API_KEY,
                'with_genres': genre.toString(),
                'vote_average.gte': game.minRating,
                'page': game.page,
