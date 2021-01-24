@@ -33,7 +33,7 @@ export const GameRoute = () => {
     * page
     */
    useEffect(() => {
-      axios.get(config.server.url + config.server.newGame, {
+      axios.get(config.server.apiUrl + 'game', {
          params: {
             id: gameId
          }
@@ -58,7 +58,7 @@ export const GameRoute = () => {
    useEffect(() => {
 
       /* Init socket io client */
-      socket = io(config.server.url + 'game', {
+      socket = io(config.server.gameSocketUrl, {
          query: {
             'gameId': gameId
          }
