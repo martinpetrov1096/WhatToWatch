@@ -5,8 +5,8 @@
       "profileUrl": "https://www.themoviedb.org/t/p/w138_and_h175_face"
    },
    "server": {
-      "url": "/",
-      "newGame": "api/game/",
-      "details": "api/details/"
+      "gameSocketUrl": "/game",
+      "lobbySocketUrl": "/lobby",
+      "apiUrl": "/api/"
    }
 }

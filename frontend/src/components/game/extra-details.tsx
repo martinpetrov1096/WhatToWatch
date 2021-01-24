@@ -13,7 +13,7 @@ export const GameExtraDetails = (props: IExtraDetailsProp) => {
    const [details, setDetails] = useState<any>(undefined);
 
    useEffect(() => {
-      axios.get(config.server.url + config.server.details, {
+      axios.get(config.server.apiUrl + 'details', {
          params: {
             id: props.cardId,
             type: props.type

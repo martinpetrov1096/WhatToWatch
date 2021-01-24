@@ -40,7 +40,7 @@ export const LobbyRoute = function() {
     * event functions
     */
    useEffect(() => {
-      socket =io(config.server.url + 'lobby', {
+      socket =io(config.server.apiUrl + 'lobby', {
          query: {
             'gameId': lobbyId
          }
@@ -72,7 +72,7 @@ export const LobbyRoute = function() {
     * page
     */
    useEffect(() => {
-      axios.get(config.server.url + config.server.newGame, {
+      axios.get(config.server.apiUrl + 'game', {
          params: {
             id: lobbyId
          }

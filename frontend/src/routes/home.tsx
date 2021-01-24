@@ -22,7 +22,7 @@ export const HomeRoute = function() {
    }
 
    const newGame = useCallback(() => {
-      axios.post(config.server.url + config.server.newGame)
+      axios.post(config.server.apiUrl + 'game')
          .then((res) => {
             if (res.status === 200) {
                setJoinCode(res.data.id);
@@ -47,7 +47,7 @@ export const HomeRoute = function() {
     */
    useEffect(() => {
       if (joinCode.length === 5) {
-         axios.get(config.server.url + 'game/', {
+         axios.get(config.server.apiUrl + "/game", {
             params: {
                id: joinCode
             }
