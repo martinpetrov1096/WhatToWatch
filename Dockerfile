@@ -15,7 +15,7 @@ WORKDIR /app/backend
 RUN rm -rf ../frontend
 RUN yarn install
 RUN yarn build
-RUN mv ./src/build ../bin/build
+RUN mv ./src/build ./bin/build
 EXPOSE 8080
 
 CMD ["yarn", "start"]
