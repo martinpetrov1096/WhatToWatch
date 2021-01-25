@@ -74,7 +74,8 @@ export const HomeRoute = function() {
             <Home.NewButton onClick={newGame}>NEW GAME</Home.NewButton>
             <Home.OrHeader>OR</Home.OrHeader>
             <Home.JoinSection>
-               <ReactCodeInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" onChange={setJoinCode} value={joinCode || '     '}/>
+               <Home.JoinInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" onChange={setJoinCode} value={joinCode ?? '     '}/>
+               {/* <ReactCodeInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" inputStyle={{width: '40px'}} onChange={setJoinCode} value={joinCode ?? '     '} /> */}
                <Link to={'/lobby/' + joinCode}>
                   <Home.JoinButton disabled={!validCode}>JOIN</Home.JoinButton>
                </Link>

@@ -40,7 +40,7 @@ export const LobbyRoute = function() {
     * event functions
     */
    useEffect(() => {
-      socket =io(config.server.apiUrl + 'lobby', {
+      socket =io(config.server.lobbySocketUrl, {
          query: {
             'gameId': lobbyId
          }
