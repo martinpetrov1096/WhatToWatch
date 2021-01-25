@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import * as Global from '../global';
+import ReactCodeInput from 'react-code-input';
 
 export const BG = styled(Global.PurpleBG)`
    display: flex;
@@ -50,6 +51,29 @@ export const JoinSection = styled.div`
       align-items: space-around;
    }
 `;
+
+export const JoinInput = styled(ReactCodeInput)`
+   display: flex;
+   justify-content: space-between;
+   width: 100%;
+   
+   > input {
+      margin: 5px;
+      box-shadow: inset 2px 2px 2px #191B30;
+      outline: none;
+      appearance: none;
+      border: none;
+      border-radius: 5px;
+      width: 35px;
+      height: 35px;
+      background-color: ${Global.color.primaryDark};
+      text-align: center;
+      font-size: 16px;
+      color: white;
+   }
+
+`;
+
 
 export const JoinButton = styled(Global.Button)`
    disabled: ${(props: any) => props.disabled};
