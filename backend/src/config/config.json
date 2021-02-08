@@ -6,7 +6,10 @@
          "defaults": {
             "include_adult": false,
             "language": "en-US",
-            "vote_count.gte": "200",
+            "vote_count.gte": "400",
+            "region": "US",
+            "watch_region": "US",
+            
             "sort_by": "popularity.desc"
          }
       },

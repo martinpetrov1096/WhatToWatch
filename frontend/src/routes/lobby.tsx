@@ -8,6 +8,7 @@ import { LobbyGenres } from '../components/lobby/genres'
 import { LobbyMinRating } from '../components/lobby/min-rating';
 import { LobbyID } from '../components/lobby/id';
 import { LobbyType } from '../components/lobby/type';
+import { LobbyProviders } from '../components/lobby/providers';
 import * as Lobby from '../styles/routes/lobby';
 import { Button } from '../styles/global';
 
@@ -16,7 +17,7 @@ interface ILobbyParamTypes {
 }
 
 let socket: Socket;
-export const LobbyRoute = function() {
+export const LobbyRoute = () => {
    
    const { lobbyId } = useParams<ILobbyParamTypes>();
    const history = useHistory();
@@ -26,6 +27,7 @@ export const LobbyRoute = function() {
       numPlayers: 1,
       type: 'movie',
       genres: [],
+      providers: [],
       minRating: 1
    });
 
@@ -107,32 +109,11 @@ export const LobbyRoute = function() {
 
       }
    }, [lobby, history, lobbyId]);
-   ///////////////////////////////////////////////////////////////////////////
-   ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
-   ///////////////////////////////////////////////////////////////////////////
 
    const startGame = useCallback(() => {
       socket.emit('start');
    }, []);
 
-   const setType = useCallback((newType: 'movie' | 'tv') => {
-      socket.emit('changeType', newType);
-   }, []);
-
-   const addGenre = useCallback((genreId: number) => {
-      socket.emit('addGenre', genreId);
-      console.log('adding genre');
-   }, []);
-
-   const delGenre = useCallback((genreId: number) => {
-      socket.emit('delGenre', genreId);
-      console.log('deleting genre');
-   }, []);
-
-   const changeMinRating = useCallback((MinRating: number) => {
-      socket.emit('changeMinRating', MinRating);
-      console.log('changing minimum rating');
-   }, []);
 
    return (
       <Lobby.BG>
@@ -145,9 +126,10 @@ export const LobbyRoute = function() {
          </Lobby.Heading>
          <LobbyID lobbyId={lobbyId}/>
  
-         <LobbyType type={lobby.type} setType={setType} />
-         <LobbyMinRating curMinRating={lobby.minRating} changeMinRating={changeMinRating} />
-         <LobbyGenres type={lobby.type} addGenre={addGenre} delGenre={delGenre} curGenres={lobby.genres} />
+         <LobbyType type={lobby.type} socket={socket}/>
+         <LobbyMinRating curMinRating={lobby.minRating} socket={socket}/>
+         <LobbyGenres type={lobby.type} socket={socket} selectedGenres={lobby.genres}/>
+         <LobbyProviders selectedProviders={lobby.providers} socket={socket}/>
          <Button onClick={startGame}>START</Button>
       </Lobby.BG>
    );

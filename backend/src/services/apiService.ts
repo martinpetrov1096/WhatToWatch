@@ -55,6 +55,7 @@ export class ApiService {
    ///////////////////////////////////////////////////////////////////////////
 
    private async getResults(game: IGame): Promise<Array<IResult>> {
+      console.log(game.providers.toString())
       return axios.get(config.movieDbApi.discover.url + game.type, {
          params: {
             'api_key': process.env.API_KEY,
@@ -80,6 +81,7 @@ export class ApiService {
        * requests into a 1D array
        */
       const results = game.genres.map((genre: number) => {
+         console.log(game.providers.toString())
          return axios.get(config.movieDbApi.discover.url + game.type, {
             params: {
                'api_key': process.env.API_KEY,

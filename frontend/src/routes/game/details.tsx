@@ -2,11 +2,11 @@ import { useParams, useHistory } from 'react-router-dom';
 import { buildStyles } from 'react-circular-progressbar';
 import { ISwipe } from '../../types/swipe';
 import config from '../../config/config.json';
-import genre from '../../config/genres.json';
 import { useState, useEffect, useMemo } from 'react';
 import { GameExtraDetails } from '../../components/game/extra-details';
 import * as Details from '../../styles/routes/game/details';
 import * as Global from '../../styles/global';
+import axios from 'axios';
 
 interface ICardProp {
    cards: Array<ISwipe>;
@@ -19,7 +19,7 @@ export const CardDetails = (props: ICardProp) => {
 
    const  { cardId } = useParams<ParamTypes>();
    const history = useHistory();
-   
+
    const curCard = useMemo<ISwipe | undefined>(() => {
       return props.cards.find((card) => card.id === parseInt(cardId));
    }, [cardId, props.cards]);
@@ -35,17 +35,24 @@ export const CardDetails = (props: ICardProp) => {
    }, [curCard]);
 
    const [genres, setGenres ] = useState<Array<string>>([]);
-
    useEffect(() => {
-      if (curCard?.genre_ids === undefined) {
-         setGenres([]);
-      } else {
-         const genres = curCard?.genre_ids.map((id) => {
-            const genreName = genre[type || 'movie'].find((g) => g.id === id)?.name || '';
-            return genreName;
+      axios.get(config.server.apiUrl + '/info/genres')
+         .then((res) => {
+            const allGenres = res.data;
+
+            if (curCard?.genre_ids === undefined) {
+               setGenres([]);
+            } else {
+               const curMovieGenres = curCard?.genre_ids.map((id) => {
+                  const genreName = allGenres[type || 'movie'].find((g: any) => g.id === id)?.name || '';
+                  return genreName;
+               });
+               setGenres(curMovieGenres);
+            }
+         })
+         .catch((err) => {
+            console.error('Could not get genres from server');
          });
-         setGenres(genres);
-      }
    }, [type, curCard?.genre_ids]);
 
    const bgUrl = useMemo<string>(() => {
@@ -68,7 +75,6 @@ export const CardDetails = (props: ICardProp) => {
 
    useEffect(() => {
       if (curCard === undefined) {
-         console.log(curCard);
          history.push('/error');
       }
    }, [curCard, history]);
@@ -83,7 +89,7 @@ export const CardDetails = (props: ICardProp) => {
                <Details.InfoWrapper>
                   <Details.Title>{curCard?.title}</Details.Title>
                   <Details.GenresWrapper>
-                     {genres.map((g) => <Details.GenreItem>{g}</Details.GenreItem>)}
+                     {genres.map((g) => <Details.GenreItem key={g}>{g}</Details.GenreItem>)}
                   </Details.GenresWrapper>
                   <Details.DescriptionVoteWrapper>
                      <Details.VoteWrapper>

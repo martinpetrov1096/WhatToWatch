@@ -4,7 +4,7 @@ import config from './config/config.json';
 import path from 'path';
 import dotenv from 'dotenv'
 import gameRouter from './routes/gameRoute';
-import detailsRouter from './routes/detailsRoute';
+import infoRouter from './routes/infoRoute';
 import { errors } from 'celebrate';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -37,7 +37,7 @@ if (!process.env.DB_PORT) {
 const app = express();
 app.use(bodyParser.json());
 app.use('/api/game', gameRouter);
-app.use('/api/details', detailsRouter);
+app.use('/api/info', infoRouter);
 
 app.use(history());
 app.use(express.static(path.join(__dirname, '/build')));

@@ -13,7 +13,7 @@ export const GameExtraDetails = (props: IExtraDetailsProp) => {
    const [details, setDetails] = useState<any>(undefined);
 
    useEffect(() => {
-      axios.get(config.server.apiUrl + 'details', {
+      axios.get(config.server.apiUrl + 'info/details', {
          params: {
             id: props.cardId,
             type: props.type
@@ -45,7 +45,7 @@ export const GameExtraDetails = (props: IExtraDetailsProp) => {
             <ExtraDetails.CastWrapper>
                
                {cast.map((c: any) => (
-                  <ExtraDetails.Cast>
+                  <ExtraDetails.Cast key={c.name}>
                      <img src={config.movieDb.profileUrl + c.profile_path} alt={c.name}/>
                      <div>
                         <h3>{c.name}</h3>
@@ -56,7 +56,7 @@ export const GameExtraDetails = (props: IExtraDetailsProp) => {
             <ExtraDetails.ReviewsWrapper>
                <h2>Reviews</h2>
                   {reviews.map((r: any) => (
-                     <ExtraDetails.Review>
+                     <ExtraDetails.Review key={r.id}>
                         <blockquote cite={r.url}>{r.content}</blockquote>
                         <h6>-{r.author}</h6>
                      </ExtraDetails.Review>

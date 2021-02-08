@@ -1,8 +1,8 @@
 import express from 'express';
-
 import { celebrate, Joi, Segments } from 'celebrate';
 import { ApiService } from '../services/apiService';
-
+import genres from '../config/genres.json';
+import providers from '../config/providers.json';
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// CONFIG //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -13,8 +13,7 @@ const apiService = ApiService.getInstance();
 ///////////////////////////////// ROUTES //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-
-router.get('/', celebrate({
+router.get('/details', celebrate({
    [Segments.QUERY]: Joi.object().keys({
       type: Joi.string().valid(...['movie', 'tv']).required(),
       id: Joi.number().required()
@@ -43,7 +42,15 @@ router.get('/', celebrate({
       })
       .catch((err: Error) => {
          return res.status(500).json({'Error': 'Something went wrong'});
-      })
+      });
+});
+
+router.get('/genres', (req, res) => {
+   res.send(genres);
+});
+
+router.get('/providers', (req, res) => {
+   res.send(providers);
 });
 
 export default router;
