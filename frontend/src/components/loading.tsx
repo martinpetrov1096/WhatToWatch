@@ -1,5 +1,17 @@
 import styled, { keyframes, css} from 'styled-components';
-import * as Global from '../../global';
+import * as Global from '../styles/global';
+
+export const Loading = () => {
+
+   return (
+      <Wrapper viewBox="25 25 50 50">
+         <Circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+    </Wrapper>
+   );
+}
+///////////////////////////////////////////////////////////////////////////
+////////////////////////////////// STYLES /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 const rotateKeyframe = () => keyframes`
    100% {
@@ -22,7 +34,7 @@ const dashKeyframe = () => keyframes`
    }
 `;
 
-export const Wrapper = styled.svg`
+const Wrapper = styled.svg`
    position: absolute;
    top: 0;
    bottom: 0;
@@ -37,7 +49,7 @@ export const Wrapper = styled.svg`
    transform-origin: center center;
 `;
 
-export const Circle = styled.circle`
+const Circle = styled.circle`
    stroke: ${Global.color.secondary};
    stroke-dasharray: 89, 200;
    stroke-dashoffset: 10;
