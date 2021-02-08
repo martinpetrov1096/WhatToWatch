@@ -1,8 +1,9 @@
 import { color } from '../../styles/global';
-import * as Type from '../../styles/components/lobby/type';
+
 import Switch from 'react-switch';
 import { useCallback } from 'react';
 import { Socket } from 'socket.io-client';
+import styled from 'styled-components';
 
 const TypeSwitchParams = {
       checkedIcon: false,
@@ -27,10 +28,26 @@ export const LobbyType = (props: LobbyTypeProps) => {
    }, [props.socket]);
 
    return (
-      <Type.Wrapper>
-         <Type.Category>MOVIE</Type.Category>
+      <Wrapper>
+         <Category>MOVIE</Category>
          <Switch checked={props.type==='tv'} onChange={(checked) => checked ? setType('tv') : setType('movie')} {...TypeSwitchParams}/>
-         <Type.Category>TV SHOW</Type.Category>
-      </Type.Wrapper>
+         <Category>TV SHOW</Category>
+      </Wrapper>
    );
 }
+///////////////////////////////////////////////////////////////////////////
+////////////////////////////////// STYLES /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+const Wrapper = styled.div`
+   margin-bottom: 30px;
+   display: flex;
+   flex-flow: row nowrap;
+   align-items: center;
+`;
+
+const Category = styled.h3`
+   margin: 0 10px;
+   font-size: 18px;
+   text-align: center;
+`;
