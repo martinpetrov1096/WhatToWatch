@@ -1,9 +1,9 @@
 import { useHistory, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
+import styled from 'styled-components';
 import { ISwipe } from '../../types/swipe';
 import config from '../../config/config.json';
-import * as Card from '../../styles/components/game/card';
-import { Loading } from '../global/loading';
+import { Loading } from '../loading';
 
 interface ICardProp {
    card: ISwipe | undefined;
@@ -26,7 +26,28 @@ export const GameCard = (props: ICardProp) => {
       return (<Loading/>);
    } else {
       return (
-         <Card.Main posterUrl={(config.movieDb.posterUrl + props.card.poster_path).toString()} key={props.card.id} onClick={goToDetails}/>
+         <Main posterUrl={(config.movieDb.posterUrl + props.card.poster_path).toString()} key={props.card.id} onClick={goToDetails}/>
       );
    }
 }
+///////////////////////////////////////////////////////////////////////////
+////////////////////////////////// STYLES /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+type CardStyleProps = {
+   posterUrl: string;
+}
+
+const Main = styled.div`
+   padding-bottom: min(100%, 60vh);
+   border-radius: 5%;
+   width: 66.6%;
+   max-width: 450px;
+
+   background-image: url("${ (props: CardStyleProps) => props.posterUrl }");
+   background-position: center;
+   background-size: cover;
+   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+   transition: all 1s ease-in-out;
+`;
