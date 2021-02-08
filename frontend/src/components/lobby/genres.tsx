@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useEffect, useMemo, useCallback, useState } from 'react';
 import { Socket } from 'socket.io-client';
+import styled from 'styled-components';
 import config from '../../config/config.json';
-import * as Genres from '../../styles/components/lobby/genres';
+import * as Global from '../../styles/global';
 
 interface IGenreSelectorParamTypes {
    type: 'movie' | 'tv';
@@ -48,24 +49,72 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
       }
       return genres[props.type].map((genre: any) => {
          return (
-            <Genres.ItemWrapper key={genre.id} >
-               <Genres.Checkbox type="checkbox" 
+            <ItemWrapper key={genre.id} >
+               <Checkbox type="checkbox" 
                   name={genre.name}
                   value={genre.id}
                   id={genre.name}
                   checked={props.selectedGenres.includes(genre.id)}
                   onChange={()=>props.selectedGenres.includes(genre.id) ? delGenre(genre.id) : addGenre(genre.id)}
                />
-               <Genres.Label htmlFor={genre.name}>{genre.name}</Genres.Label>
-            </Genres.ItemWrapper>
+               <Label htmlFor={genre.name}>{genre.name}</Label>
+            </ItemWrapper>
          );
       });
    }, [genres, addGenre, delGenre, props.selectedGenres, props.type]);
 
    return (
-      <Genres.Wrapper>
-         <Genres.Header>Genres</Genres.Header>
+      <Wrapper>
+         <Header>Genres</Header>
          { genreElements }
-      </Genres.Wrapper>
+      </Wrapper>
    );
 }
+///////////////////////////////////////////////////////////////////////////
+////////////////////////////////// STYLES /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+const Wrapper = styled.div`
+   margin-bottom: 30px;
+
+   max-width: 500px;
+   height: 100%;
+   display: flex;
+   flex-flow: row wrap;
+   justify-content: center;
+   align-content: space-around;
+`;
+
+const Header = styled.h3`
+   width: 100%;
+   text-align: center;
+   font-size: 30px;
+`;
+
+const ItemWrapper = styled.div`
+   margin-top: 30px;
+
+   flex-basis: 80px;
+   flex-grow: 1;
+   white-space: nowrap;
+`;
+
+const Checkbox = styled.input`
+   visibility: hidden;
+   :checked + label {
+      background-color: ${Global.color.primaryDark};
+      box-shadow: inset 2px 2px 2px #191B30;
+   }
+`;
+
+const Label = styled.label`
+   padding: 10px;
+   border-radius: 5px;
+
+   font-size: 14px;
+   transition: ${Global.transition};
+
+   :hover {
+      background-color: ${Global.color.primaryDark};
+   }
+`;
