@@ -5,6 +5,7 @@ import crypto  from 'crypto';
 import { ILobby } from '../types/lobby';
 import  { promisify } from 'util'
 import genres from '../config/genres.json';
+import providers from '../config/providers.json';
 
 export class LobbyService {
 
@@ -46,6 +47,7 @@ export class LobbyService {
          type: type,
          numPlayers: 0,
          genres: new Array<number>(),
+         providers: new Array<number>(),
          minRating: 0,
       }
       /* Add to redis, don't need to use lock here */
@@ -163,6 +165,31 @@ export class LobbyService {
       }
    }
 
+   public async addProvider(lobbyId: string, provider: number): Promise<ILobby> {
+      const resource = 'locks:' + lobbyId;
+      const lock = await this.redlock.lock(resource, 1000);
+      try {
+         const lobby = await this.getLobby(lobbyId);
+         this.checkStatus(lobby);
+
+         /**
+          * Verify that the provider isn't already in the list 
+          * of providers, and that it is a valid provider
+          */
+         if (lobby.providers.indexOf(provider) == -1 && providers.map((g)=> g.id).includes(provider)) {
+            lobby.providers.push(provider);
+         }
+         await this.setLobby(lobbyId, lobby);
+         lock.unlock();
+
+         return lobby;
+      }
+      catch(err: any) {
+         lock.unlock();
+         throw new Error(err.message);
+      }
+   }
+
    public async delGenre(lobbyId: string, genre: number): Promise<ILobby> {
       const resource = 'locks:' + lobbyId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -173,6 +200,27 @@ export class LobbyService {
          const genreIdx = lobby.genres.indexOf(genre);
          if (genreIdx != -1) {
             lobby.genres.splice(genreIdx, 1);
+         }
+         await this.setLobby(lobbyId, lobby);
+         lock.unlock();
+         return lobby;
+      }
+      catch(err: any) {
+         lock.unlock();
+         throw new Error(err.message);
+      }
+   }
+
+   public async delProvider(lobbyId: string, provider: number): Promise<ILobby> {
+      const resource = 'locks:' + lobbyId;
+      const lock = await this.redlock.lock(resource, 1000);
+      try {
+         const lobby = await this.getLobby(lobbyId);
+         this.checkStatus(lobby);
+
+         const providerIdx = lobby.providers.indexOf(provider);
+         if (providerIdx != -1) {
+            lobby.providers.splice(providerIdx, 1);
          }
          await this.setLobby(lobbyId, lobby);
          lock.unlock();
