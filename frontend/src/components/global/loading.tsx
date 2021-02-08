@@ -1,4 +1,4 @@
-import { Wrapper, Circle } from '../styles/components/game/loading';
+import { Wrapper, Circle } from '../../styles/components/game/loading';
 
 export const Loading = () => {
 
