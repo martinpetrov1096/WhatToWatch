@@ -1,5 +1,5 @@
 build/
 node_modules/
 .eslintcache
-./src/react-app-env.d.ts
+src/react-app-env.d.ts
 yarn-error.log
