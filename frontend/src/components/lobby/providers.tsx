@@ -73,7 +73,7 @@ const ProviderWrapper = styled.div`
 `;
 
 const Provider = styled.input.attrs({
-   type: 'radio',
+   type: 'checkbox',
    name: 'provider'
 })`
 
