@@ -4,6 +4,7 @@ export interface ILobby {
    type: 'movie' | 'tv';
    numPlayers: number;
    genres: Array<number>;
+   providers: Array<number>,
    minRating: number;
 }
 
