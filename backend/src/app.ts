@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import config from './config/config.json';
 import path from 'path';
+import dotenv from 'dotenv'
 import gameRouter from './routes/gameRoute';
 import detailsRouter from './routes/detailsRoute';
 import { errors } from 'celebrate';
@@ -15,9 +16,25 @@ import gameMiddleware from './middleware/gameMiddleware';
 ////////////////////////////// EXPRESS CONFIG /////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
+/**
+ * Check that all env variables exist before starting
+ */
+dotenv.config();
+
+if (!process.env.API_KEY) {
+   console.error('Missing API_KEY env variable');
+   process.exit(1);
+}
+if (!process.env.DB_IP) {
+   console.error('Missing DB_IP env variable');
+   process.exit(1);
+}
+if (!process.env.DB_PORT) {
+   console.error('Missing DB_PORT env variable');
+   process.exit(1);
+}
+
 const app = express();
-
-
 app.use(bodyParser.json());
 app.use('/api/game', gameRouter);
 app.use('/api/details', detailsRouter);
@@ -38,24 +55,6 @@ const gameIO = io.of('/game');
 lobbyIO.on('connection', lobbySocket);
 gameIO.on('connection', gameSocket);
 
-
-
-
-/**
- * Check that all env variables exist before starting
- */
-if (!process.env.API_KEY) {
-   console.error('Missing API_KEY env variable');
-   process.exit(1);
-}
-if (!process.env.DB_IP) {
-   console.error('Missing DB_IP env variable');
-   process.exit(1);
-}
-if (!process.env.DB_PORT) {
-   console.error('Missing DB_PORT env variable');
-   process.exit(1);
-}
 
 httpServer.listen(config.port, () => {
    console.log('what-to-watch listening on port ' + config.port);
