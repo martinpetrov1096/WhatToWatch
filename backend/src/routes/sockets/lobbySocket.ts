@@ -26,16 +26,7 @@ export const lobbySocket = (socket: any) => {
          socket.emit('error', err.message);
       });
 
-   socket.on('disconnect', () => {
-      lobbyService.disconnect(lobbyId)
-         .then((lobby: ILobby) => {
-            socket.to(lobbyId).emit('update', lobby);
-         }) 
-         .catch((err: any) => {
-            console.log(err.message);
-            socket.emit('error', err.message);
-         });
-   });
+
 
    socket.on('addGenre', (genre: number) => {
       console.log('adding genre');
@@ -54,11 +45,12 @@ export const lobbySocket = (socket: any) => {
       }
    });
 
-   socket.on('delGenre', (genre: any) => {
-      if (typeof genre != 'number') {
-         socket.emit('error', new Error('Genre must be a number'))
+   socket.on('addProvider', (provider: number) => {
+      console.log('adding provider');
+      if (typeof provider != 'number') {
+         socket.emit('error', new Error('Provider must be a number'))
       } else {
-         lobbyService.delGenre(lobbyId, genre)
+         lobbyService.addProvider(lobbyId, provider)
             .then((lobby: ILobby) => {
                socket.emit('update', lobby);
                socket.to(lobbyId).emit('update', lobby);
@@ -96,6 +88,49 @@ export const lobbySocket = (socket: any) => {
                socket.emit('error', err.message);
             });
       }
+   });
+
+   socket.on('delGenre', (genre: any) => {
+      if (typeof genre != 'number') {
+         socket.emit('error', new Error('Genre must be a number'))
+      } else {
+         lobbyService.delGenre(lobbyId, genre)
+            .then((lobby: ILobby) => {
+               socket.emit('update', lobby);
+               socket.to(lobbyId).emit('update', lobby);
+            })
+            .catch((err: any) => {
+               console.log(err.message);
+               socket.emit('error', err.message);
+            });
+      }
+   });
+
+   socket.on('delProvider', (provider: any) => {
+      if (typeof provider != 'number') {
+         socket.emit('error', new Error('Provider must be a number'))
+      } else {
+         lobbyService.delProvider(lobbyId, provider)
+            .then((lobby: ILobby) => {
+               socket.emit('update', lobby);
+               socket.to(lobbyId).emit('update', lobby);
+            })
+            .catch((err: any) => {
+               console.log(err.message);
+               socket.emit('error', err.message);
+            });
+      }
+   });
+
+   socket.on('disconnect', () => {
+      lobbyService.disconnect(lobbyId)
+         .then((lobby: ILobby) => {
+            socket.to(lobbyId).emit('update', lobby);
+         }) 
+         .catch((err: any) => {
+            console.log(err.message);
+            socket.emit('error', err.message);
+         });
    });
 
    socket.on('start', () => {
