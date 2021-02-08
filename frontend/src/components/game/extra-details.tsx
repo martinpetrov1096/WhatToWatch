@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { useState, useEffect, useMemo } from 'react';
 import config from '../../config/config.json';
-import { Loading } from '../loading';
+import { Loading } from '../global/loading';
 import * as ExtraDetails from '../../styles/components/game/extra-details';
 interface IExtraDetailsProp {
    cardId: string;
