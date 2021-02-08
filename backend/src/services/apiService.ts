@@ -59,6 +59,7 @@ export class ApiService {
          params: {
             'api_key': process.env.API_KEY,
             'with_genres': game.genres.toString(),
+            'with_watch_providers': game.providers.toString(),
             'vote_average.gte': game.minRating,
             'page': game.page,
             ...config.movieDbApi.discover.defaults
@@ -83,6 +84,7 @@ export class ApiService {
             params: {
                'api_key': process.env.API_KEY,
                'with_genres': genre.toString(),
+               'with_watch_providers': game.providers.toString(),
                'vote_average.gte': game.minRating,
                'page': game.page,
                ...config.movieDbApi.discover.defaults
