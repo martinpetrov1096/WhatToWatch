@@ -17,7 +17,7 @@
          "url": "https://api.themoviedb.org/3/",
          "defaults": {
             "language": "en-US",
-            "append_to_response": "videos,reviews,credits"
+            "append_to_response": "videos,reviews,credits,watch/providers"
          }
       }
    }
