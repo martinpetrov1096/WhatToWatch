@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import * as Global from '../../styles/global';
 
 interface IGameNavbarProps {
    route: 'vote' | 'overview';
@@ -16,8 +15,7 @@ export const GameNavbar = (props: IGameNavbarProps) => {
    }, [history]);
 
    return (
-
-      <Wrapper onVoteView={props.route==='vote'}>
+      <Wrapper voteView={props.route==='vote'}>
          <h6 onClick={() => navigateTo('vote')}>Vote</h6>
          <h6 onClick={() => navigateTo('overview')}>Overview</h6>
       </Wrapper>
@@ -28,7 +26,8 @@ export const GameNavbar = (props: IGameNavbarProps) => {
 ///////////////////////////////////////////////////////////////////////////
 
 type NavStyleProps = {
-   onVoteView: boolean;
+   voteView: boolean;
+   theme: any;
 }
 
 const Wrapper = styled.nav`
@@ -49,14 +48,10 @@ const Wrapper = styled.nav`
    }
    > * { // Needed since styled-components created a div
       &:first-child {
-         color: ${(props: NavStyleProps) => props.onVoteView ? Global.color.secondary : 'white'} !important;
+         color: ${(props: NavStyleProps) => props.voteView ? props.theme.colorAccent : 'white'} !important;
       }
       &:nth-child(2) {
-            color: ${(props: NavStyleProps) => (!props.onVoteView) ? Global.color.secondary : 'white'} !important;
+            color: ${(props: NavStyleProps) => (!props.voteView) ? props.theme.colorAccent : 'white'} !important;
          }
    }
-`;
-
-const Link = styled.a`
-
 `;

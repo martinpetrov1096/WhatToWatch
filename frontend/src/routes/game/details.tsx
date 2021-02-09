@@ -4,8 +4,10 @@ import { ISwipe } from '../../types/swipe';
 import config from '../../config/config.json';
 import { useState, useEffect, useMemo } from 'react';
 import { GameExtraDetails } from '../../components/game/extra-details';
-import * as Details from '../../styles/routes/game/details';
-import * as Global from '../../styles/global';
+import styled from 'styled-components';
+import { Button } from '../../styles/styled-components/global';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import theme from '../../config/theme.json';
 import axios from 'axios';
 
 interface ICardProp {
@@ -81,36 +83,171 @@ export const CardDetails = (props: ICardProp) => {
 
 
    return (
-      <Details.Wrapper bgUrl={bgUrl}>
-         <Details.ContentWrapper>
-            <Details.BackButton onClick={()=> history.goBack()}>Go Back</Details.BackButton>
-            <Details.Card>
-               <Details.PosterImage posterUrl={posterUrl}/>
-               <Details.InfoWrapper>
-                  <Details.Title>{curCard?.title}</Details.Title>
-                  <Details.GenresWrapper>
-                     {genres.map((g) => <Details.GenreItem key={g}>{g}</Details.GenreItem>)}
-                  </Details.GenresWrapper>
-                  <Details.DescriptionVoteWrapper>
-                     <Details.VoteWrapper>
-                        <Details.VoteProgressBar 
+      < Wrapper bgUrl={bgUrl}>
+         < ContentWrapper>
+            < BackButton onClick={()=> history.goBack()}>Go Back</ BackButton>
+            < Card>
+               < PosterImage posterUrl={posterUrl}/>
+               < InfoWrapper>
+                  < Title>{curCard?.title}</ Title>
+                  < GenresWrapper>
+                     {genres.map((g) => < GenreItem key={g}>{g}</ GenreItem>)}
+                  </ GenresWrapper>
+                  < DescriptionVoteWrapper>
+                     < VoteWrapper>
+                        < VoteProgressBar 
                               value={(curCard?.vote_average || 0) * 10}
                               text={curCard?.vote_average?.toString()}
                               strokeWidth={20}
                               styles={buildStyles({
                                  strokeLinecap: 'butt',
-                                 pathColor: Global.color.secondary,
-                                 trailColor: Global.color.primaryDark
+                                 pathColor: theme.colorAccent,
+                                 trailColor: theme.colorPrimaryDark
                               })}
                         />
                         <h5>User Vote</h5>
-                     </Details.VoteWrapper>
-                     <Details.Description>{curCard?.overview}</Details.Description>
-                  </Details.DescriptionVoteWrapper>
+                     </ VoteWrapper>
+                     < Description>{curCard?.overview}</ Description>
+                  </ DescriptionVoteWrapper>
                   <GameExtraDetails cardId={cardId} type={type}/>
-               </Details.InfoWrapper>
-            </Details.Card>
-         </Details.ContentWrapper>   
-      </Details.Wrapper>
+               </ InfoWrapper>
+            </ Card>
+         </ ContentWrapper>   
+      </ Wrapper>
    );
 }
+///////////////////////////////////////////////////////////////////////////
+////////////////////////////////// STYLES /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+type DetailsStyleProps = {
+   bgUrl: string;
+}
+
+const Wrapper = styled.div`
+   height: 100%;
+   width: 100%;
+
+   &:before {
+      content: '';
+      z-index: 1;
+      position: fixed;
+      height: 100vh;
+      width: 100vw;
+      background-image: linear-gradient(rgba(59, 64, 107, .2), rgba(59, 64, 107, .9)), url('${(props: DetailsStyleProps) => props.bgUrl}');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+   }
+`;
+
+const ContentWrapper = styled.div`
+   backdrop-filter: blur(8px);
+   background-color: transparent;
+   position: relative;
+   z-index: 10;
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: center;
+`;
+
+const BackButton = styled(Button)`
+   position: relative;
+   z-index: 10;
+   align-self: flex-start;
+
+`;
+
+const Card = styled.div`
+   margin: 300px 0;
+   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+   border-radius: 30px;
+   width: min(1500px, 100%);
+   background-color: ${(props: any) => props.theme.colorPrimary };
+
+   display: flex;
+   flex-flow: row nowrap;
+`;
+
+type DetailsPosterImageProps = {
+   posterUrl: string;
+}
+
+const PosterImage = styled.div`
+   display: none;
+   flex-basis: 40%;
+   flex-grow: 1;
+   flex-shrink: 1;
+   border-radius: 30px 0 0 30px;
+   background-image: url("${ (props: DetailsPosterImageProps) => props.posterUrl }") ;
+   background-position: center;
+   background-size: contain;
+
+   @media only screen and (max-width: 900px) {
+      display: none;
+   }
+`;
+
+const InfoWrapper = styled.div`
+   flex-grow: 1;
+   flex-shrink: 2;
+   padding: min(5%, 70px);
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: flex-start;
+   > * {
+      padding-top: 20px;
+   }
+`;
+
+const Title = styled.h2`
+   font-size: max(3vw, 30px);
+   text-align: center;
+`;
+
+const GenresWrapper = styled.div`
+   display: flex;
+   flex-flow: row wrap;
+`;
+
+const GenreItem = styled.h4`
+   margin: 5px;
+   border-radius: 5px;
+   padding: 10px;
+   background-color: ${(props: any) => props.theme.colorPrimaryDark};
+
+`;
+
+const DescriptionVoteWrapper = styled.div`
+   width: 100%;
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: space-around;
+   align-items: center;
+   @media (max-width: 500px) {
+      flex-flow: column;
+      justify-content: space-around;
+      align-items: space-around;
+   }
+`;
+
+const Description = styled.p`
+   padding: 30px;
+   font-size: 14px;
+   line-height: 1.2
+`;
+
+const VoteWrapper = styled.div`
+   flex-shrink: 0;
+   flex-basis: 80px !important;
+
+   > h5 {
+      margin-top: 10px;
+      font-size: 12px;
+      text-align: center;
+   }
+`;
+
+const VoteProgressBar = styled(CircularProgressbar)`
+   height: 50px;
+`;

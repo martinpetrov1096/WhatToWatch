@@ -1,5 +1,5 @@
 import styled, { keyframes, css} from 'styled-components';
-import * as Global from '../styles/global';
+
 
 export const Loading = () => {
 
@@ -50,7 +50,7 @@ const Wrapper = styled.svg`
 `;
 
 const Circle = styled.circle`
-   stroke: ${Global.color.secondary};
+   stroke: ${(props: any) => props.colorAccent};
    stroke-dasharray: 89, 200;
    stroke-dashoffset: 10;
    animation: ${css`${dashKeyframe()} 2s linear infinite`};

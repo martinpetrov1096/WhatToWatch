@@ -1,26 +1,32 @@
 [
    {
       "id": 8,
-      "name": "Netflix"
+      "name": "Netflix",
+      "iconUrl": "/assets/providers/netflix.png"
    },
    {
       "id": 15,
-      "name": "Hulu"
+      "name": "Hulu",
+      "iconUrl": "/assets/providers/hulu.png"
    },
    {
       "id": 119,
-      "name": "Amazon Prime Video"
+      "name": "Amazon Prime Video",
+      "iconUrl": "/assets/providers/amazonprimevideo.png"
    },
    {
       "id": 337,
-      "name": "Disney Plus"
+      "name": "Disney Plus",
+      "iconUrl": "/assets/providers/disneyplus.png"
    },
    {
       "id": 350,
-      "name": "Apple TV Plus"
+      "name": "Apple TV Plus",
+      "iconUrl": "/assets/providers/appletvplus.png"
    },
    {
       "id": 384,
-      "name": "HBO Max"
+      "name": "HBO Max",
+      "iconUrl": "/assets/providers/hbomax.png"
    }
 ]

@@ -38,7 +38,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use('/api/game', gameRouter);
 app.use('/api/info', infoRouter);
-
+app.use('/assets', express.static(path.join(__dirname, '/assets')));
 app.use(history());
 app.use(express.static(path.join(__dirname, '/build')));
 app.use(errors());

@@ -3,8 +3,7 @@ import { useEffect, useMemo, useCallback, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import config from '../../config/config.json';
-import * as Global from '../../styles/global';
-
+import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
 interface IGenreSelectorParamTypes {
    type: 'movie' | 'tv';
    socket: Socket;
@@ -36,7 +35,7 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
    }, []);
 
    const genreElements = useMemo(() => {
-      console.log(genres);
+
       /**
        * If genres promise hasn't fullfilled yet,
        * just return null
@@ -65,8 +64,14 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
 
    return (
       <Wrapper>
-         <Header>Genres</Header>
-         { genreElements }
+         <Title>Genres</Title>
+         <Description>
+            Filter results to only recommend movie/tv shows
+            that are of certain genres
+         </Description>
+         <ItemsWrapper>
+            { genreElements }
+         </ItemsWrapper>
       </Wrapper>
    );
 }
@@ -74,26 +79,18 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
 ////////////////////////////////// STYLES /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-const Wrapper = styled.div`
-   margin-bottom: 30px;
-
-   max-width: 500px;
+const ItemsWrapper = styled.div`
    height: 100%;
    display: flex;
    flex-flow: row wrap;
    justify-content: center;
    align-content: space-around;
+   align-items: center;
 `;
 
-const Header = styled.h3`
-   width: 100%;
-   text-align: center;
-   font-size: 30px;
-`;
 
 const ItemWrapper = styled.div`
-   margin-top: 30px;
-
+   margin-bottom: 30px;
    flex-basis: 80px;
    flex-grow: 1;
    white-space: nowrap;
@@ -102,8 +99,8 @@ const ItemWrapper = styled.div`
 const Checkbox = styled.input`
    visibility: hidden;
    :checked + label {
-      background-color: ${Global.color.primaryDark};
-      box-shadow: inset 2px 2px 2px #191B30;
+      background-color: ${(props: any) => props.theme.colorPrimaryDark};
+      box-shadow: ${(props: any) => props.theme.boxShadowInset};
    }
 `;
 
@@ -112,9 +109,9 @@ const Label = styled.label`
    border-radius: 5px;
 
    font-size: 14px;
-   transition: ${Global.transition};
+   transition: ${(props: any) => props.theme.transition};
 
    :hover {
-      background-color: ${Global.color.primaryDark};
+      background-color: ${(props: any) => props.theme.colorPrimaryDark};
    }
 `;

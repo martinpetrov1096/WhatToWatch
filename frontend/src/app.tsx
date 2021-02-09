@@ -1,8 +1,12 @@
 import React from 'react';
-import { Router } from './routes/router';
+import { ThemeProvider } from 'styled-components';
 
+import { Router } from './routes/router';
+import theme from './config/theme.json';
 export default function App() {
    return (
-      <Router/>
+      <ThemeProvider theme={theme}>
+         <Router/>
+      </ThemeProvider>
    );
 }
