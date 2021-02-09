@@ -71,7 +71,7 @@ export const LobbyProviders = (props: IProviderParam) => {
 const ProvidersWrapper = styled.div`
    margin-bottom: 40px;
    width: 100%;
-   height: 70px;
+
    display: flex;
    flex-flow: row wrap;
    justify-content: space-around;
@@ -79,6 +79,8 @@ const ProvidersWrapper = styled.div`
 `;
 
 const ProviderWrapper = styled.div`
+   flex: 1 1 50px;
+   max-width: 50px;
    display: flex;
    flex-flow: column nowrap;
 `;
@@ -100,8 +102,9 @@ interface ProviderLabelProps {
 }
 
 const ProviderLabel = styled.label`
+
    border-radius: 5px;
-   width: 50px;
+
    height: 50px;
    background-image: url(${(props: ProviderLabelProps) => props.iconUrl});
    background-position: center;

@@ -1,16 +1,19 @@
 import styled from 'styled-components';
 
 export const Button = styled.button`
+   margin: 15px;
+   border-radius: 10px;
+   padding: 15px;
+
    transition: ${(props: any) => props.theme.transition};
-   padding: 10px;
-   background-color: white;
+   background-color: transparent;
    box-shadow: ${(props: any) => props.theme.boxShadowSmall};
    outline: none;
    border: none !important;
-   border-radius: 5px;
-   color: black;
+
+   color: white;
    font-size: 22px;
-   margin: 15px;
+
 
 `;
 
