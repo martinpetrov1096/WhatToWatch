@@ -16,7 +16,7 @@ export const Reviews = (props: IReviewProps) => {
                      <Rating rating={r.author_details.rating} subtitle={''}/>
                      
                   </HeadingWrapper>
-                  <Description cite={r.url}>{r.content}</Description>
+                  <Description >{r.content}</Description>
                </Review>
             ))}
       </ReviewsWrapper>
@@ -75,8 +75,8 @@ const ReviewTitle = styled.h3`
 `;
 
 
-const Description = styled.blockquote`
-   max-height: 250px;
+const Description = styled.p`
+
    font-size: 14px;
    line-height: 1.5;
    overflow: hidden;

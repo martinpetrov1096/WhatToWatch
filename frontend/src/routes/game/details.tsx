@@ -109,7 +109,7 @@ const BackButton = styled(Button)`
 
 const Card = styled.div`
    margin: 300px 0;
-   padding: min(5%, 70px);
+   padding: 40px min(5%, 70px);
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
    border-radius: 30px;
    width: min(1500px, 90%);

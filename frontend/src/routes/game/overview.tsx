@@ -1,10 +1,7 @@
-import { buildStyles } from 'react-circular-progressbar';
 import { ISwipe } from "../../types/swipe"
 import { GameCard } from "../../components/game/card";
 import styled from 'styled-components';
-import { CircularProgressbar } from 'react-circular-progressbar';
 import { Rating } from '../../components/game/rating';
-import theme from '../../config/theme.json';
 import 'react-circular-progressbar/dist/styles.css';
 
 interface IGameOverviewProp {
@@ -57,17 +54,9 @@ interface IGameOverviewProp {
    display: flex;
    flex-flow: row nowrap;
    justify-content: center;
-
-
    > * {
       flex-basis: 80px;
    }
-`;
-
-
- const ProgressBar = styled(CircularProgressbar)`
-   width: 50px !important;
-   height: 50px;
 `;
 
 type PlayerVoteStyleProps = {
