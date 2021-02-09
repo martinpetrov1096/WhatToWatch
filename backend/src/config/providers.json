@@ -10,11 +10,6 @@
       "iconUrl": "/assets/providers/hulu.png"
    },
    {
-      "id": 119,
-      "name": "Amazon Prime Video",
-      "iconUrl": "/assets/providers/amazonprimevideo.png"
-   },
-   {
       "id": 337,
       "name": "Disney Plus",
       "iconUrl": "/assets/providers/disneyplus.png"

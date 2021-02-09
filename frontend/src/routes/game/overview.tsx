@@ -3,6 +3,7 @@ import { ISwipe } from "../../types/swipe"
 import { GameCard } from "../../components/game/card";
 import styled from 'styled-components';
 import { CircularProgressbar } from 'react-circular-progressbar';
+import { Rating } from '../../components/game/rating';
 import theme from '../../config/theme.json';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -19,16 +20,7 @@ interface IGameOverviewProp {
                <CardWrapper key={swipe.id}>
                   <GameCard card={swipe} key={swipe.id}/>
                   <StatusWrapper>
-                     <ProgressBar 
-                        value={swipe.numLikes * 100 / (swipe.numLikes+swipe.numDislikes)}
-                        text={swipe.numLikes.toString() + '/' + (swipe.numLikes + swipe.numDislikes).toString()}
-                        strokeWidth={20}
-                        styles={buildStyles({
-                           strokeLinecap: 'butt',
-                           pathColor: theme.colorAccent,
-                           trailColor: theme.colorPrimaryDark
-                        })}
-                     />
+                     <Rating rating={swipe.numLikes * 100 / (swipe.numLikes+swipe.numDislikes)} subtitle='User Votes'/>
                      <PlayerVote vote={swipe.vote}/>
                   </StatusWrapper>
                </CardWrapper> 
@@ -65,7 +57,7 @@ interface IGameOverviewProp {
    display: flex;
    flex-flow: row nowrap;
    justify-content: center;
-   align-items: center;
+
 
    > * {
       flex-basis: 80px;
