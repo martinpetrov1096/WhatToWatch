@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import * as Global from '../../styles/global';
 import config from '../../config/config.json';
 import { Loading } from '../loading';
 
@@ -103,7 +102,7 @@ const Wrapper = styled.div`
    width: 138px;
    height: 100%;
    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-   background-color: ${Global.color.primaryDark};
+   background-color: ${(props: any) => props.theme.colorPrimaryDark};
    display: flex;
    flex-flow: column nowrap;
    justify-content: flex-start;
@@ -151,7 +150,7 @@ const Wrapper = styled.div`
    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
    border-radius: 10px;
    padding: 40px;
-   background-color: ${Global.color.primaryDark};
+   background-color: ${(props: any) => props.theme.colorPrimaryDark};
 
    > blockquote {
       font-size: 13px;

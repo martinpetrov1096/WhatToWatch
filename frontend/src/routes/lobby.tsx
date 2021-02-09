@@ -9,8 +9,8 @@ import { LobbyMinRating } from '../components/lobby/min-rating';
 import { LobbyID } from '../components/lobby/id';
 import { LobbyType } from '../components/lobby/type';
 import { LobbyProviders } from '../components/lobby/providers';
-import * as Lobby from '../styles/routes/lobby';
-import { Button } from '../styles/global';
+import { Button, ButtonAccent } from '../styles/styled-components/global';
+import styled from 'styled-components';
 
 interface ILobbyParamTypes {
    lobbyId: string;
@@ -114,23 +114,50 @@ export const LobbyRoute = () => {
       socket.emit('start');
    }, []);
 
-
    return (
-      <Lobby.BG>
-         <Lobby.Title>What-To-Watch</Lobby.Title>
-         <Lobby.Heading>
-            Click Share to copy the link to the clipboard.
-            Also, while you're waiting for everyone to join, 
+      <BG>
+         <Title>What-To-Watch</Title>
+         <Heading>
+            While you're waiting for everyone to join, 
             help us help you to find what to watch by narrowing 
             down the choices
-         </Lobby.Heading>
+         </Heading>
          <LobbyID lobbyId={lobbyId}/>
- 
          <LobbyType type={lobby.type} socket={socket}/>
          <LobbyMinRating curMinRating={lobby.minRating} socket={socket}/>
          <LobbyGenres type={lobby.type} socket={socket} selectedGenres={lobby.genres}/>
          <LobbyProviders selectedProviders={lobby.providers} socket={socket}/>
-         <Button onClick={startGame}>START</Button>
-      </Lobby.BG>
+         <ButtonAccent onClick={startGame}>START</ButtonAccent>
+      </BG>
    );
 }
+///////////////////////////////////////////////////////////////////////////
+////////////////////////////////// STYLES /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+/**
+ * Make the BG height auto, and not 100%
+ * since later on when we keep adding 
+ * options, things might get cluttered
+ */
+const BG = styled.div`
+   margin: 0;
+   padding: 10px;
+   height: auto;
+   display: flex;
+   flex-flow: column nowrap;
+   justify-content: flex-start;
+   align-items: center;
+`;
+
+const Title = styled.h1`
+   margin: 20px 0;
+   font-size: max(5vw, 30px);
+`;
+
+const Heading = styled.h4`
+   max-width: 800px;
+   font-size: 14px;
+   text-align: center;
+`;
+

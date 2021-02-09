@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ISwipe } from '../../types/swipe';
 import { GameCard } from '../../components/game/card';
-import * as Vote from '../../styles/routes/game/vote';
+import styled, { css, keyframes } from 'styled-components';
+
 interface IVoteProp {
    vote: (v: 'yes' | 'no') => void;
    curSwipe: ISwipe | undefined;
@@ -49,28 +50,104 @@ export const GameVote = (props: IVoteProp) => {
    useEffect(() => {
       if (props.swipeIdx === -99) {
          setCurView(
-            <Vote.Wrapper>
+            <Wrapper>
                <h1>No Swipes Left</h1>
-            </Vote.Wrapper>
+            </Wrapper>
          );
       }
       else {      
          setCurView(
-            <Vote.Wrapper>
-               <Vote.CardWrapper vote={curVote}>
+            <Wrapper>
+               <CardWrapper vote={curVote}>
                   <GameCard card={props.curSwipe}/>
-               </Vote.CardWrapper>
-               <Vote.VoteWrapper>
+               </CardWrapper>
+               <VoteWrapper>
                   {/* Only allow to vote once per card by 
                         only having the button work when 
                         curVote != 'yes' or 'no' */}
-                  <Vote.NoButton onClick={()=> curVote ? ()=>{} : vote('no')}/>
-                  <Vote.YesButton onClick={()=> curVote ? ()=>{} : vote('yes')}/>
-               </Vote.VoteWrapper>
-            </Vote.Wrapper>
+                  <NoButton onClick={()=> curVote ? ()=>{} : vote('no')}/>
+                  <YesButton onClick={()=> curVote ? ()=>{} : vote('yes')}/>
+               </VoteWrapper>
+            </Wrapper>
          );
       }
    }, [props, curVote, vote]);
 
    return curView;
 }
+///////////////////////////////////////////////////////////////////////////
+////////////////////////////////// STYLES /////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+const Wrapper = styled.div`
+   margin: 0;
+   padding: 10px;
+   // Account for 60px nav and 20px padding
+   height: calc(100vh - 80px); 
+   width: calc(100% - 20px); 
+   display: flex;
+   flex-flow: column nowrap;
+   justify-content: space-around;
+   align-items: center;
+`;
+
+const voteYesKeyframe = () => keyframes`
+50% {
+   transform: translateX(400px) rotate(45deg) rotateY(90deg);
+}
+to {
+   transform: translateX(0) rotateY(360deg);
+}
+`;
+
+const voteNoKeyframe = () => keyframes`
+   50% {
+      transform: translateX(-400px) rotate(-45deg) rotateY(90deg);
+   }
+   to {
+      transform: translateX(0) rotateY(360deg);
+   }
+`;
+
+type CardWrapperStyleProp = {
+   vote: 'yes' | 'no' | undefined;
+}
+const CardWrapper = styled.div`
+   flex-basis: 400px;
+   flex-shrink: 2;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: min(500px, 100%);
+   animation: ${(props: CardWrapperStyleProp) => props.vote !== undefined ? (props.vote === 'yes' ? css`${voteYesKeyframe()} .75s ease-in-out` : css`${voteNoKeyframe()} .75s ease-in-out`)   : 'none'};
+`;
+
+const VoteWrapper = styled.div`
+   flex-basis: 100px;
+   flex-shrink: 1;
+   width: min(500px, 100%);
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: space-around;
+`;
+
+const Button = styled.button`
+   width: 100%;
+   height: 100%;
+   box-shadow: none;
+   border: none;
+   border-radius: 100%;
+   outline: none;
+   background-repeat: no-repeat;
+   background-position: center;
+   background-color: transparent;
+`;
+
+const NoButton = styled(Button)`
+   background-image: url("/assets/dislike-btn.svg");
+`;
+
+const YesButton = styled(Button)`
+   background-image: url("/assets/like-btn.svg");
+`;
+

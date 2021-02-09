@@ -1,0 +1,10 @@
+{
+
+   "colorPrimary": "#3B406B",
+   "colorPrimaryDark": "#2B2F54",
+   "colorAccent": "#FF616F",
+   "boxShadowSmall": "2px 2px 2px #2B2F54",
+   "boxShadowBig": "",
+   "boxShadowInset": "inset 2px 2px 2px #191B30",
+   "transition": "all .15s ease-in-out"
+}

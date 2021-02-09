@@ -1,7 +1,8 @@
 import { useCallback } from "react";
 import { Socket } from "socket.io-client";
 import styled from 'styled-components';
-import * as Global from '../../styles/global';
+import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
+import { Button } from '../../styles/styled-components/global';
 interface IMinRatingParamTypes {
    curMinRating: number;
    socket: Socket;
@@ -20,11 +21,16 @@ export const LobbyMinRating = (props: IMinRatingParamTypes) => {
 
    return (
       <Wrapper>
-         <Header>Minimum Rating</Header>
+         <Title>Minimum Rating</Title>
+         <Description>
+            Filter results so that all movie/tv-show 
+            recommendations are above a certain minimum
+            rating
+         </Description>
          <SelectionWrapper>
-            <Button onClick={() => changeMinRating(props.curMinRating-1)}>-</Button>
+            <RatingButton onClick={() => changeMinRating(props.curMinRating-1)}>-</RatingButton>
             <Input type="number" value={props.curMinRating} onChange={handleChange} min="0" max="9"/>
-            <Button onClick={() => changeMinRating(props.curMinRating+1)}>+</Button>
+            <RatingButton onClick={() => changeMinRating(props.curMinRating+1)}>+</RatingButton>
          </SelectionWrapper>
       </Wrapper>
    );
@@ -33,24 +39,13 @@ export const LobbyMinRating = (props: IMinRatingParamTypes) => {
 ////////////////////////////////// STYLES /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-const Wrapper = styled.div`
-   margin-bottom: 30px;
-   display: flex;
-   flex-flow: column nowrap;
-   align-items: center;
-`;
-
-const Header = styled.h3`
-   font-size: 30px;
-`;
-
 const SelectionWrapper = styled.div`
    display: flex;
    flex-flow: row nowrap;
    align-items: center;
 `;
 
-const Button = styled(Global.Button)`
+const RatingButton = styled(Button)`
    width: 40px;
    height: 40px;
    padding: 0;
@@ -59,12 +54,11 @@ const Button = styled(Global.Button)`
 
 const Input = styled.input`
    border: none;
-   border-radius: 8px;
-   box-shadow: inset 2px 2px 2px #191B30;
+   border-radius: 5px;
    outline: none;
    width: 40px;
    height: 40px;
-   background-color: ${Global.color.primaryDark};
+   background-color: ${(props: any) => props.theme.colorPrimaryDark};
    text-align: center;
    color: white;
    font-family: 'Varela', sans-serif;
@@ -74,5 +68,5 @@ const Input = styled.input`
       -webkit-appearance: none;
       margin: 0;
    }
-   -moz-appearance: textfield // Firefox
+   -moz-appearance: textfield; // Firefox
 `;
