@@ -27,7 +27,7 @@ export const HomeRoute = function() {
       axios.post(config.server.apiUrl + 'game')
          .then((res) => {
             if (res.status === 200) {
-               setJoinCode(res.data.id);
+              // setJoinCode(res.data.id);
                /**
                 * Add a small delay just to make sure
                 * we can enter the game
@@ -55,6 +55,13 @@ export const HomeRoute = function() {
             }
          }).then((res) => {
             if (res.status === 200) {
+               console.log(res.data.status);
+               if (res.data === 'game') {
+                  history.push('/game/' + joinCode);
+               } else if (res.data.status === 'lobby') {
+                  history.push('/lobby/' + joinCode);
+               }
+
                addToast('Valid Code', {appearance: 'success'});
                setValidCode(true);
             }
@@ -64,45 +71,40 @@ export const HomeRoute = function() {
          });
       }
 
-   }, [joinCode, addToast]);
+   }, [joinCode, addToast, history]);
+
+
+
 
    return (
-      <BG>
+      <Wrapper>
          <Header>
             <Title>What-To-Watch</Title>
             <Description>A quick and easy way to coordinate with friends to decided on what to watch</Description>
          </Header>
-         <GameSection>
-            <ButtonAccent onClick={newGame}>NEW GAME</ButtonAccent>
-            <OrHeader>OR</OrHeader>
-            <JoinSection>
-               <JoinInput onChange={setJoinCode} value={joinCode ?? '     '}/>
-               <Link to={'/lobby/' + joinCode}>
-                  <Button disabled={!validCode}>JOIN</Button>
-               </Link>
-            </JoinSection>
-         </GameSection>
-      </BG>
+         <ButtonAccent onClick={newGame}>NEW GAME</ButtonAccent>
+         <OrHeader>Or Enter Join Code</OrHeader>
+         <JoinInput onChange={setJoinCode} value={joinCode ?? '     '}/>
+      </Wrapper>
    );
 }
 ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// STYLES /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-const BG = styled.div`
+const Wrapper = styled.div`
    margin: 0;
    padding: 10px;
    display: flex;
    flex-flow: column;
    align-items: center;
-   justify-content: space-around;
+   justify-content: flex-start;
    width: calc(100% - 20px);
    height: calc(100% - 20px);
 `;
 
 const Header = styled.div`
-   flex-basis: 1;
-   flex-grow: 1;
+   flex: 0 1 40%;
    display: flex;
    flex-flow: column;
    align-items: center;
@@ -120,27 +122,6 @@ const Description = styled.h6`
    text-align: center;
 `;
 
-const GameSection = styled.div`
-   flex-basis: 2;
-   flex-grow: 2;
-   display: flex;
-   flex-flow: column;
-   align-items: center;
-   justify-content: flex-start;
-`;
-
-const JoinSection = styled.div`
-   display: flex;
-   flex-flow: row nowrap;
-   align-items: center;
-   justify-content: center;
-   @media (max-width: 410px) {
-      flex-flow: column;
-      justify-content: space-around;
-      align-items: space-around;
-   }
-`;
-
 const JoinInput = styled(ReactCodeInput).attrs({
    type: 'text',
    fields: 5,
@@ -152,7 +133,6 @@ const JoinInput = styled(ReactCodeInput).attrs({
 })`
    display: flex;
    justify-content: space-between;
-   width: 100%;
    
    > input {
       margin: 5px;
@@ -170,9 +150,6 @@ const JoinInput = styled(ReactCodeInput).attrs({
    }
 
 `;
-
-
-
 
 const OrHeader = styled.h2`
    font-size: 30px;

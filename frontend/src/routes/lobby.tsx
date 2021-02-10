@@ -87,7 +87,7 @@ export const LobbyRoute = () => {
             id: lobbyId
          }
       }).then((res) => {
-         if (res.data.Status !== 'Lobby') {
+         if (res.data.status !== 'lobby') {
             history.push('/error');
             socket.disconnect();
          }
