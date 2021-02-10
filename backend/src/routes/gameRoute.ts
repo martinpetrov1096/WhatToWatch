@@ -31,11 +31,11 @@ router.get('/', celebrate({
    const id = req.query.id.toString();
 
    if (await lobbyService.checkLobby(id)) {
-      return res.status(200).json({'Status': 'Lobby'});
+      return res.status(200).json({'status': 'lobby'});
    } else if (await gameService.checkGame(id)) {
-      return res.status(200).json({'Status': 'Game'});
+      return res.status(200).json({'status': 'game'});
    } else {
-      return res.status(404).json({'Status': 'Not Found'});
+      return res.status(404).json({'status': 'not found'});
    }
 });
 

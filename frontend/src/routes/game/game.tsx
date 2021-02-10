@@ -40,7 +40,7 @@ export const GameRoute = () => {
             id: gameId
          }
       }).then((res) => {
-         if (res.data.Status !== 'Game') {
+         if (res.data.status !== 'game') {
             history.push('/error');
             socket.disconnect();
          }
