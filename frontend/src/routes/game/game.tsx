@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Switch,Route, useParams, useHistory } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
+import { useToasts } from 'react-toast-notifications';
 import { GameNavbar } from '../../components/game/navbar';
 import { GameVote } from './vote';
 import { GameOverview } from './overview';
@@ -22,6 +23,7 @@ export const GameRoute = () => {
    const [swipes, setSwipes] = useState<Array<ISwipe>>([]);
    const [curSwipeIdx, setCurSwipeIdx] = useState<number>(0);
    const history = useHistory();
+   const { addToast } = useToasts();
    ///////////////////////////////////////////////////////////////////////////
    /////////////////////////// USE EFFECT FUNCTIONS //////////////////////////
    ///////////////////////////////////////////////////////////////////////////
@@ -56,7 +58,7 @@ export const GameRoute = () => {
     * event functions
     */
    useEffect(() => {
-
+      console.log('GameID: ' + gameId);
       /* Init socket io client */
       socket = io(config.server.gameSocketUrl, {
          query: {
@@ -92,7 +94,7 @@ export const GameRoute = () => {
       });
 
       socket.on('newConn', (numPlayers: number) => {
-         console.log('A new player joined');
+         addToast('A new player joined', {appearance: 'info'});
          setNumPlayers(numPlayers);
       });
 

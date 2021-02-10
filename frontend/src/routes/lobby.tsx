@@ -9,7 +9,8 @@ import { LobbyMinRating } from '../components/lobby/min-rating';
 import { LobbyID } from '../components/lobby/id';
 import { LobbyType } from '../components/lobby/type';
 import { LobbyProviders } from '../components/lobby/providers';
-import { Button, ButtonAccent } from '../styles/styled-components/global';
+import { ButtonAccent } from '../styles/styled-components/global';
+import { useToasts } from 'react-toast-notifications';
 import styled from 'styled-components';
 
 interface ILobbyParamTypes {
@@ -21,6 +22,7 @@ export const LobbyRoute = () => {
    
    const { lobbyId } = useParams<ILobbyParamTypes>();
    const history = useHistory();
+   const { addToast } = useToasts();
    const [lobby, setLobby] = useState<ILobby>({
       id: lobbyId,
       playing: false,
@@ -54,6 +56,12 @@ export const LobbyRoute = () => {
             return JSON.parse(JSON.stringify(lobby));
          });
       });
+      socket.on('newConn', (numPlayers: number) => {
+         addToast('A new player joined', {appearance: 'info'});
+      });
+      socket.on('newDisconn', (numPlayers: number) => {
+         addToast('A player left', {appearance: 'info'});
+      });
       socket.on('error', (err: string) => {
          console.log(err);
          switch(err) {
@@ -65,7 +73,7 @@ export const LobbyRoute = () => {
          console.log('lobby cleanup');
          socket.disconnect();
       }
-   }, [lobbyId]);
+   }, [lobbyId, addToast]);
 
    /**
     * Monitor lobbyId. If it is changed, 

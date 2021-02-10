@@ -19,7 +19,7 @@ export const lobbySocket = (socket: any) => {
       .then((lobby: ILobby) => {
          socket.join(lobbyId);
          socket.emit('update', lobby);
-         socket.to(lobbyId).emit('update', lobby);
+         socket.to(lobbyId).emit('newConn', lobby.numPlayers);
       })
       .catch(err => {
          console.log(err.message);
@@ -125,7 +125,8 @@ export const lobbySocket = (socket: any) => {
    socket.on('disconnect', () => {
       lobbyService.disconnect(lobbyId)
          .then((lobby: ILobby) => {
-            socket.to(lobbyId).emit('update', lobby);
+            // socket.to(lobbyId).emit('update', lobby);
+            socket.to(lobbyId).emit('newDisconn', lobby.numPlayers);
          }) 
          .catch((err: any) => {
             console.log(err.message);

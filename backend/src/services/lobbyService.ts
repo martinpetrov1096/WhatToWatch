@@ -89,7 +89,6 @@ export class LobbyService {
          lock.unlock();
          return false;
       }
-
    }
 
    public async disconnect(lobbyId: string): Promise<ILobby> {
@@ -281,7 +280,7 @@ export class LobbyService {
    ///////////////////////////////////////////////////////////////////////////
 
    private genlobbyId(): string {
-      return (Math.random() + 1).toString(36).substring(2,7);
+      return (Math.random() + 1).toString(36).substring(2,7).toUpperCase();
    }
 
    /**
@@ -292,7 +291,9 @@ export class LobbyService {
       return await this.getAsync(lobbyId)
       .then((reply: string) => {
          if (!reply) {
-            throw new Error('Couldn\'t find game with this id');
+            console.error('In get lobby');
+            console.error(reply);
+            throw new Error('Couldn\'t find lobby with this id');
          }
          return JSON.parse(reply);
       });
@@ -306,6 +307,8 @@ export class LobbyService {
    private async setLobby(lobbyId: string, lobby: ILobby): Promise<void> {
       this.setAsync(lobby.id, JSON.stringify(lobby))
          .then((reply: any) => {
+            console.log('in setLobby for lobby ' + lobbyId)
+            console.log(reply);
             if (reply != 'OK') throw new Error('Couldn\'t update lobby');
          });
    }
