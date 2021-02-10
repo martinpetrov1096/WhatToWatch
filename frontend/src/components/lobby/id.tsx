@@ -39,6 +39,7 @@ const Element = styled.h2`
    margin: 0 min(10px, 1vw);
    border-radius: 8px;
    padding: 20px;
-   background-color: ${(props: any) => props.theme.colorPrimaryDark};
+   background-color: ${(props: any) => props.theme.colorPrimary};
+   box-shadow: ${(props: any) => props.theme.boxShadowInset};
 
 `;
