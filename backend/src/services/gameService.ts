@@ -191,6 +191,8 @@ export class GameService {
       return await this.getAsync(gameId)
       .then((reply: string) => {
          if (!reply) {
+            console.error('In getGame');
+            console.error(reply);
             throw new Error('Couldn\'t find game with this id');
          }
          return JSON.parse(reply);

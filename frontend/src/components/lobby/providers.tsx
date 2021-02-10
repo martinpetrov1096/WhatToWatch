@@ -12,13 +12,21 @@ interface IProviderParam {
 export const LobbyProviders = (props: IProviderParam) => {
 
    const addProvider = useCallback((genreId: number) => {
-      props.socket.emit('addProvider', genreId);
-      console.log('adding provider');
+      if (props.socket) {
+         props.socket.emit('addProvider', genreId);
+         console.log('adding provider');
+      } else {
+         console.error('couldn\'t add provider, socket not defined');
+      }
    }, [props.socket]);
 
    const delProvider = useCallback((genreId: number) => {
-      props.socket.emit('delProvider', genreId);
-      console.log('deleting provider');
+      if (props.socket) {
+         props.socket.emit('delProvider', genreId);
+         console.log('deleting provider');
+      } else {
+         console.error('couldn\'t remove provider, socket not defined');
+      }
    }, [props.socket]);
 
    const [providers, setProviders] = useState<any>();

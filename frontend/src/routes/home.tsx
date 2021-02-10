@@ -5,11 +5,13 @@ import config from '../config/config.json';
 import ReactCodeInput from 'react-code-input';
 import styled from 'styled-components';
 import { Button, ButtonAccent } from '../styles/styled-components/global';
+import { useToasts } from 'react-toast-notifications';
 export const HomeRoute = function() {
 
    const [joinCode, _setJoinCode] = useState<string>('');
    const [validCode, setValidCode] = useState<boolean>(false)
    const history = useHistory();
+   const { addToast } = useToasts();
    /**
     * These two functions are just used to
     * wrap the setJoinCode so that we can
@@ -26,7 +28,6 @@ export const HomeRoute = function() {
          .then((res) => {
             if (res.status === 200) {
                setJoinCode(res.data.id);
-
                /**
                 * Add a small delay just to make sure
                 * we can enter the game
@@ -37,9 +38,10 @@ export const HomeRoute = function() {
             }
          })
          .catch((err)=> {
-            console.log(err);
+            console.log(err.message);
+            addToast(err.message, {appearance: 'error'});
          });
-   },[history]);
+   },[history, addToast]);
 
    /**
     * Check if join code is valid each time it
@@ -53,16 +55,16 @@ export const HomeRoute = function() {
             }
          }).then((res) => {
             if (res.status === 200) {
+               addToast('Valid Code', {appearance: 'success'});
                setValidCode(true);
-            } else {
-               setValidCode(false);
             }
          }).catch(() => {
+            addToast('Invalid Code', {appearance: 'error'});
             setValidCode(false);
          });
       }
 
-   }, [joinCode]);
+   }, [joinCode, addToast]);
 
    return (
       <BG>
@@ -74,8 +76,7 @@ export const HomeRoute = function() {
             <ButtonAccent onClick={newGame}>NEW GAME</ButtonAccent>
             <OrHeader>OR</OrHeader>
             <JoinSection>
-               <JoinInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" onChange={setJoinCode} value={joinCode ?? '     '}/>
-               {/* <ReactCodeInput type="text" fields={5} name="joinCode" inputMode="full-width-latin" inputStyle={{width: '40px'}} onChange={setJoinCode} value={joinCode ?? '     '} /> */}
+               <JoinInput onChange={setJoinCode} value={joinCode ?? '     '}/>
                <Link to={'/lobby/' + joinCode}>
                   <Button disabled={!validCode}>JOIN</Button>
                </Link>
@@ -140,7 +141,15 @@ const JoinSection = styled.div`
    }
 `;
 
-const JoinInput = styled(ReactCodeInput)`
+const JoinInput = styled(ReactCodeInput).attrs({
+   type: 'text',
+   fields: 5,
+   name: 'joinCode',
+   inputMode: 'full-width-latin',
+   autocorrect: 'off',
+   autocapitalize: 'none'
+
+})`
    display: flex;
    justify-content: space-between;
    width: 100%;
