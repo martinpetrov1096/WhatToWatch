@@ -80,6 +80,7 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
 ///////////////////////////////////////////////////////////////////////////
 
 const ItemsWrapper = styled.div`
+   margin-top: 20px;
    height: 100%;
    display: flex;
    flex-flow: row wrap;
@@ -90,7 +91,8 @@ const ItemsWrapper = styled.div`
 
 
 const ItemWrapper = styled.div`
-   margin-bottom: 30px;
+   margin-bottom: 50px;
+
    flex-basis: 80px;
    flex-grow: 1;
    white-space: nowrap;
@@ -99,19 +101,20 @@ const ItemWrapper = styled.div`
 const Checkbox = styled.input`
    visibility: hidden;
    :checked + label {
-      background-color: ${(props: any) => props.theme.colorPrimaryDark};
       box-shadow: ${(props: any) => props.theme.boxShadowInset};
    }
 `;
 
 const Label = styled.label`
-   padding: 10px;
-   border-radius: 5px;
 
+   border-radius: 10px;
+   padding: 15px;
    font-size: 14px;
    transition: ${(props: any) => props.theme.transition};
+   text-align: center;
 
+/* 
    :hover {
       background-color: ${(props: any) => props.theme.colorPrimaryDark};
-   }
+   } */
 `;

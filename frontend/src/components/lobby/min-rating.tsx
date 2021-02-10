@@ -46,22 +46,25 @@ const SelectionWrapper = styled.div`
 `;
 
 const RatingButton = styled(Button)`
-   width: 40px;
-   height: 40px;
-   padding: 0;
+
+   width: 50px;
+   height: 50px;
    text-align: center;
 `;
 
 const Input = styled.input`
+   margin: 10px;
    border: none;
-   border-radius: 5px;
+   border-radius: 10px;
    outline: none;
-   width: 40px;
-   height: 40px;
-   background-color: ${(props: any) => props.theme.colorPrimaryDark};
+   width: 80px;
+   height: 80px;
+   background-color: ${(props: any) => props.theme.colorPrimary};
+   box-shadow: ${(props: any) => props.theme.boxShadowInset};
    text-align: center;
    color: white;
    font-family: 'Varela', sans-serif;
+   font-size: 32px;
    
    ::-webkit-outer-spin-button,
    ::-webkit-inner-spin-button {

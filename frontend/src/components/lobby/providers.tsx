@@ -79,8 +79,8 @@ const ProvidersWrapper = styled.div`
 `;
 
 const ProviderWrapper = styled.div`
-   flex: 1 1 50px;
-   max-width: 50px;
+   margin: 10px;
+
    display: flex;
    flex-flow: column nowrap;
 `;
@@ -91,9 +91,12 @@ const Provider = styled.input.attrs({
 })`
    display: none;
    :checked + label {
-      border: ${(props: any) => props.theme.colorAccent} 3px solid;
+      /* border: ${(props: any) => props.theme.colorAccent} 3px solid;
       box-shadow: 3px 3px 5px ${(props: any) => props.theme.colorAccent},
-                  -3px -3px 5px ${(props: any) => props.theme.colorAccent};;
+                  -3px -3px 5px ${(props: any) => props.theme.colorAccent}; */
+      transform: scale(1.2);
+      box-shadow: ${(props: any) => props.theme.boxShadowSmall};
+  
    }
 `;
 
@@ -102,11 +105,12 @@ interface ProviderLabelProps {
 }
 
 const ProviderLabel = styled.label`
-
+   margin: 5px;
    border-radius: 5px;
-
-   height: 50px;
+   height: 60px;
+   width: 60px;
    background-image: url(${(props: ProviderLabelProps) => props.iconUrl});
    background-position: center;
    background-size: cover;
+   transition: ${(props: any) => props.theme.transition};
 `;
