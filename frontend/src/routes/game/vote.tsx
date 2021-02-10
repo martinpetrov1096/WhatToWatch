@@ -83,7 +83,7 @@ const Wrapper = styled.div`
    margin: 0;
    padding: 10px;
    // Account for 60px nav and 20px padding
-   height: calc(100vh - 80px); 
+   height: calc(100% - 80px); 
    width: calc(100% - 20px); 
    display: flex;
    flex-flow: column nowrap;
