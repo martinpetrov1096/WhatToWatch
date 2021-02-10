@@ -1,15 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config/config.json';
 import ReactCodeInput from 'react-code-input';
 import styled from 'styled-components';
-import { Button, ButtonAccent } from '../styles/styled-components/global';
+import { ButtonAccent } from '../styles/styled-components/global';
 import { useToasts } from 'react-toast-notifications';
 export const HomeRoute = function() {
 
    const [joinCode, _setJoinCode] = useState<string>('');
-   const [validCode, setValidCode] = useState<boolean>(false)
    const history = useHistory();
    const { addToast } = useToasts();
    /**
@@ -19,7 +18,7 @@ export const HomeRoute = function() {
     */
    const setJoinCode = (code: string) => {
       if (code.length <= 5) {
-         _setJoinCode(code);
+         _setJoinCode(code.toUpperCase());
       }
    }
 
@@ -63,18 +62,12 @@ export const HomeRoute = function() {
                }
 
                addToast('Valid Code', {appearance: 'success'});
-               setValidCode(true);
             }
          }).catch(() => {
             addToast('Invalid Code', {appearance: 'error'});
-            setValidCode(false);
          });
       }
-
    }, [joinCode, addToast, history]);
-
-
-
 
    return (
       <Wrapper>
