@@ -233,7 +233,7 @@ export class LobbyService {
    }
 
    public async changeMinRating(lobbyId: string, minRating: number): Promise<ILobby> {
-      if (minRating < 1 || minRating > 9) {
+      if (minRating < 0 || minRating > 9) {
          throw new Error('Rating must be a number between 1-9');
       }
       const resource = 'locks:' + lobbyId;
