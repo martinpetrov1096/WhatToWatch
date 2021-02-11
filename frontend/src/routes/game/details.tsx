@@ -58,8 +58,10 @@ export const CardDetails = (props: ICardProp) => {
          <ContentWrapper>
             <BackButton onClick={()=> history.goBack()}>Go Back</ BackButton>
             <Card>          
-               <InitialDetails card={curCard} type={type}/>
-               <ExtraDetails cardId={cardId} type={type}/>
+               <DetailsWrapper>
+                  <InitialDetails card={curCard} type={type}/>
+                  <ExtraDetails cardId={cardId} type={type}/>
+               </DetailsWrapper>
             </Card>
          </ContentWrapper>   
       </Wrapper>
@@ -109,13 +111,23 @@ const BackButton = styled(Button)`
 
 const Card = styled.div`
    margin: 300px 0;
-   padding: 40px min(5%, 70px);
+
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
    border-radius: 30px;
-   width: min(1500px, 90%);
-
+   width: min(1300px, 90%);
    background-color: ${(props: any) => props.theme.colorPrimary };
    display: flex;
-   flex-flow: column nowrap;
-   align-items: flex-start;
+   flex-flow: row wrap;
+   align-items: stretch;
+   justify-content: stretch;
+
+   @media only screen and (max-width: 450px) {
+      width: 100%;
+   }
+`;
+
+const DetailsWrapper = styled.div`
+   flex: 4 2 800px;
+   padding: 40px min(5%, 70px);
+
 `;

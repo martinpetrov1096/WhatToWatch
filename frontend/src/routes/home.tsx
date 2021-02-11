@@ -129,14 +129,14 @@ const JoinInput = styled(ReactCodeInput).attrs({
    
    > input {
       margin: 5px;
-      box-shadow: inset 2px 2px 2px #191B30;
+      box-shadow: ${(props: any) => props.theme.boxShadowInset};
       outline: none;
       appearance: none;
       border: none;
       border-radius: 5px;
-      width: 35px;
-      height: 35px;
-      background-color: ${(props: any) => props.theme.colorPrimaryDark};
+      width: 45px;
+      height: 45px;
+      background-color: ${(props: any) => props.theme.colorPrimary};
       text-align: center;
       font-size: 16px;
       color: white;

@@ -40,7 +40,7 @@ type CardStyleProps = {
 
 const Main = styled.div`
    padding-bottom: min(100%, 60vh);
-   border-radius: 5%;
+   border-radius: 20px;
    width: 66.6%;
    max-width: 450px;
 
