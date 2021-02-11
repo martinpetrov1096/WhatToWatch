@@ -37,6 +37,7 @@ const RatingWrapper = styled.div`
 `;
 
 const RatingProgressBar = styled(CircularProgressbar)`
+   margin: 0 10px;
    height: 50px;
    width: 50px;
 `;

@@ -27,21 +27,21 @@ export const InitialDetails = (props: IInitialDetailsProps) => {
                setGenres(curMovieGenres);
             }
          })
-         .catch((err) => {
+         .catch(() => {
             console.error('Could not get genres from server');
          });
    }, [props.type, props.card?.genre_ids]);
 
    return (
       <Wrapper>
-         <TitleRatingWrapper>
-            <Title>{props.card?.title}</ Title>
-            <Rating rating={props.card?.vote_average} subtitle={'Audience Score'}/>
-         </TitleRatingWrapper>
+         <Title>{props.card?.title}</ Title>
          <GenresWrapper>
             {genres.map((g) => < GenreItem key={g}>{g}</ GenreItem>)}
          </GenresWrapper>
-         <Description>{props.card?.overview}</ Description>
+         <DescriptionRatingWrapper>
+            <Rating rating={props.card?.vote_average} subtitle={'Audience Score'}/>
+            <Description>{props.card?.overview}</ Description>
+         </DescriptionRatingWrapper>
       </Wrapper>
    );
 };
@@ -53,19 +53,14 @@ const Wrapper = styled.div`
    align-self: center;
    display: flex;
    flex-flow: column nowrap;
-`;
-
-const TitleRatingWrapper = styled.div`
-   width: 100%;
-   display: flex;
-   flex-flow: row wrap;
-   align-items: center;
+   > * {
+      margin: 10px 0;
+   }
 `;
 
 const Title = styled.h2`
-   margin-right: 30px;
    align-self: center;
-   font-size: max(3vw, 30px);
+   font-size: max(4vw, 30px);
    text-align: center;
 `;
 const GenresWrapper = styled.div`
@@ -74,14 +69,23 @@ const GenresWrapper = styled.div`
 `;
 
 const GenreItem = styled.h4`
-   margin-right: 10px;
+   margin: 5px;
    border-radius: 5px;
    padding: 10px;
    background-color: ${(props: any) => props.theme.colorPrimaryDark};
 `;
 
+const DescriptionRatingWrapper = styled.div`
+   width: 100%;
+   display: flex;
+   flex-flow: row wrap;
+   align-items: center;
+   justify-content: space-between;
+`;
+
 const Description = styled.p`
-   padding: 30px 0;
+   flex: 1 1 80%;
+   padding: 30px 10px;
    font-size: 14px;
-   line-height: 1.2
+   line-height: 1.5;
 `;

@@ -11,7 +11,7 @@ export const Cast = (props: ICastProps) => {
       <CastWrapper>
          {props.cast.map((c: any) => (
             <CastItem key={c.name}>
-               <img src={config.movieDb.profileUrl + c.profile_path} alt={c.name}/>
+               <img src={c.profile_path ?  config.movieDb.profileUrl + c.profile_path : config.movieDb.missingProfileUrl  } alt={c.name}/>
                <div>
                   <h3>{c.name}</h3>
                   <h4>{c.character}</h4>
@@ -39,7 +39,8 @@ border-radius: 10px;
 width: 138px;
 height: 100%;
 box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-background-color: ${(props: any) => props.theme.colorPrimaryDark};
+background-color: ${(props: any) => props.theme.colorPrimary};
+   box-shadow: ${(props: any) => props.theme.boxShadowSmall};
 display: flex;
 flex-flow: column nowrap;
 justify-content: flex-start;

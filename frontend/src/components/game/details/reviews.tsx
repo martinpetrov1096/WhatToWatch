@@ -5,18 +5,16 @@ interface IReviewProps {
 }
 
 export const Reviews = (props: IReviewProps) => {
-
    return (
       <ReviewsWrapper>
          <Title>Reviews</Title>
             {props.reviews.map((r: any) => (
                <Review key={r.id}>
                   <HeadingWrapper>
-                     <ReviewTitle>A Review by {r.author}</ReviewTitle>
-                     <Rating rating={r.author_details.rating} subtitle={''}/>
-                     
+                     <ReviewTitle>A review by <a href={r.url} rel="noreferrer noopener" target="_blank">{r.author}</a></ReviewTitle>
+                     {r.author_details.rating ? <Rating rating={r.author_details.rating} subtitle={''}/> :  null}
                   </HeadingWrapper>
-                  <Description >{r.content}</Description>
+                  <Description>{r.content}</Description>
                </Review>
             ))}
       </ReviewsWrapper>
@@ -38,30 +36,30 @@ const ReviewsWrapper = styled.div`
 
 const Title = styled.h2`
    align-self: flex-start;
-   flex-basis: 100%;
    font-size: 50px;
+
 `;
 
 
 const Review = styled.div`
-   align-self: center;
-   max-width: 1000px;
-
-   margin: 30px 0;
+   align-self: stretch;
+   margin: 50px 0;
    border-radius: 10px;
-   padding: 30px;
-   background-color: ${(props: any) => props.theme.colorPrimaryDark};
+   padding: min(7%, 50px);
+   max-width: 1000px;
+   max-height: 300px;
 
+
+   background-color: ${(props: any) => props.theme.colorPrimary};
+   box-shadow: ${(props: any) => props.theme.boxShadowSmall};
    display: flex;
    flex-flow: column nowrap;
-   justify-content: space-around;
+   justify-content: flex-start;
 
-   @media only screen and (min-width: 900px) {
-      margin: 30px 30px;
-   }
 `;
 
 const HeadingWrapper = styled.div`
+   width: 100%;
    display: flex;
    flex-flow: row wrap;
    align-items: center;
@@ -70,16 +68,24 @@ const HeadingWrapper = styled.div`
 `;
 
 const ReviewTitle = styled.h3`
+
+   margin-bottom: 10px;
    font-size: 30px;
-   margin-right: 20px;
+   word-break: break-word;
+
+   > a {
+      color: inherit;
+   }
 `;
 
 
 const Description = styled.p`
 
-   font-size: 14px;
+   font-size: 15px;
    line-height: 1.5;
+
+   word-break: break-word;
+
+
    overflow: hidden;
-   word-wrap: break-word;
-   text-overflow: ellipsis;
 `;

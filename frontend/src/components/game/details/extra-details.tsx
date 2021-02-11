@@ -58,7 +58,6 @@ export const ExtraDetails = (props: IExtraDetailsProp) => {
 
 const Wrapper = styled.div`
    align-self: center;
-   width: 95%;
 
    display: flex;
    flex-flow: column nowrap;
