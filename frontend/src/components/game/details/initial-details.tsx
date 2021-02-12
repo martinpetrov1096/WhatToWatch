@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ISwipe } from '../../../types/swipe';
 import config from '../../../config/config.json';
 import { Rating } from '../../game/rating';
+import { Genre, getGenres } from '../../../utils/get-assets';
 
 interface IInitialDetailsProps {
    card: ISwipe | undefined;
@@ -12,31 +13,25 @@ interface IInitialDetailsProps {
 
 export const InitialDetails = (props: IInitialDetailsProps) => {
    
-   const [genres, setGenres ] = useState<Array<string>>([]);
+   const [genres, setGenres ] = useState<Genre[]>([]);
    useEffect(() => {
-      axios.get(config.server.apiUrl + '/info/genres')
-         .then((res) => {
-            const allGenres = res.data;
-
-            if (props.card?.genre_ids === undefined) {
-               setGenres([]);
-            } else {
-               const curMovieGenres = props.card?.genre_ids.map((id) => {
-                  return allGenres[ props.type ?? 'movie'].find((g: any) => g.id === id)?.name || '';
-               });
-               setGenres(curMovieGenres);
-            }
-         })
-         .catch(() => {
-            console.error('Could not get genres from server');
-         });
+      if (props.card?.genre_ids === undefined) {
+         return;
+      }
+      if (props.type === undefined) {
+         return;
+      }
+      getGenres(props.type).then((allGenres: Genre[]) => {
+         setGenres(allGenres
+            .filter((genre: Genre) => props.card?.genre_ids?.includes(genre.id)));
+      });
    }, [props.type, props.card?.genre_ids]);
 
    return (
       <Wrapper>
          <Title>{props.card?.title}</ Title>
          <GenresWrapper>
-            {genres.map((g) => < GenreItem key={g}>{g}</ GenreItem>)}
+            {genres.map((g) => < GenreItem key={g.id}>{g.name}</ GenreItem>)}
          </GenresWrapper>
          <DescriptionRatingWrapper>
             <Rating rating={props.card?.vote_average} subtitle={'Audience Score'}/>

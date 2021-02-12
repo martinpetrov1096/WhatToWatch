@@ -1,9 +1,8 @@
-import axios from 'axios';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
-import config from '../../config/config.json';
 import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
+import { getProviders, Provider } from '../../utils/get-assets';
 interface IProviderParam {
    socket: Socket;
    selectedProviders: number[]
@@ -32,13 +31,9 @@ export const LobbyProviders = (props: IProviderParam) => {
    const [providers, setProviders] = useState<any>();
 
    useEffect(() => {
-      axios.get(config.server.apiUrl + '/info/providers')
-         .then((res) => {
-            setProviders(res.data);
-         })
-         .catch((err) => {
-            console.error('Could not get providers from server');
-         })
+      getProviders().then((providers: Provider[]) => {
+         setProviders(providers);
+      });
    }, []);
 
    const providerElements = useMemo(() => {
@@ -47,7 +42,7 @@ export const LobbyProviders = (props: IProviderParam) => {
       }
       return providers.map((p: any) => (
          <ProviderWrapper key={p.id}>
-            <Provider 
+            <ProviderElement 
                name={p.name}
                value={p.id}
                checked={props.selectedProviders.includes(p.id)}
@@ -93,7 +88,7 @@ const ProviderWrapper = styled.div`
    flex-flow: column nowrap;
 `;
 
-const Provider = styled.input.attrs({
+const ProviderElement = styled.input.attrs({
    type: 'checkbox',
    name: 'provider'
 })`
