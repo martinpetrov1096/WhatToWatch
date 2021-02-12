@@ -1,6 +1,13 @@
 import axios from 'axios';
 import config from '../config/config.json';
 
+/**
+ * This file essentially stores all of the requests
+ * we need to make to the server. I also have several
+ * non exported global variables here that act as the 
+ * cache for requests that will be made frequently
+ */
+
 export interface Provider {
    id: number,
    name: string,
@@ -27,17 +34,20 @@ export const getProviders = async (): Promise<Provider[]> => {
    return providers;
 }
 
-
 export interface Genre {
    id: number;
    name: string;
 }
 
-export interface GenreList {
+/**
+ * genresList is a cached version of all
+ * of the possible genres for both movies
+ * and tv shows
+ */
+interface GenreList {
    tv : Genre[];
    movie: Genre[];
 }
-
 let genresList: GenreList;
 export const getGenres = async (type: 'movie' | 'tv'): Promise<Genre[]> => {
 

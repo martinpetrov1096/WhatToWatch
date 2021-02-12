@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { useEffect, useMemo, useCallback, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
-import config from '../../config/config.json';
 import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
 import { Genre, getGenres } from '../../utils/get-assets';
 interface IGenreSelectorParamTypes {

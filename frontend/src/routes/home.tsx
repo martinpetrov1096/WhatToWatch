@@ -55,8 +55,8 @@ export const HomeRoute = function() {
          }).then((res) => {
             if (res.status === 200) {
                console.log(res.data.status);
-               if (res.data === 'game') {
-                  history.push('/game/' + joinCode);
+               if (res.data.status === 'game') {
+                  history.push('/game/' + joinCode + '/vote');
                } else if (res.data.status === 'lobby') {
                   history.push('/lobby/' + joinCode);
                }

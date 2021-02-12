@@ -5,6 +5,7 @@ import config from '../../../config/config.json';
 import { Loading } from '../../loading';
 import { Cast } from './cast';
 import { Reviews } from './reviews';
+import { Providers } from './providers';
 interface IExtraDetailsProp {
    cardId: string;
    type: 'movie' | 'tv' | undefined;
@@ -44,6 +45,7 @@ export const ExtraDetails = (props: IExtraDetailsProp) => {
    if (details) {
       return (
          <Wrapper>
+            <Providers providers={details['watch/providers']?.results?.US?.flatrate}/>
             <Cast cast={cast}/>
             <Reviews reviews={reviews}/>
          </Wrapper>
