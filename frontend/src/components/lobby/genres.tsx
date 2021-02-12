@@ -4,6 +4,7 @@ import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import config from '../../config/config.json';
 import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
+import { Genre, getGenres } from '../../utils/get-assets';
 interface IGenreSelectorParamTypes {
    type: 'movie' | 'tv';
    socket: Socket;
@@ -22,17 +23,13 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
       console.log('deleting genre');
    }, [props.socket]);
 
-   const [genres, setGenres] = useState<any>(null);
+   const [genres, setGenres] = useState<Genre[]>();
    useEffect(() => {
-      axios.get(config.server.apiUrl + '/info/genres')
-         .then((res) => {
-            console.log(res.data);
-            setGenres(res.data);
-         })
-         .catch((err) => {
-            console.error('Could not get genres from server');
-         })
-   }, []);
+      getGenres(props.type).then((genres: Genre[]) => {
+         setGenres(genres);
+      });
+   }, [props.type]);
+
 
    const genreElements = useMemo(() => {
 
@@ -42,11 +39,8 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
        */
       if (!genres) {
          return null;
-      } 
-      if (genres[props.type] === null) {
-         return null;
       }
-      return genres[props.type].map((genre: any) => {
+      return genres.map((genre: any) => {
          return (
             <ItemWrapper key={genre.id} >
                <Checkbox type="checkbox" 
@@ -60,7 +54,7 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
             </ItemWrapper>
          );
       });
-   }, [genres, addGenre, delGenre, props.selectedGenres, props.type]);
+   }, [genres, addGenre, delGenre, props.selectedGenres]);
 
    return (
       <Wrapper>
@@ -89,10 +83,8 @@ const ItemsWrapper = styled.div`
    align-items: center;
 `;
 
-
 const ItemWrapper = styled.div`
    margin-bottom: 50px;
-
    flex-basis: 80px;
    flex-grow: 1;
    white-space: nowrap;
@@ -106,15 +98,9 @@ const Checkbox = styled.input`
 `;
 
 const Label = styled.label`
-
    border-radius: 10px;
    padding: 15px;
    font-size: 14px;
    transition: ${(props: any) => props.theme.transition};
    text-align: center;
-
-/* 
-   :hover {
-      background-color: ${(props: any) => props.theme.colorPrimaryDark};
-   } */
 `;
