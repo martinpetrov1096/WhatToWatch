@@ -17,7 +17,7 @@ interface IGameOverviewProp {
                <CardWrapper key={swipe.id}>
                   <GameCard card={swipe} key={swipe.id}/>
                   <StatusWrapper>
-                     <Rating rating={swipe.numLikes * 100 / (swipe.numLikes+swipe.numDislikes)} subtitle='User Votes'/>
+                     <Rating rating={swipe.numLikes * 10 / (swipe.numLikes+swipe.numDislikes)} subtitle='Game Votes'/>
                      <PlayerVote vote={swipe.vote}/>
                   </StatusWrapper>
                </CardWrapper> 

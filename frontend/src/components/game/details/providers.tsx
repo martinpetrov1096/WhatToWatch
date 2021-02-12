@@ -39,9 +39,7 @@ const ProvidersWrapper = styled.div`
    flex-flow: row wrap;
 `;
 
-const ProviderItem = styled.img.attrs({
-   
-})`
+const ProviderItem = styled.img`
    margin: 5px;
    border-radius: 5px;
    height: 50px;

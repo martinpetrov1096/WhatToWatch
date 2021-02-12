@@ -13,7 +13,7 @@ export const Rating = (props: IRatingProps) => {
       <RatingWrapper>
          <RatingProgressBar 
             value={(props.rating || 0) * 10}
-            text={props?.rating?.toString()}
+            text={(((props?.rating ?? 0) * 10)?.toString())}
             strokeWidth={20}
             styles={buildStyles({
                strokeLinecap: 'butt',
