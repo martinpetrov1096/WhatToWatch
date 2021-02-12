@@ -1,11 +1,8 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { ISwipe } from '../../../types/swipe';
-import config from '../../../config/config.json';
 import { Rating } from '../../game/rating';
-import { Genre, getGenres } from '../../../utils/get-assets';
-
+import { Genres } from './genres'; 
 interface IInitialDetailsProps {
    card: ISwipe | undefined;
    type: 'movie' | 'tv' | undefined;
@@ -13,26 +10,10 @@ interface IInitialDetailsProps {
 
 export const InitialDetails = (props: IInitialDetailsProps) => {
    
-   const [genres, setGenres ] = useState<Genre[]>([]);
-   useEffect(() => {
-      if (props.card?.genre_ids === undefined) {
-         return;
-      }
-      if (props.type === undefined) {
-         return;
-      }
-      getGenres(props.type).then((allGenres: Genre[]) => {
-         setGenres(allGenres
-            .filter((genre: Genre) => props.card?.genre_ids?.includes(genre.id)));
-      });
-   }, [props.type, props.card?.genre_ids]);
-
    return (
       <Wrapper>
          <Title>{props.card?.title}</ Title>
-         <GenresWrapper>
-            {genres.map((g) => < GenreItem key={g.id}>{g.name}</ GenreItem>)}
-         </GenresWrapper>
+         <Genres genre_ids={props.card?.genre_ids} type={props.type}/>
          <DescriptionRatingWrapper>
             <Rating rating={props.card?.vote_average} subtitle={'Audience Score'}/>
             <Description>{props.card?.overview}</ Description>
@@ -58,17 +39,7 @@ const Title = styled.h2`
    font-size: max(4vw, 30px);
    text-align: center;
 `;
-const GenresWrapper = styled.div`
-   display: flex;
-   flex-flow: row wrap;
-`;
 
-const GenreItem = styled.h4`
-   margin: 5px;
-   border-radius: 5px;
-   padding: 10px;
-   background-color: ${(props: any) => props.theme.colorPrimaryDark};
-`;
 
 const DescriptionRatingWrapper = styled.div`
    width: 100%;
