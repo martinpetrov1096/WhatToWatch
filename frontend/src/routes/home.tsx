@@ -48,7 +48,7 @@ export const HomeRoute = function() {
     */
    useEffect(() => {
       if (joinCode.length === 5) {
-         axios.get(config.server.apiUrl + "/game", {
+         axios.get(config.server.apiUrl + 'game', {
             params: {
                id: joinCode
             }
