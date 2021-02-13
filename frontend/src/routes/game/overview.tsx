@@ -9,7 +9,15 @@ interface IGameOverviewProp {
 }
 
  export const GameOverview = (props: IGameOverviewProp) => {
-      
+   
+   if (props.swipes.length === 0) {
+      return (
+         <Wrapper>
+            <NoVotes>You haven't voted on anything yet.</NoVotes>
+         </Wrapper>
+      );
+   }
+
    return (
       <Wrapper>
          { props.swipes.sort((a: ISwipe, b: ISwipe) => { return (b.numLikes/(b.numLikes + b.numDislikes)) - (a.numLikes/(a.numLikes + a.numDislikes))}).map((swipe: ISwipe) => {
@@ -30,14 +38,21 @@ interface IGameOverviewProp {
 ////////////////////////////////// STYLES /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
- const Wrapper = styled.div`
+const Wrapper = styled.div`
    width: 100%;
    display: flex;
    flex-flow: row wrap;
-   justify-content: center;
+   justify-content: flex-start;
 `;
 
- const CardWrapper = styled.div`
+const NoVotes = styled.h1`
+   margin-top: 300px;
+   width: 100%;
+   text-align: center;
+   font-size: 32px;
+`;
+
+const CardWrapper = styled.div`
    width: 90%;
    max-width: 500px;
    height: auto;

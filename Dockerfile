@@ -9,13 +9,14 @@ COPY backend ./backend
 WORKDIR /app/frontend
 RUN yarn install
 RUN yarn build
-RUN mv ./build ../backend/src/build
+RUN mkdir ../backend/bin
+
+RUN mv ./build ../backend/bin/
 
 WORKDIR /app/backend
 RUN rm -rf ../frontend
 RUN yarn install
 RUN yarn build
-RUN mv ./src/build ./bin/build
 EXPOSE 8080
 
 CMD ["yarn", "start"]
