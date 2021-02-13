@@ -23,7 +23,7 @@ export const getProviders = async (): Promise<Provider[]> => {
     * then cache them
     */
    if (!providers) {
-      providers = await axios.get(config.server.apiUrl + '/info/providers')
+      providers = await axios.get(config.server.apiUrl + 'info/providers')
          .then((res) => {
             return res.data;
          })
@@ -57,7 +57,7 @@ export const getGenres = async (type: 'movie' | 'tv'): Promise<Genre[]> => {
     * then cache them
     */
    if (!genresList) {
-      genresList = await axios.get(config.server.apiUrl + '/info/genres')
+      genresList = await axios.get(config.server.apiUrl + 'info/genres')
       .then((res) => {
          return res.data;
       })

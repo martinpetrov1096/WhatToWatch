@@ -14,6 +14,7 @@ RUN mkdir ../backend/bin
 RUN mv ./build ../backend/bin/
 
 WORKDIR /app/backend
+RUN cp -r src/assets/ bin/
 RUN rm -rf ../frontend
 RUN yarn install
 RUN yarn build
