@@ -1,7 +1,7 @@
 
 # What-To-Watch [Link](https://whattowatch.martin-petrov.com)
 This is just a small site I put together to help friends agree on what to watch by swiping on
-movies 'tinder style'. To get started, head over to this [url](whattowatch.martin-petrov.com) 
+movies 'tinder style'. To get started, head over to this [url](https://whattowatch.martin-petrov.com) 
 and click 'start', or 'join' if someone else already created a lobby. While waiting on everyone
 to join, users can narrow down what movies WTW suggests by specifying which genres they want
 to watch, or giving a minimum rating. Users can also get TV suggestions instead of movies.After
