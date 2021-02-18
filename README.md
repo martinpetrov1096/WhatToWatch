@@ -13,4 +13,4 @@ users reach a verbal consensus
 
 
 # About
-I use (TheMovieDb's)[https://www.themoviedb.org/] api to 
+I use [TheMovieDb's](https://www.themoviedb.org/) api to grab all data for movies / tv-shows
