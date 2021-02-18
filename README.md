@@ -1,5 +1,5 @@
 
-# What-To-Watch [Link](whattowatch.martin-petrov.com)
+# What-To-Watch [Link](https://whattowatch.martin-petrov.com)
 This is just a small site I put together to help friends agree on what to watch by swiping on
 movies 'tinder style'. To get started, head over to this [url](whattowatch.martin-petrov.com) 
 and click 'start', or 'join' if someone else already created a lobby. While waiting on everyone
