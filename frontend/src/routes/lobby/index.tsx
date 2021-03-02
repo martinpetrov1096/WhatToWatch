@@ -2,14 +2,14 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { io, Socket } from "socket.io-client";
 import axios from 'axios';
-import config from '../config/config.json';
-import { ILobby } from '../types/lobby';
-import { LobbyGenres } from '../components/lobby/genres'
-import { LobbyMinRating } from '../components/lobby/min-rating';
-import { LobbyID } from '../components/lobby/id';
-import { LobbyType } from '../components/lobby/type';
-import { LobbyProviders } from '../components/lobby/providers';
-import { ButtonAccent } from '../styles/styled-components/global';
+import config from '../../config/config.json';
+import { ILobby } from '../../types/lobby';
+import { LobbyGenres } from './genres'
+import { LobbyMinRating } from './min-rating';
+import { LobbyID } from './id';
+import { LobbyType } from './type';
+import { LobbyProviders } from './providers';
+import { ButtonAccent } from '../../styles/styled-components/global';
 import { useToasts } from 'react-toast-notifications';
 import styled from 'styled-components';
 

@@ -1,11 +1,11 @@
 import { useParams, useHistory } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { ISwipe } from '../../types/swipe';
-import config from '../../config/config.json';
-import { ExtraDetails } from '../../components/game/details/extra-details';
-import { InitialDetails } from '../../components/game/details/initial-details';
-import { Button } from '../../styles/styled-components/global';
+import { ISwipe } from '../../../types/swipe';
+import config from '../../../config/config.json';
+import { ExtraDetails } from './extra-details';
+import { InitialDetails } from './initial-details';
+import { Button } from '../../../styles/styled-components/global';
 
 interface ICardProp {
    cards: Array<ISwipe>;
