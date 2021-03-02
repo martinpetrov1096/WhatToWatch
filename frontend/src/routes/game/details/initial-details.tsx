@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ISwipe } from '../../../types/swipe';
-import { Rating } from '../../game/rating';
+import { Rating } from '../../../components/game/rating';
 import { Genres } from './genres'; 
 interface IInitialDetailsProps {
    card: ISwipe | undefined;

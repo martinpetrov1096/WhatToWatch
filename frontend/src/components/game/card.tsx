@@ -50,4 +50,10 @@ const Main = styled.div`
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 
    transition: all 1s ease-in-out;
+   transition: transform .2s ease-in-out;
+   &:hover {
+      transform: scale(1.05);
+
+
+   }
 `;
