@@ -1,7 +1,7 @@
 import { ISwipe } from "../../types/swipe"
-import { GameCard } from "../../components/game/card";
+import { GameCard } from "../../components/card";
 import styled from 'styled-components';
-import { Rating } from '../../components/game/rating';
+import { Rating } from '../../components/rating';
 import 'react-circular-progressbar/dist/styles.css';
 
 interface IGameOverviewProp {
@@ -39,6 +39,7 @@ interface IGameOverviewProp {
 ///////////////////////////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
+   position: relative;
    width: 100%;
    display: flex;
    flex-flow: row wrap;

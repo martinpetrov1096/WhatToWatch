@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Genre, getGenres } from '../../../utils/get-assets';
+import { Genre, getGenres } from '../../../../utils/get-assets';
 import styled from 'styled-components';
 
 interface IGenresProps {

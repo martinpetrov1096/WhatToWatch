@@ -1,9 +1,11 @@
 import { useHistory, useParams } from 'react-router-dom';
-import { useCallback } from 'react';
-import styled from 'styled-components';
-import { ISwipe } from '../../types/swipe';
-import config from '../../config/config.json';
-import { Loading } from '../loading';
+import { useCallback, useState } from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import { CSSTransition } from 'react-transition-group';
+
+import { ISwipe } from '../types/swipe';
+import config from '../config/config.json';
+import { Loading } from './loading';
 
 interface ICardProp {
    card: ISwipe | undefined;
@@ -18,7 +20,10 @@ export const GameCard = (props: ICardProp) => {
 
    const goToDetails = useCallback(() => {
       if (props.card) {
-         history.push('/game/' + gameId + '/details/' + props.card.id);
+
+
+         history.push('/game/' + gameId + '/details/' + props?.card?.id);
+
       }
    }, [props.card, gameId, history]);
 
@@ -38,6 +43,25 @@ type CardStyleProps = {
    posterUrl: string;
 }
 
+
+const hoverShift = keyframes`
+   0% {
+      background-position: 50% 50%;
+   }
+   50% {
+      background-position: 65% 65%;
+
+
+   }
+   100% {
+      background-position: 50% 50%;
+   }
+
+
+`;
+
+
+
 const Main = styled.div`
    padding-bottom: min(100%, 60vh);
    border-radius: 20px;
@@ -46,7 +70,7 @@ const Main = styled.div`
 
    background-image: url("${ (props: CardStyleProps) => props.posterUrl }");
    background-position: center;
-   background-size: cover;
+   background-size: 110%;
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 
    transition: all 1s ease-in-out;
@@ -54,6 +78,8 @@ const Main = styled.div`
    &:hover {
       transform: scale(1.05);
 
-
+      animation: ${css`${hoverShift} 5s linear infinite`};
    }
+
+
 `;

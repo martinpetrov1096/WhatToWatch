@@ -3,7 +3,7 @@ import { Switch,Route, useParams, useHistory, useLocation } from 'react-router-d
 import { io, Socket } from "socket.io-client";
 import { useToasts } from 'react-toast-notifications';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
-import { GameNavbar } from '../../components/game/navbar';
+import { GameNavbar } from '../../components/navbar';
 import { GameVote } from './vote';
 import { GameOverview } from './overview';
 import { CardDetails } from './details';
@@ -12,7 +12,8 @@ import config from '../../config/config.json';
 import { ISwipe } from "../../types/swipe";
 import { IGame } from "../../types/game";
 import axios from "axios";
-import styled from 'styled-components';
+
+
 interface IGameParamTypes {
    gameId: string;
 };
@@ -195,73 +196,22 @@ export const GameRoute = () => {
    }, [swipes, gameId, curSwipeIdx]);
 
    return (
-      <>
+      <Switch>
          <Route path="/game/:gameId/:subpath(vote|overview)" >
-            <GameNavbar route="vote"/>
-         </Route> 
-   
+            <GameNavbar route="vote"/>         
             <Route exact path="/game/:gameId/vote">
-               
                <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]} swipeIdx={curSwipeIdx}/>
-            </Route>
-            <Route exact path="/game/:gameId/details/:cardId">
-               {({ match }) => (
-                  <CSSTransition in={match != null} timeout={3000} classNames="fade" unmountOnExit>
-                     <CardDetails cards={swipes}/>
-                  </CSSTransition>
-               )}
-
-
             </Route>
             <Route exact path="/game/:gameId/overview/">
                <GameOverview swipes={swipes.filter((x) => x.vote !== undefined)} />
             </Route>
-
-            {/* <Route path="/game">
-               <InvalidGame apology="Sorry, this page doesn't exist :("/>
-            </Route> */}
- 
-      </>
+         </Route>
+         <Route exact path="/game/:gameId/details/:cardId">
+            <CardDetails cards={swipes}/>
+         </Route>
+         <Route path="/game">
+            <InvalidGame apology="Sorry, this page doesn't exist :("/>
+         </Route>
+      </Switch>
    );
 }
-
-const TestTwo = styled(CSSTransition)`
-   .fade-enter{
-      opacity: 0;
-   }
-   .fade-exit{
-      opacity: 1;
-   }
-   .fade-enter-active{
-      opacity: 1;
-   }
-   .fade-exit-active{
-      opacity: 0;
-   }
-   .fade-enter-active,
-   .fade-exit-active{
-      transition: opacity 500ms;
-   }
-
-`;
-
-const Test = styled(CardDetails)`
-
-   .fade-enter{
-      opacity: 0;
-   }
-   .fade-exit{
-      opacity: 1;
-   }
-   .fade-enter-active{
-      opacity: 1;
-   }
-   .fade-exit-active{
-      opacity: 0;
-   }
-   .fade-enter-active,
-   .fade-exit-active{
-      transition: opacity 500ms;
-   }
-
-`;

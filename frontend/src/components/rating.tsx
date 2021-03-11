@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
-import theme from '../../config/theme.json';
+import theme from '../config/theme.json';
 
 interface IRatingProps {
    rating: number | undefined;

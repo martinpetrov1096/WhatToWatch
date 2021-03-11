@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import config from '../../../config/config.json';
-import { Loading } from '../../../components/loading';
+import config from '../../../../config/config.json';
+import { Loading } from '../../../../components/loading';
 import { Cast } from './cast';
 import { Reviews } from './reviews';
 import { Providers } from './providers';

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import config from '../../../config/config.json';
+import config from '../../../../config/config.json';
 
 interface ICastProps {
    cast: Array<any>;

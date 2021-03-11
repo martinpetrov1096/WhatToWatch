@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Provider, getProviders } from '../../../utils/get-assets';
+import { Provider, getProviders } from '../../../../utils/get-assets';
 import styled from 'styled-components';
 
 interface IProviderProps {
