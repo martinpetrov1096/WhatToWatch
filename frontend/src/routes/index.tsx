@@ -6,6 +6,8 @@ import ReactCodeInput from 'react-code-input';
 import styled from 'styled-components';
 import { ButtonAccent } from '../styles/styled-components/global';
 import { useToasts } from 'react-toast-notifications';
+
+
 export const HomeRoute = function() {
 
    const [joinCode, _setJoinCode] = useState<string>('');

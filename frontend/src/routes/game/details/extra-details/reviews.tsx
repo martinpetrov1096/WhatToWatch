@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Rating } from '../../../components/game/rating';
+import { Rating } from '../../../../components/rating';
 interface IReviewProps {
    reviews: Array<any>;
 }

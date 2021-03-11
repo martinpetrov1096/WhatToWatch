@@ -37,7 +37,7 @@ export const CardDetails = (props: ICardProp) => {
       if (curCard && curCard.backdrop_path) {
          return config.movieDb.bgUrl + curCard.backdrop_path;
       } else {
-         history.push('/error');
+         //history.push('/error');
          return '';
       }
    }, [curCard, history]);
@@ -47,16 +47,18 @@ export const CardDetails = (props: ICardProp) => {
     * just let the user go to the home 
     * screen via the error route
     */
-   useEffect(() => {
-      if (curCard === undefined) {
-         history.push('/error');
-      }
-   }, [curCard, history]);
+   /* TODO: Removed for now, since this will trigger the error page because of react transition group */
+   // useEffect(() => {
+   //    console.log(curCard);
+   //    if (curCard === undefined) {
+   //     //  history.push('/error');
+   //    }
+   // }, [curCard, history]);
 
    return (
       <Wrapper bgUrl={bgUrl}>
          <ContentWrapper>
-            <BackButton onClick={()=> history.goBack()}>Go Back</ BackButton>
+            <BackButton onClick={()=> {history.goBack(); console.log(history)}}>Go Back</ BackButton>
             <Card>          
                <DetailsWrapper>
                   <InitialDetails card={curCard} type={type}/>
@@ -76,9 +78,9 @@ type DetailsStyleProps = {
 }
 
 const Wrapper = styled.div`
+   position: relative;
    height: 100vh;
    width: 100vw;
-
    &:before {
       content: '';
       z-index: 1;
@@ -106,12 +108,10 @@ const BackButton = styled(Button)`
    position: relative;
    z-index: 10;
    align-self: flex-start;
-
 `;
 
 const Card = styled.div`
    margin: 300px 0;
-
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
    border-radius: 30px;
    width: min(1300px, 90%);
@@ -120,7 +120,6 @@ const Card = styled.div`
    flex-flow: row wrap;
    align-items: stretch;
    justify-content: stretch;
-
    @media only screen and (max-width: 450px) {
       width: 100%;
    }
@@ -129,5 +128,4 @@ const Card = styled.div`
 const DetailsWrapper = styled.div`
    flex: 4 2 800px;
    padding: 40px min(5%, 70px);
-
 `;

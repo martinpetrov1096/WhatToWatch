@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ISwipe } from '../../types/swipe';
-import { GameCard } from '../../components/game/card';
+import { GameCard } from '../../components/card';
 import styled, { css, keyframes } from 'styled-components';
 
 interface IVoteProp {
@@ -80,6 +80,7 @@ export const GameVote = (props: IVoteProp) => {
 ///////////////////////////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
+   position: relative;
    margin: 0;
    padding: 10px;
    // Account for 60px nav and 20px padding
