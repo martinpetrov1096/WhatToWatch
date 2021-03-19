@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface IGameNavbarProps {
@@ -9,15 +9,21 @@ interface IGameNavbarProps {
 export const GameNavbar = (props: IGameNavbarProps) => {
    
    const history = useHistory();
-
+   const location = useLocation();
    const navigateTo = useCallback((loc: string) => {
       history.push(loc);
    }, [history]);
+   console.log(location.pathname.split('/').slice(-1)[0]);
+
+   const currentView = useMemo(() => {
+      return location.pathname.split('/').slice(-1)[0];
+   }, [location.pathname]); 
+
 
    return (
-      <Wrapper voteView={props.route==='vote'}>
-         <h6 onClick={() => navigateTo('vote')}>Vote</h6>
-         <h6 onClick={() => navigateTo('overview')}>Overview</h6>
+      <Wrapper>
+         <NavText highlight={currentView === 'vote'} onClick={() => navigateTo('vote')}>Vote</NavText>
+         <NavText highlight={currentView === 'overview'} onClick={() => navigateTo('overview')}>Overview</NavText>
       </Wrapper>
    );
 }
@@ -25,10 +31,7 @@ export const GameNavbar = (props: IGameNavbarProps) => {
 ////////////////////////////////// STYLES /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-type NavStyleProps = {
-   voteView: boolean;
-   theme: any;
-}
+
 
 const Wrapper = styled.nav`
    align-self: center;
@@ -38,20 +41,19 @@ const Wrapper = styled.nav`
    flex-flow: row nowrap;
    align-items: center;
    justify-content: center;
-   > h6 {
-      flex-basis: 400px;
-      flex-shrink: 1;
-      flex-grow: 0;
-      text-align: center;
-      text-decoration: none;
-      font-size: 20px;
-   }
-   > * { // Needed since styled-components created a div
-      &:first-child {
-         color: ${(props: NavStyleProps) => props.voteView ? props.theme.colorAccent : 'white'} !important;
-      }
-      &:nth-child(2) {
-            color: ${(props: NavStyleProps) => (!props.voteView) ? props.theme.colorAccent : 'white'} !important;
-         }
-   }
+`;
+
+type NavTextStyleProps = {
+   highlight: boolean; 
+   theme: any;
+}
+
+const NavText = styled.h6`
+   flex-basis: 400px;
+   flex-shrink: 1;
+   flex-grow: 0;
+   text-align: center;
+   text-decoration: none;
+   font-size: 20px;
+   color: ${(props: NavTextStyleProps) => props.highlight ? props.theme.colorAccent : 'white'};
 `;
