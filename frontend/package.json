@@ -1,6 +1,6 @@
 {
   "name": "what-to-watch",
-  "version": "0.5.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "axios": "^0.21.1",
