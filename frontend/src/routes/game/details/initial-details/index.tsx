@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { ISwipe } from '../../../../types/swipe';
 import { Rating } from '../../../../components/rating';
 import { Genres } from './genres'; 
-interface IInitialDetailsProps {
-   card: ISwipe | undefined;
-   type: 'movie' | 'tv' | undefined;
-}
 
+
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
 export const InitialDetails = (props: IInitialDetailsProps) => {
    
+
    return (
       <Wrapper>
          <Title>{props.card?.title}</ Title>
@@ -21,9 +22,16 @@ export const InitialDetails = (props: IInitialDetailsProps) => {
       </Wrapper>
    );
 };
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+interface IInitialDetailsProps {
+   card: ISwipe | undefined;
+   type: 'movie' | 'tv' | undefined;
+}
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
    align-self: center;
@@ -33,14 +41,11 @@ const Wrapper = styled.div`
       margin: 10px 0;
    }
 `;
-
 const Title = styled.h2`
    align-self: center;
    font-size: max(4vw, 30px);
    text-align: center;
 `;
-
-
 const DescriptionRatingWrapper = styled.div`
    width: 100%;
    display: flex;
@@ -48,7 +53,6 @@ const DescriptionRatingWrapper = styled.div`
    align-items: center;
    justify-content: space-between;
 `;
-
 const Description = styled.p`
    flex: 1 1 80%;
    padding: 30px 10px;

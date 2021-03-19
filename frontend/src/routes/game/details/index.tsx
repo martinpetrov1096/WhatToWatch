@@ -1,5 +1,5 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { ISwipe } from '../../../types/swipe';
 import config from '../../../config/config.json';
@@ -7,12 +7,6 @@ import { ExtraDetails } from './extra-details';
 import { InitialDetails } from './initial-details';
 import { Button } from '../../../styles/styled-components/global';
 
-interface ICardProp {
-   cards: Array<ISwipe>;
-}
-interface ParamTypes {
-   cardId: string
-}
 
 export const CardDetails = (props: ICardProp) => {
 
@@ -37,7 +31,6 @@ export const CardDetails = (props: ICardProp) => {
       if (curCard && curCard.backdrop_path) {
          return config.movieDb.bgUrl + curCard.backdrop_path;
       } else {
-         //history.push('/error');
          return '';
       }
    }, [curCard, history]);
@@ -69,9 +62,18 @@ export const CardDetails = (props: ICardProp) => {
       </Wrapper>
    );
 }
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+interface ICardProp {
+   cards: Array<ISwipe>;
+}
+interface ParamTypes {
+   cardId: string
+}
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 type DetailsStyleProps = {
    bgUrl: string;
@@ -93,7 +95,6 @@ const Wrapper = styled.div`
       background-size: cover;
    }
 `;
-
 const ContentWrapper = styled.div`
    backdrop-filter: blur(8px);
    background-color: transparent;
@@ -103,13 +104,11 @@ const ContentWrapper = styled.div`
    flex-flow: column nowrap;
    align-items: center;
 `;
-
 const BackButton = styled(Button)`
    position: relative;
    z-index: 10;
    align-self: flex-start;
 `;
-
 const Card = styled.div`
    margin: 300px 0;
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -124,7 +123,6 @@ const Card = styled.div`
       width: 100%;
    }
 `;
-
 const DetailsWrapper = styled.div`
    flex: 4 2 800px;
    padding: 40px min(5%, 70px);

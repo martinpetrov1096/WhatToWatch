@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Provider, getProviders } from '../../../../utils/get-assets';
 import styled from 'styled-components';
 
-interface IProviderProps {
-   providers: number[] | undefined;
-}
+
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
 
 export const Providers = (props: IProviderProps) => {
 
    const [providers, setProviders ] = useState<Provider[]>([]);
    useEffect(() => {
-      if (props?.providers === undefined) {
-         return;
-      }
-
+      if (props?.providers === undefined) return;
+      
       getProviders().then((allProviders: Provider[]) => {
          setProviders(allProviders
             .filter((provider: Provider) => {
@@ -25,12 +24,22 @@ export const Providers = (props: IProviderProps) => {
       });
    }, [props?.providers]);
 
+
    return (
       <ProvidersWrapper>
          {providers.map((p) => <ProviderItem key={p.id} src={p.iconUrl} alt={p.name}/>)}
       </ProvidersWrapper>
    );
 }
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+interface IProviderProps {
+   providers: number[] | undefined;
+}
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 const ProvidersWrapper = styled.div`
    margin: 0;
@@ -38,7 +47,6 @@ const ProvidersWrapper = styled.div`
    display: flex;
    flex-flow: row wrap;
 `;
-
 const ProviderItem = styled.img`
    margin: 5px;
    border-radius: 5px;
