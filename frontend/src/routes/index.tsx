@@ -79,7 +79,7 @@ export const HomeRoute = function() {
       <Wrapper>
          <Header>
             <Title>What-To-Watch</Title>
-            <Description>A quick and easy way to coordinate with friends to decided on what to watch</Description>
+            <Description>A quick and easy way to coordinate with friends to decide on what to watch</Description>
          </Header>
          <ButtonAccent onClick={newGame}>NEW GAME</ButtonAccent>
          <OrHeader>Or Enter Join Code</OrHeader>
