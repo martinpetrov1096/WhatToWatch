@@ -15,7 +15,7 @@ RUN mv ./build ../backend/bin/
 
 WORKDIR /app/backend
 RUN cp -r src/assets/ bin/
-RUN rm -rf ../frontend
+#RUN rm -rf ../frontend
 RUN yarn install
 RUN yarn build
 EXPOSE 8080
