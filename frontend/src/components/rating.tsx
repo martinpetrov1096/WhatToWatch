@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import theme from '../config/theme.json';
 
-interface IRatingProps {
-   rating: number | undefined;
-   subtitle: string;
-}
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
+
 
 export const Rating = (props: IRatingProps) => {
+
 
    return (
       <RatingWrapper>
@@ -25,23 +26,28 @@ export const Rating = (props: IRatingProps) => {
       </RatingWrapper>
    );
 }
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
 
+interface IRatingProps {
+   rating: number | undefined;
+   subtitle: string;
+}
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 const RatingWrapper = styled.div`
    display: flex;
    flex-flow: column nowrap;
    align-items: center;
 `;
-
 const RatingProgressBar = styled(CircularProgressbar)`
    margin: 0 10px;
    height: 50px;
    width: 50px;
 `;
-
 const Subtitle = styled.h6`
    margin-top: 10px;
    font-size: 12px;

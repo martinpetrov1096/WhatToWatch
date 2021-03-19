@@ -3,11 +3,11 @@ import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
 import { getProviders, Provider } from '../../utils/get-assets';
-interface IProviderParam {
-   socket: Socket;
-   selectedProviders: number[]
-}
 
+
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
 export const LobbyProviders = (props: IProviderParam) => {
 
    const addProvider = useCallback((genreId: number) => {
@@ -67,46 +67,44 @@ export const LobbyProviders = (props: IProviderParam) => {
       </Wrapper>
    );
 }
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+
+interface IProviderParam {
+   socket: Socket;
+   selectedProviders: number[]
+}
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 const ProvidersWrapper = styled.div`
    margin-bottom: 40px;
    width: 100%;
-
    display: flex;
    flex-flow: row wrap;
    justify-content: space-around;
    align-items: center;
 `;
-
 const ProviderWrapper = styled.div`
    margin: 10px;
-
    display: flex;
    flex-flow: column nowrap;
 `;
-
 const ProviderElement = styled.input.attrs({
    type: 'checkbox',
    name: 'provider'
 })`
    display: none;
    :checked + label {
-      /* border: ${(props: any) => props.theme.colorAccent} 3px solid;
-      box-shadow: 3px 3px 5px ${(props: any) => props.theme.colorAccent},
-                  -3px -3px 5px ${(props: any) => props.theme.colorAccent}; */
       transform: scale(1.2);
       box-shadow: ${(props: any) => props.theme.boxShadowSmall};
-  
    }
 `;
-
 interface ProviderLabelProps {
    iconUrl: string;
 }
-
 const ProviderLabel = styled.label`
    margin: 5px;
    border-radius: 5px;

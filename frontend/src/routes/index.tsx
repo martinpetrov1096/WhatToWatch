@@ -8,6 +8,10 @@ import { ButtonAccent } from '../styles/styled-components/global';
 import { useToasts } from 'react-toast-notifications';
 
 
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
+
 export const HomeRoute = function() {
 
    const [joinCode, _setJoinCode] = useState<string>('');
@@ -83,9 +87,9 @@ export const HomeRoute = function() {
       </Wrapper>
    );
 }
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
    margin: 0;
@@ -97,7 +101,6 @@ const Wrapper = styled.div`
    width: calc(100% - 20px);
    height: calc(100% - 20px);
 `;
-
 const Header = styled.div`
    flex: 0 1 40%;
    display: flex;
@@ -106,17 +109,14 @@ const Header = styled.div`
    justify-content: center;
    width: calc(80% - 20px);
 `;
-
 const Title = styled.h1`
    font-size: max(10vw, 60px);
    text-align: center;
 `;
-
 const Description = styled.h6`
    font-size: max(1.2vw, 12px);
    text-align: center;
 `;
-
 const JoinInput = styled(ReactCodeInput).attrs({
    type: 'text',
    fields: 5,
@@ -124,11 +124,9 @@ const JoinInput = styled(ReactCodeInput).attrs({
    inputMode: 'full-width-latin',
    autocorrect: 'off',
    autocapitalize: 'none'
-
 })`
    display: flex;
    justify-content: space-between;
-   
    > input {
       margin: 5px;
       box-shadow: ${(props: any) => props.theme.boxShadowInset};
@@ -143,9 +141,7 @@ const JoinInput = styled(ReactCodeInput).attrs({
       font-size: 16px;
       color: white;
    }
-
 `;
-
 const OrHeader = styled.h2`
    font-size: 30px;
    margin: 10px;

@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Switch,Route, useParams, useHistory, useLocation } from 'react-router-dom';
+import { Switch,Route, useParams, useHistory } from 'react-router-dom';
 import { io, Socket } from "socket.io-client";
 import { useToasts } from 'react-toast-notifications';
-import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import { GameNavbar } from '../../components/navbar';
 import { GameVote } from './vote';
 import { GameOverview } from './overview';
@@ -14,13 +13,12 @@ import { IGame } from "../../types/game";
 import axios from "axios";
 
 
-interface IGameParamTypes {
-   gameId: string;
-};
 let socket: Socket;
-export const GameRoute = () => {
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
 
-   let location = useLocation();
+export const GameRoute = () => {
 
    /* Get the game ID, and if invalid, redirect */
    const { gameId } = useParams<IGameParamTypes>();
@@ -29,9 +27,9 @@ export const GameRoute = () => {
    const [curSwipeIdx, setCurSwipeIdx] = useState<number>(0);
    const history = useHistory();
    const { addToast } = useToasts();
-   ///////////////////////////////////////////////////////////////////////////
-   /////////////////////////// USE EFFECT FUNCTIONS //////////////////////////
-   ///////////////////////////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////
+   /////////////// USE EFFECT FUNCTIONS ///////////////
+   ////////////////////////////////////////////////////
 
    /**
     * Monitor lobbyId. If it is changed, 
@@ -161,10 +159,10 @@ export const GameRoute = () => {
          setCurSwipeIdx(swipes.findIndex((swipe) => swipe.vote === undefined));
       }
    }, [swipes, curSwipeIdx]);
-   ///////////////////////////////////////////////////////////////////////////
-   ///////////////////////// ONCLICK HANDLER FUNCTIONS ///////////////////////
-   ///////////////////////////////////////////////////////////////////////////
-
+   ////////////////////////////////////////////////////
+   ///////////// ONCLICK HANDLER FUNCTIONS ////////////
+   ////////////////////////////////////////////////////
+   
    /**
     * A function that can be passed as a
     * param to the vote card to vote 
@@ -215,3 +213,9 @@ export const GameRoute = () => {
       </Switch>
    );
 }
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+interface IGameParamTypes {
+   gameId: string;
+};

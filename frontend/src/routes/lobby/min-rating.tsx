@@ -3,16 +3,14 @@ import { Socket } from "socket.io-client";
 import styled from 'styled-components';
 import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
 import { Button } from '../../styles/styled-components/global';
-interface IMinRatingParamTypes {
-   curMinRating: number;
-   socket: Socket;
-}
 
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
 export const LobbyMinRating = (props: IMinRatingParamTypes) => {
 
    const changeMinRating = useCallback((MinRating: number) => {
       props.socket.emit('changeMinRating', MinRating);
-      console.log('changing minimum rating');
    }, [props.socket]);
 
    const handleChange = useCallback((event: any) => {
@@ -35,23 +33,27 @@ export const LobbyMinRating = (props: IMinRatingParamTypes) => {
       </Wrapper>
    );
 }
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+interface IMinRatingParamTypes {
+   curMinRating: number;
+   socket: Socket;
+}
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 const SelectionWrapper = styled.div`
    display: flex;
    flex-flow: row nowrap;
    align-items: center;
 `;
-
 const RatingButton = styled(Button)`
-
    width: 50px;
    height: 50px;
    text-align: center;
 `;
-
 const Input = styled.input`
    margin: 10px;
    border: none;
@@ -65,7 +67,6 @@ const Input = styled.input`
    color: white;
    font-family: 'Varela', sans-serif;
    font-size: 32px;
-   
    ::-webkit-outer-spin-button,
    ::-webkit-inner-spin-button {
       -webkit-appearance: none;

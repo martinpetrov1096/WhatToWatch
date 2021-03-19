@@ -1,10 +1,11 @@
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom"
 import styled from 'styled-components';
-interface IInvalidProp {
-   apology: string;
-};
 
+
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
 export const InvalidGame = (props: IInvalidProp) => {
    
    const history = useHistory();
@@ -20,30 +21,32 @@ export const InvalidGame = (props: IInvalidProp) => {
       </Wrapper>
    );
 }
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+interface IInvalidProp {
+   apology: string;
+};
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
    width: 95%;   
    height: 100%;
-
    display: flex;
    flex-flow: column nowrap;
    justify-content: center;
    align-items: center;
 `;
-
 const GoHomeButton = styled.span`
    color: ${(props: any) => props.theme.colorAccent};
 `;
-
 const Apology = styled.h1`
    font-size: 50px;
    text-align: center;
    margin-bottom: 30px;
 `;
-
 const Solution = styled.h3`
    font-size: 25px;
    text-align: center;

@@ -3,11 +3,11 @@ import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import { Wrapper, Title, Description } from '../../styles/styled-components/lobby';
 import { Genre, getGenres } from '../../utils/get-assets';
-interface IGenreSelectorParamTypes {
-   type: 'movie' | 'tv';
-   socket: Socket;
-   selectedGenres: Array<number>;
-}
+
+
+////////////////////////////////////////////////////
+//////////////////// COMPONENT /////////////////////
+////////////////////////////////////////////////////
 
 export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
 
@@ -67,10 +67,17 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
       </Wrapper>
    );
 }
-///////////////////////////////////////////////////////////////////////////
-////////////////////////////////// STYLES /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////
+/////////////// COMPONENT PROP TYPES ///////////////
+////////////////////////////////////////////////////
+interface IGenreSelectorParamTypes {
+   type: 'movie' | 'tv';
+   socket: Socket;
+   selectedGenres: Array<number>;
+}
+////////////////////////////////////////////////////
+//////////////// STYLED COMPONENTS /////////////////
+////////////////////////////////////////////////////
 const ItemsWrapper = styled.div`
    margin-top: 20px;
    height: 100%;
@@ -80,21 +87,18 @@ const ItemsWrapper = styled.div`
    align-content: space-around;
    align-items: center;
 `;
-
 const ItemWrapper = styled.div`
    margin-bottom: 50px;
    flex-basis: 80px;
    flex-grow: 1;
    white-space: nowrap;
 `;
-
 const Checkbox = styled.input`
    visibility: hidden;
    :checked + label {
       box-shadow: ${(props: any) => props.theme.boxShadowInset};
    }
 `;
-
 const Label = styled.label`
    border-radius: 10px;
    padding: 15px;
