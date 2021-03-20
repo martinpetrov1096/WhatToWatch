@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
+import styled, { css, keyframes } from 'styled-components';
 import { ISwipe } from '../../types/swipe';
 import { GameCard } from '../../components/card';
-import styled, { css, keyframes } from 'styled-components';
+import Button from '../../components/svg-button';
 
 
 ////////////////////////////////////////////////////
@@ -64,8 +65,16 @@ export const GameVote = (props: IVoteProp) => {
                   {/* Only allow to vote once per card by 
                         only having the button work when 
                         curVote != 'yes' or 'no' */}
-                  <NoButton onClick={()=> curVote ? ()=>{} : vote('no')}/>
-                  <YesButton onClick={()=> curVote ? ()=>{} : vote('yes')}/>
+                  <VoteButton viewBox="0 0 295.64 295.64" width="75" height="75" onClick={()=> curVote ? ()=>{} : vote('no')}>
+                     <title>heartButton</title>
+                     <path className="fill" d="M219.31,80.82c-19-16.18-47.23-13.27-64.66,
+                     4.71l-6.83,7-6.82-7c-17.4-18-45.67-20.89-64.66-4.71-21.76,18.57-22.9,
+                     51.9-3.43,72L140,222.09a10.86,10.86,0,0,0,15.69,0l67-69.23c19.51-20.14,
+                     18.37-53.47-3.39-72Z"/>
+                     <circle className="stroke" strokeWidth="3" cx="147.82" cy="147.82" r="142.82"/>
+                  </VoteButton>
+                  {/* <NoButton /> */}
+                  {/* <YesButton onClick={()=> curVote ? ()=>{} : vote('yes')}/> */}
                </VoteWrapper>
             </Wrapper>
          );
@@ -140,13 +149,14 @@ const VoteWrapper = styled.div`
    justify-content: space-around;
 `;
 
-const Button = styled.button`
+const VoteButton = styled(Button)`
    width: 100%;
    height: 100%;
    box-shadow: none;
    border: none;
    border-radius: 100%;
    outline: none;
+   cursor: pointer;
    background-repeat: no-repeat;
    background-position: center;
    background-color: transparent;

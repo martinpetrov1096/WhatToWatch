@@ -3,7 +3,7 @@
    "colorPrimaryDark": "#2B2F54",
    "colorAccent": "#FF616F",
    "boxShadowSmall": "5px 5px 10px  #2d3152, -5px -5px 10px #494f84",
-   "boxShadowBig": "",
+   "boxShadowBig": "10px 10px 20px  #2d3152, -10px -10px 20px #494f84",
    "boxShadowInset": "inset 5px 5px 10px #2e3253, inset -5px -5px 10px #484e83;",
    "transition": "all .15s ease-in-out"
 }
