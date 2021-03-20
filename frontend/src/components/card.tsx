@@ -58,14 +58,15 @@ type CardStyleProps = {
    posterUrl: string;
 }
 const Main = styled.div`
-   padding-bottom: min(100%, 60vh);
-   border-radius: 20px;
    width: 66.6%;
    max-width: 450px;
+   padding-bottom: min(100%, 60vh);
+   border-radius: 20px;
    background-image: url("${ (props: CardStyleProps) => props.posterUrl }");
    background-position: center;
    background-size: 110%;
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+   cursor: pointer;
    transition: all 1s ease-in-out;
    transition: transform .2s ease-in-out;
    &:hover {

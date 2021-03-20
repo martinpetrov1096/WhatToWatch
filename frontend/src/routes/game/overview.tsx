@@ -45,7 +45,7 @@ interface IGameOverviewProp {
 ////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
-   position: relative;
+   /* position: relative; */
    width: 100%;
    display: flex;
    flex-flow: row wrap;
