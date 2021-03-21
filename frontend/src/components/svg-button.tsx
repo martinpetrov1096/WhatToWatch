@@ -59,5 +59,4 @@ const SVG = styled.svg`
          fill: ${(props: any) => props.theme.colorAccent};
       }
    }
-
 `;
