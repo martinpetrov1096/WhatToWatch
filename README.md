@@ -1,7 +1,7 @@
 
 # What-To-Watch [Link](https://whattowatch.martin-petrov.com)
 <div>
-  <img src='https://img.shields.io/github/package-json/v/martinpetrov1096/WhatToWatch'>
+  <img src='https://img.shields.io/github/package-json/v/martinpetrov1096/WhatToWatch/frontend'>
   <img src='https://img.shields.io/github/deployments/martinpetrov1096/davis-deals/github-pages'>
   <img src='https://img.shields.io/badge/React-v17.0.1-blue'>
   <img src='https://img.shields.io/github/languages/top/martinpetrov1096/WhatToWatch'>
