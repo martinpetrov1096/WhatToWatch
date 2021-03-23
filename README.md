@@ -1,39 +1,55 @@
 
 # What-To-Watch [Link](https://whattowatch.martin-petrov.com)
 <div>
-  <img src='https://img.shields.io/github/package-json/v/martinpetrov1096/WhatToWatch/frontend'>
-  <img src='https://img.shields.io/github/deployments/martinpetrov1096/davis-deals/github-pages'>
   <img src='https://img.shields.io/badge/React-v17.0.1-blue'>
   <img src='https://img.shields.io/github/languages/top/martinpetrov1096/WhatToWatch'>
   <img src='https://img.shields.io/github/last-commit/martinpetrov1096/WhatToWatch'>
   <img src='https://img.shields.io/badge/Entertainment-green'>
 </div>
-<img style="border-radius: 10px;" width="100%" src='./external-assets/demo.gif'/>
+<img width="100%" src='./external-assets/demo.gif'/>
 
 
 ## Multiplayer
+Once you create a game, share the join code with your friends so that they
+can make movie/tv suggestions too
+<img width="100%" src='./external-assets/multiplayer.gif'/>
+
 
 ## Filtering
+<img width="100%" src='./external-assets/filtering.gif'/>
+
+### Streaming Providers
+Filter results to only recommend movies/tv shows from certain streaming 
+providers such as Netflix, Hulu, Disney+. Apple TV+, and HBO Max
+
+### Genres
+Filter results to only recommend certain genres
+
+### Type
+Choose whether to give recommendations for movies or tv-shows
+
+### Minimum Rating
+Filter results so that all recommendations are above a certain rating
+threshold
+
 
 ## Voting
+<img width="100%" src='./external-assets/voting.gif'/>
+Like or dislike movies. The number of likes/dislikes will be kept track
+of, and will be shown in the overview section. WTW will keep suggesting
+movies until either it has run out of suggestions, or the users reach a
+verbal consensus
 
-## Viewing the Cast, Ratings, and Reviews
 
+## Viewing Cast, Ratings, and Reviews
+<img width="100%" src='./external-assets/details.gif'/>
+Need more info before voting on a certain movie/tv-show? Click the card to
+see information on the cast, the overall audience rating, and even reviews
 
-
-
-
-This is just a small site I put together to help friends agree on what to watch by swiping on
-movies 'tinder style'. To get started, head over to this [url](https://whattowatch.martin-petrov.com) 
-and click 'start', or 'join' if someone else already created a lobby. While waiting on everyone
-to join, users can narrow down what movies WTW suggests by specifying which genres they want
-to watch, or giving a minimum rating. Users can also get TV suggestions instead of movies.After
-someone in the lobby clicks 'start', WTW will switch over to the 'vote' view. Here users can 
-vote on whether they are willing watch by swiping left or right on movie/tv-shows. If a user 
-clicks on the overview tab, they will see the total number of votes each movie they voted on 
-recieved. WTW will keep suggesting movies until either it has run out of suggestions, or the
-users reach a verbal consensus
-
+## Overview
+<img width="100%" src='./external-assets/overview.gif'/>
+Click the overview button to see how many of your friends agreed with your vote
+on each movie/tv-show that you've already voted on
 
 # About
 I use [TheMovieDb's](https://www.themoviedb.org/) api to grab all data for movies / tv-shows
