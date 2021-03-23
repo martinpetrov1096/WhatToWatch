@@ -1,5 +1,28 @@
 
 # What-To-Watch [Link](https://whattowatch.martin-petrov.com)
+<div>
+  <img src='https://img.shields.io/github/package-json/v/martinpetrov1096/WhatToWatch'>
+  <img src='https://img.shields.io/github/deployments/martinpetrov1096/davis-deals/github-pages'>
+  <img src='https://img.shields.io/badge/React-v17.0.1-blue'>
+  <img src='https://img.shields.io/github/languages/top/martinpetrov1096/WhatToWatch'>
+  <img src='https://img.shields.io/github/last-commit/martinpetrov1096/WhatToWatch'>
+  <img src='https://img.shields.io/badge/Entertainment-green'>
+</div>
+<img style="border-radius: 10px;" width="100%" src='./external-assets/demo.gif'/>
+
+
+## Multiplayer
+
+## Filtering
+
+## Voting
+
+## Viewing the Cast, Ratings, and Reviews
+
+
+
+
+
 This is just a small site I put together to help friends agree on what to watch by swiping on
 movies 'tinder style'. To get started, head over to this [url](https://whattowatch.martin-petrov.com) 
 and click 'start', or 'join' if someone else already created a lobby. While waiting on everyone
