@@ -5,16 +5,18 @@ export const Button = styled.button`
    border-radius: 10px;
    padding: 15px;
 
-   transition: ${(props: any) => props.theme.transition};
    background-color: transparent;
    box-shadow: ${(props: any) => props.theme.boxShadowSmall};
+   transition: ${(props: any) => props.theme.transition};
+   cursor: pointer;
    outline: none;
    border: none !important;
-
    color: white;
    font-size: 22px;
 
-
+   :hover {
+      box-shadow: none;
+   }
 `;
 
 export const ButtonAccent = styled(Button)`

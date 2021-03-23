@@ -11,11 +11,12 @@ export const GameNavbar = (props: IGameNavbarProps) => {
    
    const history = useHistory();
    const location = useLocation();
-   const navigateTo = useCallback((loc: string) => {
-      history.push(loc);
-   }, [history]);
-   console.log(location.pathname.split('/').slice(-1)[0]);
 
+   const navigateTo = useCallback((loc: string) => {
+      const gameID = location.pathname.split('/')[2];
+      history.push('/game/' + gameID + '/' + loc);
+   }, [history, location.pathname]);
+ 
    const currentView = useMemo(() => {
       return location.pathname.split('/').slice(-1)[0];
    }, [location.pathname]); 
@@ -40,8 +41,11 @@ interface IGameNavbarProps {
 ////////////////////////////////////////////////////
 
 const Wrapper = styled.nav`
-   align-self: center;
-   padding: 30px 0 10px 0;
+   width: 100%;
+   border-radius: 0 0 20px 20px;
+   padding: 25px 0;
+   z-index: 200;
+   background-color: ${(props: any) => props.theme.colorPrimary};
    display: flex;
    flex-basis: 800px;
    flex-flow: row nowrap;
@@ -59,5 +63,11 @@ const NavText = styled.h6`
    text-align: center;
    text-decoration: none;
    font-size: 20px;
+   
    color: ${(props: NavTextStyleProps) => props.highlight ? props.theme.colorAccent : 'white'};
+   cursor: pointer;
+   transition: ${(props: any) => props.theme.transition};
+   :hover {
+      color: ${(props: any) => props.theme.colorAccent};
+   }
 `;

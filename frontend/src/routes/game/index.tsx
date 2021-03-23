@@ -11,6 +11,7 @@ import config from '../../config/config.json';
 import { ISwipe } from "../../types/swipe";
 import { IGame } from "../../types/game";
 import axios from "axios";
+import styled from 'styled-components';
 
 
 let socket: Socket;
@@ -194,23 +195,25 @@ export const GameRoute = () => {
    }, [swipes, gameId, curSwipeIdx]);
 
    return (
-      <Switch>
-         <Route path="/game/:gameId/:subpath(vote|overview)" >
-            <GameNavbar route="vote"/>         
-            <Route exact path="/game/:gameId/vote">
-               <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]} swipeIdx={curSwipeIdx}/>
+
+
+         <Switch>
+            <Route path="/game/:gameId/:subpath(vote|overview)" >
+               <GameNavbar route="vote"/>     
+               <Route exact path="/game/:gameId/vote">
+                  <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]} swipeIdx={curSwipeIdx}/>
+               </Route>
+               <Route exact path="/game/:gameId/overview/">
+                  <GameOverview swipes={swipes.filter((x) => x.vote !== undefined)} />
+               </Route>
             </Route>
-            <Route exact path="/game/:gameId/overview/">
-               <GameOverview swipes={swipes.filter((x) => x.vote !== undefined)} />
+            <Route exact path="/game/:gameId/details/:cardId">
+               <CardDetails cards={swipes}/>
             </Route>
-         </Route>
-         <Route exact path="/game/:gameId/details/:cardId">
-            <CardDetails cards={swipes}/>
-         </Route>
-         <Route path="/game">
-            <InvalidGame apology="Sorry, this page doesn't exist :("/>
-         </Route>
-      </Switch>
+            <Route path="/game">
+               <InvalidGame apology="Sorry, this page doesn't exist :("/>
+            </Route>
+         </Switch>
    );
 }
 ////////////////////////////////////////////////////
