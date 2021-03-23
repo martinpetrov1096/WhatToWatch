@@ -222,7 +222,3 @@ export const GameRoute = () => {
 interface IGameParamTypes {
    gameId: string;
 };
-
-
-const MarginSwitch = styled(Switch)`
-`;
