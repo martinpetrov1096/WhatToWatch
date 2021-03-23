@@ -44,11 +44,8 @@ const Wrapper = styled.nav`
    width: 100%;
    border-radius: 0 0 20px 20px;
    padding: 25px 0;
-   position: fixed;
    z-index: 200;
-   /* backdrop-filter: blur(20px); */
    background-color: ${(props: any) => props.theme.colorPrimary};
-   box-shadow: ${(props: any) => props.theme.boxShadowBig};
    display: flex;
    flex-basis: 800px;
    flex-flow: row nowrap;
@@ -65,7 +62,7 @@ const NavText = styled.h6`
    flex-grow: 0;
    text-align: center;
    text-decoration: none;
-   font-size: 25px;
+   font-size: 20px;
    
    color: ${(props: NavTextStyleProps) => props.highlight ? props.theme.colorAccent : 'white'};
    cursor: pointer;
