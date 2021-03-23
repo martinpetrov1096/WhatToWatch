@@ -1,12 +1,11 @@
 
-# What-To-Watch [Link](https://whattowatch.martin-petrov.com)
+# [What-To-Watch](https://whattowatch.martin-petrov.com)
 <div>
   <img src='https://img.shields.io/badge/React-v17.0.1-blue'>
   <img src='https://img.shields.io/github/languages/top/martinpetrov1096/WhatToWatch'>
   <img src='https://img.shields.io/github/last-commit/martinpetrov1096/WhatToWatch'>
   <img src='https://img.shields.io/badge/Entertainment-green'>
 </div>
-<img width="100%" src='./external-assets/demo.gif'/>
 
 
 ## Multiplayer
