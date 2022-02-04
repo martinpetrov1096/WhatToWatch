@@ -120,7 +120,7 @@ const voteYesKeyframe = () => keyframes`
    transform: translateX(400px) rotate(45deg) rotateY(90deg);
 }
 to {
-   transform: translateX(0) rotateY(360deg);
+   transform: translateX(0) rotateY(0deg);
 }
 `;
 const voteNoKeyframe = () => keyframes`
@@ -128,7 +128,7 @@ const voteNoKeyframe = () => keyframes`
       transform: translateX(-400px) rotate(-45deg) rotateY(90deg);
    }
    to {
-      transform: translateX(0) rotateY(360deg);
+      transform: translateX(0) rotateY(0deg);
    }
 `;
 
