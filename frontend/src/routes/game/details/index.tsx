@@ -48,10 +48,8 @@ export const CardDetails = (props: ICardProp) => {
                  50.5251ZM78 49.5L28 49.5V56.5L78 56.5V49.5Z" className="fill"/>
             </BackButton>
             <Card>          
-               <DetailsWrapper>
-                  <InitialDetails card={curCard} type={type}/>
-                  <ExtraDetails cardId={cardId} type={type}/>
-               </DetailsWrapper>
+               <InitialDetails card={curCard} type={type}/>
+               <ExtraDetails cardId={cardId} type={type}/>
             </Card>
          </ContentWrapper>   
       </Wrapper>
@@ -76,8 +74,6 @@ type DetailsStyleProps = {
 
 const Wrapper = styled.div`
    position: relative;
-   height: 100vh;
-   width: 100vw;
    &:before {
       content: '';
       z-index: 1;
@@ -110,16 +106,25 @@ const Card = styled.div`
    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
    border-radius: 30px;
    width: min(1300px, 90%);
+   padding: 60px min(5%, 70px);
    background-color: ${(props: any) => props.theme.colorPrimary };
    display: flex;
-   flex-flow: row wrap;
+   flex-flow: column nowrap;
    align-items: stretch;
    justify-content: stretch;
-   @media only screen and (max-width: 450px) {
+
+
+
+   /* @media only screen and (max-width: 450px) {
       width: 100%;
-   }
+   } */
 `;
-const DetailsWrapper = styled.div`
-   flex: 4 2 800px;
-   padding: 40px min(5%, 70px);
-`;
+// const DetailsWrapper = styled.div`
+//    width: 100%;
+//    flex: 2 1 800px;
+//    padding: 40px min(5%, 70px);
+//    display: flex;
+//    flex-flow: column nowrap;
+//    justify-content: center;
+//    align-items: center;
+// `;

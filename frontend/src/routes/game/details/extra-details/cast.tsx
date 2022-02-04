@@ -33,18 +33,18 @@ interface ICastProps {
 ////////////////////////////////////////////////////
 
 const CastWrapper = styled.div`
-   flex-basis: 100%;
-   flex-grow: 1;
-   height: 275px;
-   display: flex;
-   flex-flow: column wrap;
+   width: 100%;
+   display: grid;
+   grid-template-columns: repeat(auto-fit, 155px);
+   grid-auto-flow: column;
    overflow-x: scroll;
 `;
 const CastItem = styled.div`
    margin: 10px;
    border-radius: 10px;
-   width: 138px;
    height: 100%;
+   width: 138px;
+
    text-align: center;
    background-color: ${(props: any) => props.theme.colorPrimary};
    box-shadow: ${(props: any) => props.theme.boxShadowSmall};
@@ -54,6 +54,7 @@ const CastItem = styled.div`
    align-items: center;
 `;
 const CastImage = styled.img`
+   align-self: stretch;
    border-radius: 10px 10px 0 0;
 `;
 const CastName = styled.h3`

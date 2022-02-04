@@ -43,11 +43,11 @@ interface IReviewProps {
 
 const ReviewsWrapper = styled.div`
    align-self: center;
-   width: 100%;
    color: rgb(220, 225, 230);
    display: flex;
-   flex-flow: column wrap;
+   flex-flow: column nowrap;
    justify-content: center;
+   align-items: center;
 `;
 const Title = styled.h2`
    align-self: flex-start;

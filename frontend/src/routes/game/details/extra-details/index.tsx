@@ -67,6 +67,7 @@ interface IExtraDetailsProp {
 ////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
+   width: 100%;
    align-self: center;
    display: flex;
    flex-flow: column nowrap;
