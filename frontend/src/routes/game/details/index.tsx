@@ -112,19 +112,4 @@ const Card = styled.div`
    flex-flow: column nowrap;
    align-items: stretch;
    justify-content: stretch;
-
-
-
-   /* @media only screen and (max-width: 450px) {
-      width: 100%;
-   } */
 `;
-// const DetailsWrapper = styled.div`
-//    width: 100%;
-//    flex: 2 1 800px;
-//    padding: 40px min(5%, 70px);
-//    display: flex;
-//    flex-flow: column nowrap;
-//    justify-content: center;
-//    align-items: center;
-// `;
