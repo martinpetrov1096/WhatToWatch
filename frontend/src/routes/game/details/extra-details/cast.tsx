@@ -44,7 +44,7 @@ const CastItem = styled.div`
    border-radius: 10px;
    height: 100%;
    width: 138px;
-
+   height: 250px;
    text-align: center;
    background-color: ${(props: any) => props.theme.colorPrimary};
    box-shadow: ${(props: any) => props.theme.boxShadowSmall};
