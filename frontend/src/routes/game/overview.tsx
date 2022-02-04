@@ -19,17 +19,17 @@ export const GameOverview = (props: IGameOverviewProp) => {
    }
    return (
       <Wrapper>
-         { props.swipes.sort((a: ISwipe, b: ISwipe) => { return (b.numLikes/(b.numLikes + b.numDislikes)) - (a.numLikes/(a.numLikes + a.numDislikes))}).map((swipe: ISwipe) => {
+        { props.swipes.sort((a: ISwipe, b: ISwipe) => { return (b.numLikes/(b.numLikes + b.numDislikes)) - (a.numLikes/(a.numLikes + a.numDislikes))}).map((swipe: ISwipe) => {
             return (
-               <CardWrapper key={swipe.id}>
-                  <GameCard card={swipe} key={swipe.id}/>
-                  <StatusWrapper>
-                     <Rating rating={swipe.numLikes * 10 / (swipe.numLikes+swipe.numDislikes)} subtitle='Game Votes'/>
-                     <PlayerVote vote={swipe.vote}/>
-                  </StatusWrapper>
-               </CardWrapper> 
+            <CardWrapper key={swipe.id}>
+                <GameCard card={swipe} key={swipe.id}/>
+                <StatusWrapper>
+                    <Rating rating={swipe.numLikes * 10 / (swipe.numLikes+swipe.numDislikes)} subtitle='Game Votes'/>
+                    <PlayerVote vote={swipe.vote}/>
+                </StatusWrapper>
+            </CardWrapper> 
             );
-         }) }
+        }) }
       </Wrapper>
    );
 }
@@ -45,11 +45,10 @@ interface IGameOverviewProp {
 ////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
-   /* position: relative; */
    width: 100%;
-   display: flex;
-   flex-flow: row wrap;
-   justify-content: flex-start;
+   display: grid;
+   grid-template-columns: repeat(auto-fit, 450px);
+   justify-content: center;
 `;
 const NoVotes = styled.h1`
    margin-top: 300px;
@@ -58,8 +57,6 @@ const NoVotes = styled.h1`
    font-size: 32px;
 `;
 const CardWrapper = styled.div`
-   width: 90%;
-   max-width: 500px;
    height: auto;
    display: flex;
    flex-flow: column nowrap;

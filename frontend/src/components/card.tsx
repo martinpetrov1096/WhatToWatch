@@ -1,6 +1,6 @@
 import { useHistory, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
 import { ISwipe } from '../types/swipe';
 import config from '../config/config.json';
 import { Loading } from './loading';
@@ -43,17 +43,6 @@ interface GameCardParamTypes {
 //////////////// STYLED COMPONENTS /////////////////
 ////////////////////////////////////////////////////
 
-const hoverShift = keyframes`
-   0% {
-      background-position: 50% 50%;
-   }
-   50% {
-      background-position: 65% 65%;
-   }
-   100% {
-      background-position: 50% 50%;
-   }
-`;
 type CardStyleProps = {
    posterUrl: string;
 }
@@ -71,6 +60,5 @@ const Main = styled.div`
    transition: transform .2s ease-in-out;
    &:hover {
       transform: scale(1.05);
-      animation: ${css`${hoverShift} 5s linear infinite`};
    }
 `;
