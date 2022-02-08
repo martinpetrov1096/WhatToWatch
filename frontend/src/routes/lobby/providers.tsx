@@ -13,7 +13,6 @@ export const LobbyProviders = (props: IProviderParam) => {
    const addProvider = useCallback((genreId: number) => {
       if (props.socket) {
          props.socket.emit('addProvider', genreId);
-         console.log('adding provider');
       } else {
          console.error('couldn\'t add provider, socket not defined');
       }
@@ -22,7 +21,6 @@ export const LobbyProviders = (props: IProviderParam) => {
    const delProvider = useCallback((genreId: number) => {
       if (props.socket) {
          props.socket.emit('delProvider', genreId);
-         console.log('deleting provider');
       } else {
          console.error('couldn\'t remove provider, socket not defined');
       }
@@ -72,8 +70,8 @@ export const LobbyProviders = (props: IProviderParam) => {
 ////////////////////////////////////////////////////
 
 interface IProviderParam {
-   socket: Socket;
-   selectedProviders: number[]
+    socket: Socket | null;
+    selectedProviders: number[]
 }
 ////////////////////////////////////////////////////
 //////////////// STYLED COMPONENTS /////////////////

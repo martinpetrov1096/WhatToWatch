@@ -47,7 +47,6 @@ export const gameSocket = (socket: any) => {
        * Generate more results, and then
        * send them to everyone
        */
-      console.log('generating new swipes');
       gameService.genSwipes(gameId)
          .then((newSwipes: Array<ISwipe>) => {
             

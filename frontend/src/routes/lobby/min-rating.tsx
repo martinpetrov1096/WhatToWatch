@@ -10,7 +10,7 @@ import { Button } from '../../styles/styled-components/global';
 export const LobbyMinRating = (props: IMinRatingParamTypes) => {
 
    const changeMinRating = useCallback((MinRating: number) => {
-      props.socket.emit('changeMinRating', MinRating);
+      props.socket?.emit('changeMinRating', MinRating);
    }, [props.socket]);
 
    const handleChange = useCallback((event: any) => {
@@ -38,7 +38,7 @@ export const LobbyMinRating = (props: IMinRatingParamTypes) => {
 ////////////////////////////////////////////////////
 interface IMinRatingParamTypes {
    curMinRating: number;
-   socket: Socket;
+   socket: Socket | null;
 }
 ////////////////////////////////////////////////////
 //////////////// STYLED COMPONENTS /////////////////

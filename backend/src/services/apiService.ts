@@ -46,7 +46,6 @@ export class ApiService {
    ///////////////////////////////////////////////////////////////////////////
 
    private async getResults(game: IGame): Promise<Array<IResult>> {
-      console.log(game.providers.toString())
       return axios.get(config.movieDbApi.discover.url + game.type, {
          params: {
             'api_key': process.env.API_KEY,

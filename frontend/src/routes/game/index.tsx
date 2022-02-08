@@ -11,10 +11,8 @@ import config from '../../config/config.json';
 import { ISwipe } from "../../types/swipe";
 import { IGame } from "../../types/game";
 import axios from "axios";
-import styled from 'styled-components';
 
 
-let socket: Socket;
 ////////////////////////////////////////////////////
 //////////////////// COMPONENT /////////////////////
 ////////////////////////////////////////////////////
@@ -28,9 +26,29 @@ export const GameRoute = () => {
    const [curSwipeIdx, setCurSwipeIdx] = useState<number>(0);
    const history = useHistory();
    const { addToast } = useToasts();
+   const [socket, setSocket] = useState<Socket | null>(null);
    ////////////////////////////////////////////////////
    /////////////// USE EFFECT FUNCTIONS ///////////////
    ////////////////////////////////////////////////////
+
+   /**
+    * Create the socketio connection when the
+    * game starts and set it each time the 
+    * gameId changes
+    */
+   useEffect(():(() => void) => {
+    const newSocket = io(config.server.gameSocketUrl, {
+        query: {
+           'gameId': gameId
+        },
+        forceNew: true
+     });
+    setSocket(newSocket);
+    return () => {
+       newSocket.close();
+    }
+ }, [setSocket, gameId]);
+
 
    /**
     * Monitor lobbyId. If it is changed, 
@@ -45,15 +63,13 @@ export const GameRoute = () => {
          }
       }).then((res) => {
          if (res.data.status !== 'game') {
-            history.push('/error');
-            socket.disconnect();
+            history.replace('/error');
          }
       })
       .catch(() => {
-         history.push('/error');
-         socket.disconnect();
+        history.replace('/error');
       })
-   }, [gameId, history]);
+   }, [gameId, history, socket]);
 
    /**
     * When the component gets mounted, 
@@ -62,16 +78,7 @@ export const GameRoute = () => {
     * event functions
     */
    useEffect(() => {
-      console.log('GameID: ' + gameId);
-      /* Init socket io client */
-      socket = io(config.server.gameSocketUrl, {
-         query: {
-            'gameId': gameId
-         }
-      });
-
-      socket.on('newSwipes', (swipes: Array<ISwipe>) => {
-         console.log('Got new swipes');
+      socket?.on('newSwipes', (swipes: Array<ISwipe>) => {
          setSwipes((oldSwipes) => {
             return oldSwipes.concat(...swipes);
          });
@@ -81,9 +88,7 @@ export const GameRoute = () => {
        * If there aren't any more swipes, 
        * just disconnect
        */
-      socket.on('noNewSwipes', () => {
-         console.log('No new swipes left');
-         
+      socket?.on('noNewSwipes', () => {
          /**
           * Setting curSwipeIdx to -99
           * indicates that there are no
@@ -97,18 +102,17 @@ export const GameRoute = () => {
          });
       });
 
-      socket.on('newConn', (numPlayers: number) => {
+      socket?.on('newConn', (numPlayers: number) => {
          addToast('A new player joined', {appearance: 'info'});
          setNumPlayers(numPlayers);
       });
 
-      socket.on('newDisconn', (numPlayers: number) => {
-         console.log('A player left');
+      socket?.on('newDisconn', (numPlayers: number) => {
+         addToast('A player left', {appearance: 'info'});
          setNumPlayers(numPlayers);
       });
 
-      socket.on('connection', (game: IGame) => {
-         console.log('Connected');
+      socket?.on('connection', (game: IGame) => {
          setNumPlayers(game.numPlayers);
 
          /**
@@ -122,7 +126,7 @@ export const GameRoute = () => {
          setSwipes(game.swipes);
       });
 
-      socket.on('voted', ({swipeId, vote}: {swipeId: number, vote: 'yes' | 'no'}) => {
+      socket?.on('voted', ({swipeId, vote}: {swipeId: number, vote: 'yes' | 'no'}) => {
          setSwipes((oldSwipes) => {
             const idx = oldSwipes.findIndex((swipe) => swipe.id === swipeId);
             if (idx === -1) {
@@ -134,19 +138,10 @@ export const GameRoute = () => {
          });
       });
 
-      socket.on('error', (err: Error) => {
+      socket?.on('error', (err: Error) => {
          console.log(err);
       });
-      
-      /**
-       * Return a function that disconnects from 
-       * the socket so we can cleanup
-       */
-      return () => {
-         console.log('game cleanup');
-         socket.disconnect();
-      }
-   }, [gameId, addToast]);
+   }, [gameId, addToast, socket]);
    
    /**
     * Monitor @swipes to watch when new
@@ -173,10 +168,10 @@ export const GameRoute = () => {
    const voteFunc = useCallback((vote: 'yes' | 'no') => {
       
       if (vote === 'yes') {
-         socket.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'yes' });
+         socket?.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'yes' });
          swipes[curSwipeIdx].vote = 'yes';
       } else {
-         socket.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'no' });
+         socket?.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'no' });
          swipes[curSwipeIdx].vote = 'no';
       }
 
@@ -188,15 +183,12 @@ export const GameRoute = () => {
        */
       const nextSwipe = swipes.findIndex((swipe) => swipe.vote === undefined);
       if (nextSwipe === -1) {
-         socket.emit('genNewSwipes');
-         console.log('getting new swipes');
+         socket?.emit('genNewSwipes');
       }
       setCurSwipeIdx(nextSwipe);
-   }, [swipes, gameId, curSwipeIdx]);
+   }, [swipes, gameId, curSwipeIdx, socket]);
 
    return (
-
-
          <Switch>
             <Route path="/game/:gameId/:subpath(vote|overview)" >
                <GameNavbar route="vote"/>     

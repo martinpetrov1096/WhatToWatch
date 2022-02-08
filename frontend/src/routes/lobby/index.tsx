@@ -14,13 +14,14 @@ import { useToasts } from 'react-toast-notifications';
 import styled from 'styled-components';
 
 
-let socket: Socket;
+//let socket: Socket;
 ////////////////////////////////////////////////////
 //////////////////// COMPONENT /////////////////////
 ////////////////////////////////////////////////////
 
 export const LobbyRoute = () => {
    
+   const [socket, setSocket] = useState<Socket | null>(null);
    const { lobbyId } = useParams<ILobbyParamTypes>();
    const history = useHistory();
    const { addToast } = useToasts();
@@ -43,37 +44,40 @@ export const LobbyRoute = () => {
     * define all of the socket.on 
     * event functions
     */
-   useEffect(() => {
-      socket =io(config.server.lobbySocketUrl, {
+   useEffect(():(() => void) => {
+      const newSocket = io(config.server.lobbySocketUrl, {
          query: {
             'gameId': lobbyId
-         }
+         },
+         forceNew: true
       });
+      setSocket(newSocket);
+      return () => {
+         newSocket.close();
+      }
+   }, [setSocket, lobbyId]);
 
-      socket.on('update', (lobby: ILobby) => {
-         console.log('updating');
+
+   useEffect(() => {
+      socket?.on('update', (lobby: ILobby) => {
          setLobby((oldLobby: ILobby) => {
             return JSON.parse(JSON.stringify(lobby));
          });
       });
-      socket.on('newConn', (numPlayers: number) => {
+      socket?.on('newConn', (numPlayers: number) => {
          addToast('A new player joined', {appearance: 'info'});
       });
-      socket.on('newDisconn', (numPlayers: number) => {
+      socket?.on('newDisconn', (numPlayers: number) => {
          addToast('A player left', {appearance: 'info'});
       });
-      socket.on('error', (err: string) => {
+      socket?.on('error', (err: string) => {
          console.log(err);
-         switch(err) {
-            case 'game has already started':
-               socket.disconnect();
-         }
+        //  switch(err) {
+        //     case 'game has already started':
+        //        socket?.close();
+        //  }
       });
-      return () => {
-         console.log('lobby cleanup');
-         socket.disconnect();
-      }
-   }, [lobbyId, addToast]);
+   }, [lobbyId, addToast, socket]);
 
    /**
     * Monitor lobbyId. If it is changed, 
@@ -88,15 +92,13 @@ export const LobbyRoute = () => {
          }
       }).then((res) => {
          if (res.data.status !== 'lobby') {
-            history.push('/error');
-            socket.disconnect();
+            history.replace('/error');
          }
       })
       .catch(() => {
-         history.push('/error');
-         socket.disconnect();
+        history.replace('/error');
       })
-   }, [lobbyId, history]);
+   }, [lobbyId, history, socket]);
 
    /**
     * Monitor lobby.playing. If it is
@@ -106,21 +108,20 @@ export const LobbyRoute = () => {
     */
    useEffect(() => {
       if (lobby.playing) {
-         socket.disconnect();
          /**
           * Add a small delay just to make sure
           * we can enter the game
           */
          setTimeout(() => {
-            history.push('/game/' + lobbyId + '/vote');
+            history.replace('/game/' + lobbyId + '/vote');
          }, 250);
 
       }
-   }, [lobby, history, lobbyId]);
+   }, [lobby, history, lobbyId, socket]);
 
    const startGame = useCallback(() => {
-      socket.emit('start');
-   }, []);
+      socket?.emit('start');
+   }, [socket]);
 
    return (
       <BG>

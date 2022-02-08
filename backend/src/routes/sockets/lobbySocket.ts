@@ -29,7 +29,6 @@ export const lobbySocket = (socket: any) => {
 
 
    socket.on('addGenre', (genre: number) => {
-      console.log('adding genre');
       if (typeof genre != 'number') {
          socket.emit('error', new Error('Genre must be a number'))
       } else {
@@ -46,7 +45,6 @@ export const lobbySocket = (socket: any) => {
    });
 
    socket.on('addProvider', (provider: number) => {
-      console.log('adding provider');
       if (typeof provider != 'number') {
          socket.emit('error', new Error('Provider must be a number'))
       } else {

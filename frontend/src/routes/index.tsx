@@ -32,13 +32,13 @@ export const HomeRoute = function() {
       axios.post(config.server.apiUrl + 'game')
          .then((res) => {
             if (res.status === 200) {
-              // setJoinCode(res.data.id);
+               setJoinCode(res.data.id);
                /**
                 * Add a small delay just to make sure
                 * we can enter the game
                 */
                setTimeout(() => {
-                  history.push('/lobby/' + res.data.id);
+                  history.replace('/lobby/' + res.data.id);
                }, 250);
             }
          })
@@ -60,11 +60,10 @@ export const HomeRoute = function() {
             }
          }).then((res) => {
             if (res.status === 200) {
-               console.log(res.data.status);
                if (res.data.status === 'game') {
-                  history.push('/game/' + joinCode + '/vote');
+                  history.replace('/game/' + joinCode + '/vote');
                } else if (res.data.status === 'lobby') {
-                  history.push('/lobby/' + joinCode);
+                  history.replace('/lobby/' + joinCode);
                }
 
                addToast('Valid Code', {appearance: 'success'});

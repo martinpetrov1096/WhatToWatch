@@ -11,7 +11,7 @@ export const InvalidGame = (props: IInvalidProp) => {
    const history = useHistory();
 
    const goHome = useCallback(() => {
-      history.push('/');
+      history.replace('/');
    }, [history]);
 
    return (

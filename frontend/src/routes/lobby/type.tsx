@@ -23,7 +23,7 @@ const TypeSwitchParams = {
 export const LobbyType = (props: LobbyTypeProps) => {
 
    const setType = useCallback((newType: 'movie' | 'tv') => {
-      props.socket.emit('changeType', newType);
+      props?.socket?.emit('changeType', newType);
    }, [props.socket]);
 
    return (
@@ -45,7 +45,7 @@ export const LobbyType = (props: LobbyTypeProps) => {
 ////////////////////////////////////////////////////
 interface LobbyTypeProps {
    type: 'tv' | 'movie';
-   socket: Socket;
+   socket: Socket | null;
 }
 ////////////////////////////////////////////////////
 //////////////// STYLED COMPONENTS /////////////////

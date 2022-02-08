@@ -12,13 +12,11 @@ import { Genre, getGenres } from '../../utils/get-assets';
 export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
 
    const addGenre = useCallback((genreId: number) => {
-      props.socket.emit('addGenre', genreId);
-      console.log('adding genre');
+      props.socket?.emit('addGenre', genreId);
    }, [props.socket]);
 
    const delGenre = useCallback((genreId: number) => {
-      props.socket.emit('delGenre', genreId);
-      console.log('deleting genre');
+      props.socket?.emit('delGenre', genreId);
    }, [props.socket]);
 
    const [genres, setGenres] = useState<Genre[]>();
@@ -72,7 +70,7 @@ export const LobbyGenres = (props: IGenreSelectorParamTypes) => {
 ////////////////////////////////////////////////////
 interface IGenreSelectorParamTypes {
    type: 'movie' | 'tv';
-   socket: Socket;
+   socket: Socket | null;
    selectedGenres: Array<number>;
 }
 ////////////////////////////////////////////////////

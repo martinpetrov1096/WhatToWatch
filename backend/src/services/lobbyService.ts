@@ -291,7 +291,6 @@ export class LobbyService {
       return await this.getAsync(lobbyId)
       .then((reply: string) => {
          if (!reply) {
-            console.error('In get lobby');
             console.error(reply);
             throw new Error('Couldn\'t find lobby with this id');
          }
@@ -307,8 +306,6 @@ export class LobbyService {
    private async setLobby(lobbyId: string, lobby: ILobby): Promise<void> {
       this.setAsync(lobby.id, JSON.stringify(lobby))
          .then((reply: any) => {
-            console.log('in setLobby for lobby ' + lobbyId)
-            console.log(reply);
             if (reply != 'OK') throw new Error('Couldn\'t update lobby');
          });
    }
