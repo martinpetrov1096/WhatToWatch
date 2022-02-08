@@ -16,7 +16,7 @@ export const InitialDetails = (props: IInitialDetailsProps) => {
          <Title>{props.card?.title}</ Title>
          <Genres genre_ids={props.card?.genre_ids} type={props.type}/>
          <DescriptionRatingWrapper>
-            <Rating rating={props.card?.vote_average} subtitle={'Audience Score'}/>
+            {/* <Rating rating={props.card?.vote_average} subtitle={'Audience Score'}/> */}
             <Description>{props.card?.overview}</ Description>
          </DescriptionRatingWrapper>
       </Wrapper>

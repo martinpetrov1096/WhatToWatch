@@ -4,13 +4,14 @@ import { io, Socket } from "socket.io-client";
 import { useToasts } from 'react-toast-notifications';
 import { GameNavbar } from '../../components/navbar';
 import { GameVote } from './vote';
-import { GameOverview } from './overview';
+import { GameOverview } from './overview/index';
 import { CardDetails } from './details';
 import { InvalidGame } from "../invalid";
 import config from '../../config/config.json';
 import { ISwipe } from "../../types/swipe";
 import { IGame } from "../../types/game";
 import axios from "axios";
+import { IGameParamTypes } from '../../types/router';
 
 
 ////////////////////////////////////////////////////
@@ -196,7 +197,7 @@ export const GameRoute = () => {
                   <GameVote vote={voteFunc} curSwipe={swipes[curSwipeIdx]} swipeIdx={curSwipeIdx}/>
                </Route>
                <Route exact path="/game/:gameId/overview/">
-                  <GameOverview swipes={swipes.filter((x) => x.vote !== undefined)} />
+                  <GameOverview swipes={swipes} socket={socket}/>
                </Route>
             </Route>
             <Route exact path="/game/:gameId/details/:cardId">
@@ -208,9 +209,3 @@ export const GameRoute = () => {
          </Switch>
    );
 }
-////////////////////////////////////////////////////
-/////////////// COMPONENT PROP TYPES ///////////////
-////////////////////////////////////////////////////
-interface IGameParamTypes {
-   gameId: string;
-};

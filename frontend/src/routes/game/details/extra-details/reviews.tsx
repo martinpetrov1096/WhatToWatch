@@ -22,8 +22,9 @@ export const Reviews = (props: IReviewProps) => {
          {props.reviews.map((r: any) => (
             <Review key={r.id}>
                <HeadingWrapper>
+                  {/* <ReviewTitle>A review by <a href={r.url} rel="noreferrer noopener" target="_blank">{r.author}</a></ReviewTitle>
+                  {r.author_details.rating ? <Rating rating={r.author_details.rating} subtitle={''}/> :  null} */}
                   <ReviewTitle>A review by <a href={r.url} rel="noreferrer noopener" target="_blank">{r.author}</a></ReviewTitle>
-                  {r.author_details.rating ? <Rating rating={r.author_details.rating} subtitle={''}/> :  null}
                </HeadingWrapper>
                <Description>{r.content}</Description>
             </Review>

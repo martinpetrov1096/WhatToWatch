@@ -13,8 +13,8 @@ export const Rating = (props: IRatingProps) => {
    return (
       <RatingWrapper>
          <RatingProgressBar 
-            value={(props.rating || 0) * 10}
-            text={(((props?.rating ?? 0) * 10)?.toString())}
+            value={(props.number || 0) * 10}
+            text={props.text}
             strokeWidth={20}
             styles={buildStyles({
                strokeLinecap: 'butt',
@@ -22,7 +22,7 @@ export const Rating = (props: IRatingProps) => {
                trailColor: theme.colorPrimaryDark
             })}
          />
-         <Subtitle>{props.subtitle}</Subtitle>
+         {/* <Subtitle>{props.subtitle}</Subtitle> */}
       </RatingWrapper>
    );
 }
@@ -31,7 +31,8 @@ export const Rating = (props: IRatingProps) => {
 ////////////////////////////////////////////////////
 
 interface IRatingProps {
-   rating: number | undefined;
+   number: number | undefined;
+   text: string;
    subtitle: string;
 }
 ////////////////////////////////////////////////////
