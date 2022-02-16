@@ -20,6 +20,9 @@ export const GameOverview = (props: IGameOverviewProp) => {
         { props.swipes.sort((a: ISwipe, b: ISwipe) => { return (b.numLikes/(b.numLikes + b.numDislikes)) - (a.numLikes/(a.numLikes + a.numDislikes))}).map((swipe: ISwipe) => {
             return <GameOverviewCard swipe={swipe} socket={props.socket}/>
         }) }
+        <LoadMore onClick={() => props.socket?.emit('genNewSwipes')}>
+            Load More
+        </LoadMore>
       </Wrapper>
    );
 }
@@ -36,9 +39,23 @@ interface IGameOverviewProp {
 ////////////////////////////////////////////////////
 
 const Wrapper = styled.div`
+   margin-top: 50px;
    width: 100%;
    display: grid;
    grid-template-columns: repeat(auto-fit, 450px);
    gap: 50px;
    justify-content: center;
+`;
+const LoadMore = styled.div`
+   width: 100%;
+   height: 200px;
+   max-width: 450px;
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   :hover {
+      color: ${(props) => props.theme.colorAccent};
+   }
 `;

@@ -68,14 +68,14 @@ export const gameSocket = (socket: any) => {
          });
    });
 
-   socket.on('vote', ({gameId, swipeId, vote}: any) => {
+   socket.on('vote', ({gameId, swipeId, vote, revote}: any) => {
       if (vote != 'yes' && vote != 'no') {
          throw new Error('Vote must Either be yes or no');
       }
-      gameService.vote(gameId, swipeId, vote)
+      gameService.vote(gameId, swipeId, vote, revote)
          .then((game: Array<ISwipe>) => {
-            socket.emit('voted', {'swipeId':swipeId, 'vote': vote});
-            socket.to(gameId).emit('voted', {'swipeId':swipeId, 'vote': vote});
+            socket.emit('voted', {'swipeId':swipeId, 'vote': vote, revote: revote});
+            socket.to(gameId).emit('voted', {'swipeId':swipeId, 'vote': vote, revote: revote});
          })
          .catch((err: any) => {
             console.log(err.message);

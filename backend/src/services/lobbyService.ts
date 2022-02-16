@@ -6,6 +6,7 @@ import { ILobby } from '../types/lobby';
 import  { promisify } from 'util'
 import genres from '../config/genres.json';
 import providers from '../config/providers.json';
+import { IGame } from '../types/game';
 
 export class LobbyService {
 
@@ -126,7 +127,9 @@ export class LobbyService {
          this.checkStatus(lobby);
 
          lobby.playing = true;
-         await this.setLobby(lobbyId, lobby);
+         const game = lobby as IGame;
+         game.page = 1;
+         await this.setLobby(lobbyId, game);
          lock.unlock();
          return lobby;
       }

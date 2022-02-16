@@ -46,7 +46,6 @@ export class GameService {
       try {
          const game = await this.getGame(gameId);
          this.checkStatus(game);
-         game.page = 1;
          /**
           * If game.swipes doesn't exist yet, grab the
           * first page of results and add it
@@ -118,10 +117,12 @@ export class GameService {
        * to avoid hitting the movieDb api, just return 
        * empty here
        */
+
       const game = await this.getGame(gameId);
       if (game.swipes.length == 0) {
          return [];
       }
+      ++game.page;
       const newSwipes = await this.apiService.getSwipes(game);
 
       const resource = 'locks:' + gameId;
@@ -145,8 +146,10 @@ export class GameService {
          throw new Error(err.message);
       }
    }
+   
 
-   public async vote(gameId: string, swipeId: number, vote: 'yes' | 'no'): Promise<Array<ISwipe>> {
+
+   public async vote(gameId: string, swipeId: number, vote: 'yes' | 'no', revote: boolean): Promise<Array<ISwipe>> {
 
       const resource = 'locks:' + gameId;
       const lock = await this.redlock.lock(resource, 1000);
@@ -161,8 +164,10 @@ export class GameService {
          if (swipeIdx != -1) {            
             if (vote == 'yes') {
                ++game.swipes[swipeIdx].numLikes;
+               if (revote) --game.swipes[swipeIdx].numDislikes;
             } else {
                ++game.swipes[swipeIdx].numDislikes;
+               if (revote) --game.swipes[swipeIdx].numLikes;
             }
          } else {
             throw new Error('Didn\'t find this swipe in this game');
@@ -172,7 +177,7 @@ export class GameService {
           * Increment the page for the next
           * time more swipes are requested
           */
-         ++game.page;
+
          await this.setGame(gameId, game);
          lock.unlock();
 

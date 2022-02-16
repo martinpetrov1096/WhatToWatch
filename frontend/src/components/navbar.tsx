@@ -24,8 +24,8 @@ export const GameNavbar = (props: IGameNavbarProps) => {
 
    return (
       <Wrapper>
-         <NavText highlight={currentView === 'vote'} onClick={() => navigateTo('vote')}>Vote</NavText>
-         <NavText highlight={currentView === 'overview'} onClick={() => navigateTo('overview')}>Overview</NavText>
+         <NavText highlight={currentView === 'vote'} onClick={() => navigateTo('vote')}>Card</NavText>
+         <NavText highlight={currentView === 'overview'} onClick={() => navigateTo('overview')}>Grid</NavText>
       </Wrapper>
    );
 }

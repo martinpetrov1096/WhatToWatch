@@ -43,12 +43,21 @@ export const GameOverviewCard = (props: IGameOverviewCardProp) => {
 
 
    const vote = useCallback((vote: 'yes' | 'no') => {
+      const revote = props.swipe.vote === 'yes' || props.swipe.vote === 'no';
+      
+      /**
+       * Not allowed to revote if your vote is the same thign
+       */
+      if (revote && props.swipe.vote === vote) {
+         return;
+      }
+
 
       if (vote === 'yes') {
-         props.socket?.emit('vote', { gameId: gameId, swipeId: props.swipe.id, vote: 'yes' });
+         props.socket?.emit('vote', { gameId: gameId, swipeId: props.swipe.id, vote: 'yes', revote: revote});
          props.swipe.vote = 'yes';
       } else {
-         props.socket?.emit('vote', { gameId: gameId, swipeId: props.swipe.id, vote: 'no' });
+         props.socket?.emit('vote', { gameId: gameId, swipeId: props.swipe.id, vote: 'no', revote: revote });
          props.swipe.vote = 'no';
       }
 
@@ -59,24 +68,9 @@ export const GameOverviewCard = (props: IGameOverviewCardProp) => {
         <CardWrapper key={props.swipe.id}>
             <GameCard card={props.swipe} key={props.swipe.id}/>
             <VoteWrapper>
-               <VoteButton viewBox="0 0 295.64 295.64" width="50" height="50" onClick={()=> vote('yes')}>
-                     <title>heartButton</title>
-                     <path className="fill" d="M219.31,80.82c-19-16.18-47.23-13.27-64.66,
-                     4.71l-6.83,7-6.82-7c-17.4-18-45.67-20.89-64.66-4.71-21.76,18.57-22.9,
-                     51.9-3.43,72L140,222.09a10.86,10.86,0,0,0,15.69,0l67-69.23c19.51-20.14,
-                     18.37-53.47-3.39-72Z"/>
-                     <circle className="stroke" strokeWidth="10" strokeMiterlimit="10" cx="147.82" cy="147.82" r="142.82"/>
-               </VoteButton>
+               <VoteButton type='dislike' vote={props.swipe.vote} viewBox="0 0 295.64 295.64" width="50" height="50" onClick={()=> vote('no')}/>
                <Rating number={rating.value} text={rating.text} subtitle='Votes'/>
-               <VoteButton viewBox="0 0 295.64 295.64" width="50" height="50" onClick={()=> vote('no')}>
-                     <title>rejectButton</title>
-                     <path className="fill" d="M174.56,147.52l44.05-44.05a13.85,13.85,0,0,0,
-                     0-19.59l-9.79-9.79a13.86,13.86,0,0,0-19.58,0l-44.05,44.06L101.13,74.09a13.86,
-                     13.86,0,0,0-19.58,0l-9.79,9.79a13.85,13.85,0,0,0,0,19.59l44.05,44.05-44,44a13.84,
-                     13.84,0,0,0,0,19.58l9.79,9.8a13.86,13.86,0,0,0,19.58,0l44.06-44.06L189.24,221a13.86,
-                     13.86,0,0,0,19.58,0l9.79-9.8a13.84,13.84,0,0,0,0-19.58Z"/>
-                     <circle className="stroke" strokeWidth="10" strokeMiterlimit="10" cx="147.82" cy="147.82" r="142.82"/>
-               </VoteButton>
+               <VoteButton type='like' vote={props.swipe.vote} viewBox="0 0 295.64 295.64" width="50" height="50" onClick={()=> vote('yes')}/>
             </VoteWrapper>
         </CardWrapper> 
         );
@@ -112,25 +106,20 @@ const VoteWrapper = styled.div`
    justify-content: center;
    align-items: center;
 `;
-
-const VoteButton = styled(Button)`
-
-   box-shadow: none;
-   border: none;
-   border-radius: 100%;
-   outline: none;
-   cursor: pointer;
+type PlayerVoteStyleProps = {
+   vote?: 'yes' | 'no';
+   theme: any;
+}
+const VoteButton = styled(Button)<PlayerVoteStyleProps>`
    background-repeat: no-repeat;
    background-position: center;
    background-color: transparent;
+
+   .stroke {
+         stroke: ${(props: any) => (props.type === 'like' && props.vote === 'yes') || (props.type === 'dislike' && props.vote === 'no') ? props.theme.colorAccent : 'white'};
+      }
+   .fill {
+         fill: ${(props: any) => (props.type === 'like' && props.vote === 'yes') || (props.type === 'dislike' && props.vote === 'no') ? props.theme.colorAccent : 'white'};
+      }
 `;
 
-type PlayerVoteStyleProps = {
-   vote?: 'yes' | 'no';
-}
-const PlayerVote = styled.div`
-   width: 50px;
-   height: 50px;
-   background-image: url('${(props: PlayerVoteStyleProps) => props.vote === 'no' ? '/assets/dislike-btn.svg' : '/assets/like-btn.svg'}');
-   background-repeat: no-repeat;
-`;

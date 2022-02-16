@@ -65,23 +65,8 @@ export const GameVote = (props: IVoteProp) => {
                   {/* Only allow to vote once per card by 
                         only having the button work when 
                         curVote != 'yes' or 'no' */}
-                  <VoteButton viewBox="0 0 295.64 295.64" width="100" height="100" onClick={()=> curVote ? ()=>{} : vote('no')}>
-                     <title>rejectButton</title>
-                     <path className="fill" d="M174.56,147.52l44.05-44.05a13.85,13.85,0,0,0,
-                     0-19.59l-9.79-9.79a13.86,13.86,0,0,0-19.58,0l-44.05,44.06L101.13,74.09a13.86,
-                     13.86,0,0,0-19.58,0l-9.79,9.79a13.85,13.85,0,0,0,0,19.59l44.05,44.05-44,44a13.84,
-                     13.84,0,0,0,0,19.58l9.79,9.8a13.86,13.86,0,0,0,19.58,0l44.06-44.06L189.24,221a13.86,
-                     13.86,0,0,0,19.58,0l9.79-9.8a13.84,13.84,0,0,0,0-19.58Z"/>
-                     <circle className="stroke" strokeWidth="10" strokeMiterlimit="10" cx="147.82" cy="147.82" r="142.82"/>
-                  </VoteButton>
-                  <VoteButton viewBox="0 0 295.64 295.64" width="100" height="100" onClick={()=> curVote ? ()=>{} : vote('yes')}>
-                     <title>heartButton</title>
-                     <path className="fill" d="M219.31,80.82c-19-16.18-47.23-13.27-64.66,
-                     4.71l-6.83,7-6.82-7c-17.4-18-45.67-20.89-64.66-4.71-21.76,18.57-22.9,
-                     51.9-3.43,72L140,222.09a10.86,10.86,0,0,0,15.69,0l67-69.23c19.51-20.14,
-                     18.37-53.47-3.39-72Z"/>
-                     <circle className="stroke" strokeWidth="10" strokeMiterlimit="10" cx="147.82" cy="147.82" r="142.82"/>
-                  </VoteButton>
+                  <VoteButton type='dislike' viewBox="0 0 295.64 295.64" width="100" height="100" onClick={()=> curVote ? ()=>{} : vote('no')}/>
+                  <VoteButton type='like' viewBox="0 0 295.64 295.64" width="100" height="100" onClick={()=> curVote ? ()=>{} : vote('yes')}/>
                </VoteWrapper>
             </Wrapper>
          );

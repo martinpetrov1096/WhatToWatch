@@ -3,8 +3,8 @@ import { Switch,Route, useParams, useHistory } from 'react-router-dom';
 import { io, Socket } from "socket.io-client";
 import { useToasts } from 'react-toast-notifications';
 import { GameNavbar } from '../../components/navbar';
-import { GameVote } from './vote';
-import { GameOverview } from './overview/index';
+import { GameVote } from './card-view';
+import { GameOverview } from './grid-view/index';
 import { CardDetails } from './details';
 import { InvalidGame } from "../invalid";
 import config from '../../config/config.json';
@@ -127,14 +127,24 @@ export const GameRoute = () => {
          setSwipes(game.swipes);
       });
 
-      socket?.on('voted', ({swipeId, vote}: {swipeId: number, vote: 'yes' | 'no'}) => {
+      socket?.on('voted', ({swipeId, vote, revote}: {swipeId: number, vote: 'yes' | 'no', revote: boolean}) => {
          setSwipes((oldSwipes) => {
             const idx = oldSwipes.findIndex((swipe) => swipe.id === swipeId);
             if (idx === -1) {
                return oldSwipes;
             }
             const newSwipes = JSON.parse(JSON.stringify(oldSwipes));
-            vote === 'yes' ? ++newSwipes[idx].numLikes : ++newSwipes[idx].numDislikes;
+            if (revote) {
+               if (vote === 'yes') {
+                  ++newSwipes[idx].numLikes;
+                  --newSwipes[idx].numDislikes;
+               } else {
+                  --newSwipes[idx].numLikes;
+                  ++newSwipes[idx].numDislikes;
+               }
+            } else {
+               vote === 'yes' ? ++newSwipes[idx].numLikes : ++newSwipes[idx].numDislikes;
+            }
             return newSwipes;
          });
       });
@@ -169,10 +179,10 @@ export const GameRoute = () => {
    const voteFunc = useCallback((vote: 'yes' | 'no') => {
       
       if (vote === 'yes') {
-         socket?.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'yes' });
+         socket?.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'yes', revote: false });
          swipes[curSwipeIdx].vote = 'yes';
       } else {
-         socket?.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'no' });
+         socket?.emit('vote', { gameId: gameId, swipeId: swipes[curSwipeIdx].id, vote: 'no', revote: false });
          swipes[curSwipeIdx].vote = 'no';
       }
 
